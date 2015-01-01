@@ -1,0 +1,6 @@
+tmp
+*~
+.metadata
+.project
+.texlipse
+*.synctex.gz
