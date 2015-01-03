@@ -27,6 +27,7 @@
 \usepackage{graphicx} % Required to insert images
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 \usepackage{amsmath}
+\usepackage{xcolor}
 
 % Margins
 \topmargin=-0.45in
@@ -349,6 +350,63 @@
             \vspace{10pt}
             
             \problemAnswer{
+                Denote $H_L[X]$ and $H_S[X]$ as the number of occurences of
+                character $X$ in string $L$ and $S$, respectively. We have
+                \begin{table}[!h]
+                    \renewcommand{\arraystretch}{1.3}
+                    %\caption{}
+                    %\label{}
+                    \centering
+                    \begin{tabular}{c|ccc}
+                        \hline
+                        $X$ & $H_L[X]$ & $H_S[X]$ & M[X] \\
+                        \hline
+                        A & 2 & 2 & 2 \\
+                        C & 2 & 2 & 2 \\
+                        D & 3 & 1 & 1 \\
+                        E & 2 & 3 & 2 \\
+                        F & 1 & 1 & 1 \\
+                        G & 1 & 1 & 1 \\
+                        Q & 1 & 0 & 0 \\
+                        R & 1 & 2 & 1 \\
+                        W & 0 & 1 & 0 \\
+                        \hline
+                    \end{tabular}
+                \end{table}
+                We first note that ``Q'' must be removed from $L$ and ``W'' must
+                be removed from $S$, while ``A'', ``C'', ``F'' and ``G'' should
+                not be removed. 2 ``D'' must be removed from ``L'', 1 ``E'' must
+                be removed from $S$ and 1 ``R'' must be removed from $S$. We
+                remove the characters that are surely to be removed and
+                highlight the characters that could be removed as 
+                \begin{align*}
+                    L & = AC\textcolor{blue}{DD}CGF\textcolor{blue}{D}ERAE \\
+                    S & =
+                    \textcolor{blue}{EE}CDAC\textcolor{blue}{ER}GA\textcolor{blue}{R}F
+                \end{align*}
+                There are a 3 ways of removing 2 ``D''s from $L$ and $2\times 2$
+                ways to remove a ``E'' and ``R'' from S. We list the
+                $D(S_1,S_2)$ for each possible pair of $S_1$ and $S_2$ in
+                Table~\ref{table:DS1S2}
+                \begin{table}[!h]
+                    \renewcommand{\arraystretch}{1.3}
+                    \caption{All possible $D(S_1,S_2)$ for exhaustive search.}
+                    \label{table:DS1S2}
+                    \centering
+                    \begin{tabular}{c|cc}
+                        \hline
+                        $S_2$ & $S_1=ACCGFDERAE$ & $S_1=ACDCGFERAE$ \\
+                        \hline
+                        $ECDACEGARF$ & 15 & 16 \\
+                        $ECDACERGAF$ & 13 & 15 \\
+                        $EECDACGARF$ & 16 & 16 \\
+                        $EECDACRGAF$ & 14 & 15 \\
+                        \hline
+                    \end{tabular}
+                \end{table}
+                
+                Using an exhaustive search, we have $S_1 = ACCGFDERAE$ and $S_2
+                = ECDACERGAF$.
             }
         \end{homeworkSection}
     
@@ -370,7 +428,7 @@
                 $X$ from position $p$ forward in $L$. If such an $X$ is found,
                 set $q'$ to the position of that found $X$.
                 \item If such an $X$ was found in $L$, scan the characters from
-                $q + 1$ to $q' − 1$ (inclusive) for any characters on the LIST.
+                $q + 1$ to $q' - 1$ (inclusive) for any characters on the LIST.
                 As each such character is found (if any are) remove it from $L$
                 and remove one copy of it from the LIST.
                 \item Set $q$ to $q'$.
