@@ -26,6 +26,7 @@
 \usepackage{extramarks} % Required for headers and footers
 \usepackage{graphicx} % Required to insert images
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{amsmath}
 
 % Margins
 \topmargin=-0.45in
@@ -102,6 +103,43 @@
     \enterProblemHeader{\homeworkProblemName} % Header and footer after the
 % environment
 }
+
+\newtheorem{theorem}{Theorem}[homeworkProblemCounter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{definition}[1][Definition]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{example}[1][Example]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+    }
+\newenvironment{remark}[1][Remark]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+
+\newcommand{\qed}{
+    \nobreak \ifvmode \relax \else
+    \ifdim\lastskip<1.5em \hskip-\lastskip
+    \hskip1.5em plus0em minus0.5em \fi \nobreak
+    \vrule height0.75em width0.5em depth0.25em\fi
+}
    
 %----------------------------------------------------------------------------------------
 %	NAME AND CLASS SECTION
@@ -149,8 +187,8 @@
     %	PROBLEM 1
     %----------------------------------------------------------------------------------------
     \begin{homeworkProblem}
-        Given two strings L and S that have an equal number of occurrences of
-        each specific character, we define $D(S_1, S_2)$ as the minimum number
+        Given two strings $L$ and $S$ that have an equal number of occurrences
+        of each specific character, we define $D(S_1, S_2)$ as the minimum number
         of transpositions of adjacent characters needed to convert $S_1$ into
         $S_2$. For example, $S_1 = CBADA$ can be converted into $S_2 = ABDCA$
         using exactly four transpositions. Notice that all the transpositions
@@ -168,6 +206,41 @@
             \vspace{10pt}
             
             \problemAnswer{
+                \begin{lemma}
+                    \label{lemma:1.1}
+                    $D(S_1, S_2)$ equals to the Kendall tau distance between
+                    $S_1$ and $S_2$, i.e.
+                    \begin{align*}
+                        D(S_1, S_2) & = K(S_1, S_2) \\
+                         & = |\{(i,j)|i<j,(\tau_1[i]<\tau_1[j]
+                        \mbox{ AND } \tau_2[i]>\tau_2[j]) \mbox{ OR }
+                        (\tau_1[i]>\tau_1[j] \mbox{ AND }
+                        \tau_2[i]<\tau_2[j])\}|
+                    \end{align*}
+                    where $\tau_1[i]$ and $\tau_2[i]$ denotes the index/ranking
+                    of character $i$ in $S_1$ and $S_2$, respectively.
+                \end{lemma}
+                \begin{proof}
+                    Firstly, each transpositions of adjacent characters in $S_1$
+                    can at most reduce $K(S_1, S_2)$ by 1, and when $S_1$
+                    is eventually converted to $S_2$ with transpositions $K(S_1,
+                    S_2) = 0$. As a result, $K(S_1, S_2)$ is a lower
+                    bound of $D(S_1, S_2)$.
+                    
+                    On the other hand, bubble sort uses exactly $K(S_1, S_2)$
+                    adjacent transpositions to convert $S_1$ to $S_2$,
+                    therefore $K(S_1, S_2)$ is achievable. Consequently, $D(S_1,
+                    S_2) = K(S_1, S_2)$
+                \end{proof}
+                A classical algorithm to compute $K(S_1, S_2)$ is merge-sort,
+                has $\mathcal{O}(n\log n)$ complexity. Define index sequence $Q$
+                such that
+                \[
+                    Q[k] = \tau_1[S_2[k]],\,k=1,\ldots,n
+                \]
+                the constructing of which has $\mathcal{O}(n)$ complexity. Then
+                we can simply count the number of inverted pairs in $Q$ using
+                merge sort to compute $D(S_1, S_2)$.
             }
         \end{homeworkSection}
         
@@ -180,7 +253,12 @@
             \vspace{10pt}
             
             \problemAnswer{
-            }
+                As stated in the proof to Lemma~\ref{lemma:1.1}, we can bubble
+                sort $S_1$ based on the pairwise ranking defined by $Q$, which
+                uses exactly $D(S_1, S_2)$ transpositions to convert $S_1$ to
+                $S_2$, since each transposition reduces $D(S_1, S_2)$ exactly by
+                1. It has $\mathcal{O}(n^2)$ complexity.
+             }
         \end{homeworkSection}
         
         \begin{homeworkSection}{\homeworkProblemName(c)}
@@ -194,6 +272,42 @@
             \vspace{10pt}
             
             \problemAnswer{
+                \begin{lemma}
+                    \label{lemma:1.2}
+                    The transpositions that achieve $D(S_1 , S_2)$ does not
+                    change the order of multiple occurences of a same character.
+                    In other words, assume there are $n_i$
+                    occurences of character $i$ in $S_1$. After $S_1$ being
+                    converted to $S_2$, each of this occurence appears in a new
+                    position denoted as $c_1^{(i)},
+                    c_2^{(i)},\ldots,c_{n_i}^{(i)}$, where the subscripts
+                    denotes the order of their original appearance in $S_1$,
+                    then a series of $D(S_1 , S_2)$-achieving transpositions
+                    must satisfy
+                    \[
+                        c_1^{(i)}<c_2^{(i)}<\ldots<c_{n_i}^{(i)}
+                    \]
+                \end{lemma}
+                \begin{proof}
+                    If there exists $c_l^{(i)}>c_{l+1}^{(i)}$, then the $l$-th
+                    and the $l+1$-th occurence of character $i$ must have been
+                    transposed somewhere, which is totally unnecessary. This
+                    is in contradict with the assumption of minimum number of
+                    transposition.
+                \end{proof}
+                According to Lemma~\ref{lemma:1.2}, we can redefine the
+                index/ranking for each occurence of each character. Denote
+                $\tau_1[i, m]$ as the index of the $m$-th occurence of character
+                $i$ in $S_1$, then the index sequence $Q$ is also redefined as
+                \[
+                    Q[k_2[i, m]] = \tau_1[i, m],\,k=1,\ldots,n
+                \]
+                where $k_2[i, m]$ is the index of the $m$-th occurence of
+                character $i$ in $S_2$. Then counting the number of inverted
+                pairs in $Q$ using merge sort results in $D(S_1, S_2)$.
+                
+                The algorithm to compute $D(S_1, S_2)$ and actually transform
+                $S_1$ into $S_2$ is implemented in \textbf{\emph{hw\_1\_1.py.}}
             }
         \end{homeworkSection}
         
