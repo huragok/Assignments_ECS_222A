@@ -1,11 +1,6 @@
 #! /usr/bin/env python3
 import hw_1_1
 
-L = "ACDQDCGFDERAE"
-S = "EECDACWERGARF"
-#L = ("ACCGFDERAE", "ACDCGFERAE")
-#S = ("ECDACEGARF", "ECDACERGAF", "EECDACGARF", "EECDACRGAF")
-
 def get_LIST(L, S):
     """
     Function that computes M and return a LIST of the characters must be removed from L 
