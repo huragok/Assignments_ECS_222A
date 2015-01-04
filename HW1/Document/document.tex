@@ -308,7 +308,7 @@
                 pairs in $Q$ using merge sort results in $D(S_1, S_2)$.
                 
                 The algorithm to compute $D(S_1, S_2)$ and actually transform
-                $S_1$ into $S_2$ is implemented in \textbf{\emph{hw\_1\_1.py.}}
+                $S_1$ into $S_2$ is implemented in \textbf{\emph{hw\_1\_1.py}}.
             }
         \end{homeworkSection}
         
@@ -445,6 +445,10 @@
                 \item At termination, one the remaining string $L$ is called
                 $S_1$ and the remaining string $S$ is called $S_2$.
             \end{enumerate}
+            \problemAnswer{
+                This algorithm is implemented in \textbf{\emph{hw\_1\_2.py}}.
+            
+            }
         \end{homeworkSection}
     
         \begin{homeworkSection}{\homeworkProblemName(c)}
@@ -453,6 +457,10 @@
             \vspace{10pt}
             
             \problemAnswer{
+                On $L = ABCCBCD$ and $S = ACBAD$ the glorithm results in $S_1 =
+                S_2 = ACBD$.  On $L = ACDQDCGFDERAE$ and $S = EECDACWERGARF$
+                the algorithm results in $S_1 = ECDACEGARF$ and $S_2 =
+                ACCGFDERAE$.
             }
         \end{homeworkSection}
     
@@ -462,7 +470,19 @@
             \vspace{10pt}
             
             \problemAnswer{
-            }
+                Steps 2 to 10 removes characters from $L$. Since step 10 ensures
+                all characters in LIST are removed, and from the definition
+                of LIST in step 2, the occurence of each character $X$ in $L$ is
+                exactly $M[X]$ now. 
+                \\\\
+                Since $S$ has not been altered yet, if $S$ is in the same length
+                as $L$, then the occurence of each character $X$ in $S$ is
+                exactly $M[X]$ now and there is nothing to remove from it, the
+                algotithm terminates in one pass of step 2 to 10. Otherwise the
+                by swapping $L$ and $S$ the second pass will ensure so.
+                Consequently, the algorithm always terminates within two
+                executions of steps 2 to 10.
+             }
         \end{homeworkSection}
         
         \begin{homeworkSection}{\homeworkProblemName(e)}
@@ -471,7 +491,11 @@
             \vspace{10pt}
             
             \problemAnswer{
-            }
+                Comparing the results from 2(a) and 2(c) we can see that the
+                algorithm does not result in the minimun $D(S_1, S_2)$ in this
+                case. Obviously it does not always solves the MinDistRem
+                problem.
+             }
         \end{homeworkSection}
     \end{homeworkProblem}
     
