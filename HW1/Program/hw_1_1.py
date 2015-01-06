@@ -28,18 +28,19 @@ def count_inversion(Q, start, end):
         QLeft, QRight = (Q[start : mid], Q[mid : end])
         idxLeft, idxRight = (0, 0)
         countInvCross = 0
+        print([QLeft, QRight])
         QLeft, QRight = (QLeft + [INF], QRight + [INF])
         for idx in range(start, end):
             if QLeft[idxLeft] < QRight[idxRight]:
                 Q[idx] = QLeft[idxLeft]
                 idxLeft += 1
-                if idxRight == end - mid:
-                    countInvCross += 1
+                countInvCross += idxRight
+                #if idxRight == end - mid and idx_left < mid - start:
+                 #   countInvCross += 1
             else:
                 Q[idx] = QRight[idxRight]
                 idxRight += 1
-                if idxLeft < mid - start:
-                    countInvCross += 1
+        print("{0}, {1}, {2}".format(countInvLeft, countInvRight, countInvCross))
         return countInvLeft + countInvRight + countInvCross
     else:
         return 0
