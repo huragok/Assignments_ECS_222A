@@ -62,7 +62,23 @@ def remove_from_L(L, S):
 
     return ''.join([c for c in L_list if c is not None]) 
 
-            
+def min_dist_rem_BF(L, S):
+    """
+    Brute force to solve the minDistRem problem
+    """
+    pass
+
+def get_all_S12(L, S):
+    """
+    Return a tuple of all possible S1 and a tuple of all possible S2
+    """
+    pass
+
+def get_char_to_remove(L, S):
+    """
+    Get 2 dict of characters, numbers to remove and possible possitions to remove for L and S respectively    
+    """
+    pass
 
 if __name__ == "__main__":
     for (L, S) in [("ABCCBCD", "ACBAD"), ("ACDQDCGFDERAE", "EECDACWERGARF")]:
