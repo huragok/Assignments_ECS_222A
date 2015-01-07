@@ -33,13 +33,10 @@ def count_inversion(Q, start, end):
             if QLeft[idxLeft] < QRight[idxRight]:
                 Q[idx] = QLeft[idxLeft]
                 idxLeft += 1
-                if idxRight == end - mid:
-                    countInvCross += 1
+                countInvCross += idxRight
             else:
                 Q[idx] = QRight[idxRight]
                 idxRight += 1
-                if idxLeft < mid - start:
-                    countInvCross += 1
         return countInvLeft + countInvRight + countInvCross
     else:
         return 0
