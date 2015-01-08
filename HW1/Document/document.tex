@@ -588,7 +588,30 @@
             \vspace{10pt}
             
             \problemAnswer{
-            }
+                According to problem 4(a), one character in a contact must be
+                on an odd position and the other must be on an even position.
+                \\\\
+                If $C(S) = O(S)$, we can count the number of contacts according
+                to the 1's on the odd positions. For each of these 1's that is
+                not at the beginning or end of the string, its corresponding
+                grid points have at most 4 neighbors, but 2 of these 4 points
+                must correspond to the 2 adjacent characters in the string so
+                they can not form contact pairs. Consequently each 1 on the odd
+                positions but not the beginning or end of the string can have at
+                most 2 contacts. For the beginning 1 and the ending 1, a similar
+                analysis applies and both of them have at most 3 contacts. As a
+                result, the maximum number of contact is $2(C(S) + 1)$.
+                \\\\
+                If $C(S) = E(S)$,  we can count the number of contacts according
+                to the 1's on the even positions. Similarly, each 1 that is not
+                at the end of the string (it cannot be at the beginning!) can
+                have at most 2 contacts. And the 1 at the end of the string (if
+                any) can have at most 3 contacts. the maximum number of contact
+                is $2C(S) + 1$.
+                \\\\
+                In summary, the number of contacts in any legal embedding of
+                $S$, cannot exceed $2(C(S) + 1)$.
+             }
         \end{homeworkSection}
         
         \begin{homeworkSection}{\homeworkProblemName(c)}
