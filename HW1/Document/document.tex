@@ -557,6 +557,25 @@
             \vspace{10pt}
             
             \problemAnswer{
+                We first color all grid points with 2 colors white and black so
+                that the neighboring points have different color (as in a chess
+                board). 
+                \\\\
+                Consider two points $a$ and $b$ on the grid, if they
+                have the same color, then when $b$ moves to one of its
+                neighboring points, they have different colors; if they have
+                different colors, then when $b$ move to one of its neighboring
+                points, they have the same color. Consequently, two points of
+                the same color must be separated by even steps and two points of
+                different colors must be separated by odd steps. Here one step
+                is defined as one move towards one of the neighboring points.
+                \\\\
+                Due to the rule 3 the number of steps just defined equals to the
+                distance between two characters in an embedded string. If
+                characters on $i$ and $j$ forms a contact, their corresponding
+                grid points must be neighbors so that they have different
+                colors, therefore these two points must be separated by an odd
+                number of steps. As a result $|i-j|$ is also odd.
             }
         \end{homeworkSection}
         
