@@ -689,13 +689,17 @@
                 If there is a 1 either at the begining or the end point of
                 the string have 4 or 3 neighboring 1's, we would like to have as
                 few 1's that is in the middle of the string as possible in order
-                to make the average number of contacts each 1 can form larger,
-                since each of them can form at most 2 contacts. According to the
+                to possibly make the average number of contacts each 1 can form
+                larger, since each of them can form at most 2 contacts. According to the
                 number of neighboring 1's that the beginning and ending 1's
                 have, we can count the minimum number of middle 1's in the
-                string and therefore compute the maximum possible ratio of
-                contacts to 1's. The results are
-                shown in Table~\ref{table:4d} \begin{table}[!h]
+                string (a very loss lower bound though) and therefore the
+                corresponding ratio of contacts to 1's. Note that if this ratio
+                is smaller than $7/6$, then having any more number of middle
+                points will also result in a ratio smaller than $7/6$,
+                because each middle point account for at most 1 to this ratio.
+                The results are shown in Table~\ref{table:4d}
+                \begin{table}[!h]
                     \renewcommand{\arraystretch}{1.3}
                     %\caption{}
                     \label{table:4d}
@@ -706,19 +710,35 @@
                         1's in the middle & max. ratio of contacts to 1's \\
                         \hline
                         1 with 4 neighbor 1's & 1 with 4 neighbor 1's & 6 &
-                        $\frac{6\cdot 2+2\cdot 3}{6 + 2} = $
+                        $\frac{6\cdot 2+2\cdot 3}{2\cdot(6 + 2)} =\frac{9}{8} $
                         \\
                         1 with 4 neighbor 1's & 1 with 3 neighbor 1's & 5 &
-                        $\frac{5\cdot 2+2\cdot 3}{5 + 2} = $ \\
-                        1 with 4 neighbor 1's & 1 with 2 neighbor 1's &  &  \\
-                        1 with 4 neighbor 1's & 1 with 1 neighbor 1's &  &  \\
-                        1 with 4 neighbor 1's & 1 with 0 neighbor 1's &  &  \\
-                        1 with 4 neighbor 1's & 0 &  &  \\
-                        1 with 3 neighbor 1's & 1 with 3 neighbor 1's &  &  \\
-                        1 with 3 neighbor 1's & 1 with 2 neighbor 1's &  &  \\
-                        1 with 3 neighbor 1's & 1 with 1 neighbor 1's &  &  \\
-                        1 with 3 neighbor 1's & 1 with 0 neighbor 1's &  &  \\
-                        1 with 3 neighbor 1's & 0 &  &  \\
+                        $\frac{5\cdot 2+2\cdot 3}{2\cdot(5 + 2)} = \frac{8}{7}$
+                        \\
+                        1 with 4 neighbor 1's & 1 with 2 neighbor 1's & 4 &
+                        $\frac{4\cdot 2+3 + 2}{2\cdot(4+2)} = \frac{13}{12}$
+                        \\
+                        1 with 4 neighbor 1's & 1 with 1 neighbor 1's & 3 &
+                        $\frac{3\cdot 2+ 3 + 1}{2\cdot(3+2)} = 1$
+                        \\
+                        1 with 4 neighbor 1's & 1 with 0 neighbor 1's & 4 &
+                        $\frac{4\cdot 2+ 3 + 0}{2\cdot(4+2)} = \frac{11}{12}$
+                        \\
+                        1 with 4 neighbor 1's & 0 & 4 & $\frac{4\cdot 2+1\cdot
+                        3}{2\cdot(4+1)} = \frac{11}{10}$ \\
+                        1 with 3 neighbor 1's & 1 with 3 neighbor 1's & 4 &
+                        $\frac{4\cdot 2+2\cdot 3}{2\cdot(4+2)} = \frac{7}{6}$
+                        \\
+                        1 with 3 neighbor 1's & 1 with 2 neighbor 1's & 3 &
+                        $\frac{3\cdot 2+3+2}{2\cdot(3+2)} = \frac{11}{10}$
+                        \\
+                        1 with 3 neighbor 1's & 1 with 1 neighbor 1's & 2 &
+                        $\frac{2\cdot 2+3+1}{2\cdot(2+2)} = 1$
+                        \\
+                        1 with 3 neighbor 1's & 1 with 0 neighbor 1's & 3 &
+                        $\frac{3\cdot 2+3+0}{2\cdot(3+2)} = \frac{9}{10}$ \\
+                        1 with 3 neighbor 1's & 0 & 3 & $\frac{3\cdot 2+1\cdot
+                        3}{2\cdot(3+1)} = \frac{9}{8}$ \\
                         \hline
                     \end{tabular}
                 \end{table}
