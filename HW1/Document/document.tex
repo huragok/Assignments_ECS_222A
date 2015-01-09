@@ -492,7 +492,7 @@
             
             \problemAnswer{
                 Comparing the results from Problem 2(c) and Problem 2(a), we can
-                see that this algorithm does not always solves the MinDist Rem
+                see that this algorithm does not always solves the MinDistRem
                 problem.
             }
         \end{homeworkSection}
@@ -630,6 +630,17 @@
             \vspace{10pt}
             
             \problemAnswer{
+                One simple example is $S=10010000000100100000001001$, and the
+                embedding is shown in Figure~\ref{fig:fig_2}. This embedding has
+                exactly 7 contacts and 6 1's, so its ratio of contacts to 1's is
+                7/6.
+                
+                \begin{figure}[!h]
+                    \centering
+                    \includegraphics[width=0.25\columnwidth]{figs/fig_2.pdf}
+                    \caption{Embedding of $S=10010000000100100000001001$.}
+                    \label{fig:fig_2}
+                \end{figure}
             }
         \end{homeworkSection}
         
@@ -641,6 +652,76 @@
             \vspace{10pt}
             
             \problemAnswer{
+                Consider only the 1's in the string. According
+                to how many neighboring 1's they have in the embedding, they can
+                be categorized as follows:
+                \begin{enumerate}
+                    \item The 1 with 4 neighboring 1's:
+                        \begin{itemize}
+                            \item If this 1 is at the end or beginning of the
+                            string, it can form at most 3 contacts.
+                            \item If this 1 is in the middle of the string, it
+                            can form at most 2 contacts.
+                        \end{itemize}
+                    \item The 1 with 3 neighboring 1's:
+                        \begin{itemize}
+                            \item If this 1 is at the end or beginning of
+                            the string, it can form at most 3 contacts.
+                            \item If this 1 is in the middle of the string, it
+                            can form at most 2 contacts.
+                        \end{itemize}
+                    \item The 1 with 2 neighboring 1's, it can form at most 2
+                    contacts.
+                    \item The 1 with 1 neighboring 1's, it can form at most 1
+                    contacts.
+                    \item The 1 with 0 neighboring 1's, it can form 0 contact.
+                \end{enumerate}
+                According to the proof of the handshake lemma, we can count the
+                total number of contacts as the summation of the number of
+                contacts each 1 forms divided by 2. Then we sould like to prove
+                that the average number of contacts each 1 can form is at most
+                $7/3$.
+                \\\\
+                From the above categorization, we can see that if neither
+                the end nor beginning of the string is a 1 with 3 neighboring
+                1's or 4 neighboring 1's, each 1 can form at most $2 < 7/3$ contacts.
+                \\\\
+                If there is a 1 either at the begining or the end point of
+                the string have 4 or 3 neighboring 1's, we would like to have as
+                few 1's that is in the middle of the string as possible in order
+                to make the average number of contacts each 1 can form larger,
+                since each of them can form at most 2 contacts. According to the
+                number of neighboring 1's that the beginning and ending 1's
+                have, we can count the minimum number of middle 1's in the
+                string and therefore compute the maximum possible ratio of
+                contacts to 1's. The results are
+                shown in Table~\ref{table:4d} \begin{table}[!h]
+                    \renewcommand{\arraystretch}{1.3}
+                    %\caption{}
+                    \label{table:4d}
+                    \centering
+                    \begin{tabular}{cc|cc}
+                        \hline
+                         beginning of the string  & end of the string & min. \#
+                        1's in the middle & max. ratio of contacts to 1's \\
+                        \hline
+                        1 with 4 neighbor 1's & 1 with 4 neighbor 1's & 6 &
+                        $\frac{6\cdot 2+2\cdot 3}{6 + 2} = $
+                        \\
+                        1 with 4 neighbor 1's & 1 with 3 neighbor 1's & 5 &
+                        $\frac{5\cdot 2+2\cdot 3}{5 + 2} = $ \\
+                        1 with 4 neighbor 1's & 1 with 2 neighbor 1's &  &  \\
+                        1 with 4 neighbor 1's & 1 with 1 neighbor 1's &  &  \\
+                        1 with 4 neighbor 1's & 1 with 0 neighbor 1's &  &  \\
+                        1 with 4 neighbor 1's & 0 &  &  \\
+                        1 with 3 neighbor 1's & 1 with 3 neighbor 1's &  &  \\
+                        1 with 3 neighbor 1's & 1 with 2 neighbor 1's &  &  \\
+                        1 with 3 neighbor 1's & 1 with 1 neighbor 1's &  &  \\
+                        1 with 3 neighbor 1's & 1 with 0 neighbor 1's &  &  \\
+                        1 with 3 neighbor 1's & 0 &  &  \\
+                        \hline
+                    \end{tabular}
+                \end{table}
             }
         \end{homeworkSection}
     \end{homeworkProblem}
