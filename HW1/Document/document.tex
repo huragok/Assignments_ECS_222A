@@ -28,6 +28,8 @@
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 \usepackage{amsmath}
 \usepackage{xcolor}
+\usepackage{listings}
+\usepackage[toc,page]{appendix}
 
 % Margins
 \topmargin=-0.45in
@@ -140,6 +142,12 @@
     \ifdim\lastskip<1.5em \hskip-\lastskip
     \hskip1.5em plus0em minus0.5em \fi \nobreak
     \vrule height0.75em width0.5em depth0.25em\fi
+}
+
+\lstset{
+    frame=single,
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
 }
    
 %----------------------------------------------------------------------------------------
@@ -509,7 +517,10 @@
         \vspace{10pt}
             
         \problemAnswer{
-            Too hard for me \ldots
+            Too hard for me \ldots I just implemented a brute force solution to
+            exhaust all possible $(S_1, S_2)$ and find the one with the minimum
+            distance in \textbf{\emph{hw\_1\_2.py}}. Surely this is not
+            considered ``efficient''.
         }
     \end{homeworkProblem}
     
@@ -698,53 +709,230 @@
                 is smaller than $7/6$, then having any more number of middle
                 points will also result in a ratio smaller than $7/6$,
                 because each middle point account for at most 1 to this ratio.
-                The results are shown in Table~\ref{table:4d}
+                The results are shown in Table~\ref{table:4d}. Some examples of
+                each cases are plotted in Figure~\ref{fig:4e1} and
+                Figure~\ref{fig:4e2}.
+                \\\\
+                From the table we can see that the maximum raio of contacts to
+                1's is $7/6$.
+                
                 \begin{table}[!h]
                     \renewcommand{\arraystretch}{1.3}
-                    %\caption{}
+                    \caption{Enumeration of cases where the string has the
+                    minimum number of 1's in the middle.}
                     \label{table:4d}
                     \centering
-                    \begin{tabular}{cc|cc}
+                    \begin{tabular}{ccc|cc}
                         \hline
-                         beginning of the string  & end of the string & min. \#
-                        1's in the middle & max. ratio of contacts to 1's \\
+                        case & beginning of the string  & end of the string &
+                        min.
+                        \# 1's in the middle & ratio of contacts to 1's \\
                         \hline
-                        1 with 4 neighbor 1's & 1 with 4 neighbor 1's & 6 &
+                        1 & 1 with 4 neighbor 1's & 1 with 4 neighbor 1's & 6 &
                         $\frac{6\cdot 2+2\cdot 3}{2\cdot(6 + 2)} =\frac{9}{8} $
                         \\
-                        1 with 4 neighbor 1's & 1 with 3 neighbor 1's & 5 &
+                        2 & 1 with 4 neighbor 1's & 1 with 3 neighbor 1's & 5 &
                         $\frac{5\cdot 2+2\cdot 3}{2\cdot(5 + 2)} = \frac{8}{7}$
                         \\
-                        1 with 4 neighbor 1's & 1 with 2 neighbor 1's & 4 &
+                        3 & 1 with 4 neighbor 1's & 1 with 2 neighbor 1's & 4 &
                         $\frac{4\cdot 2+3 + 2}{2\cdot(4+2)} = \frac{13}{12}$
                         \\
-                        1 with 4 neighbor 1's & 1 with 1 neighbor 1's & 3 &
+                        4 & 1 with 4 neighbor 1's & 1 with 1 neighbor 1's & 3 &
                         $\frac{3\cdot 2+ 3 + 1}{2\cdot(3+2)} = 1$
                         \\
-                        1 with 4 neighbor 1's & 1 with 0 neighbor 1's & 4 &
+                        5 & 1 with 4 neighbor 1's & 1 with 0 neighbor 1's & 4 &
                         $\frac{4\cdot 2+ 3 + 0}{2\cdot(4+2)} = \frac{11}{12}$
                         \\
-                        1 with 4 neighbor 1's & 0 & 4 & $\frac{4\cdot 2+1\cdot
-                        3}{2\cdot(4+1)} = \frac{11}{10}$ \\
-                        1 with 3 neighbor 1's & 1 with 3 neighbor 1's & 4 &
+                        6 & 1 with 4 neighbor 1's & 0 & 4 & $\frac{4\cdot
+                        2+1\cdot 3}{2\cdot(4+1)} = \frac{11}{10}$ \\
+                        7 & 1 with 3 neighbor 1's & 1 with 3 neighbor 1's & 4 &
                         $\frac{4\cdot 2+2\cdot 3}{2\cdot(4+2)} = \frac{7}{6}$
                         \\
-                        1 with 3 neighbor 1's & 1 with 2 neighbor 1's & 3 &
+                        8 & 1 with 3 neighbor 1's & 1 with 2 neighbor 1's & 3 &
                         $\frac{3\cdot 2+3+2}{2\cdot(3+2)} = \frac{11}{10}$
                         \\
-                        1 with 3 neighbor 1's & 1 with 1 neighbor 1's & 2 &
+                        9 & 1 with 3 neighbor 1's & 1 with 1 neighbor 1's & 2 &
                         $\frac{2\cdot 2+3+1}{2\cdot(2+2)} = 1$
                         \\
-                        1 with 3 neighbor 1's & 1 with 0 neighbor 1's & 3 &
+                        10 & 1 with 3 neighbor 1's & 1 with 0 neighbor 1's & 3 &
                         $\frac{3\cdot 2+3+0}{2\cdot(3+2)} = \frac{9}{10}$ \\
-                        1 with 3 neighbor 1's & 0 & 3 & $\frac{3\cdot 2+1\cdot
-                        3}{2\cdot(3+1)} = \frac{9}{8}$ \\
+                        11 & 1 with 3 neighbor 1's & 0 & 3 & $\frac{3\cdot
+                        2+1\cdot 3}{2\cdot(3+1)} = \frac{9}{8}$ \\
                         \hline
                     \end{tabular}
                 \end{table}
+                
+                \begin{figure}[!H]
+                    \begin{minipage}[b]{0.24\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_4_1.pdf}}
+                        \centerline{Case 1 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_4_2.pdf}}
+                        \centerline{Case 1 - 2}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_3_1.pdf}}
+                        \centerline{Case 2 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.24\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_3_2.pdf}}
+                        \centerline{Case 2 - 2}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.24\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_3_3.pdf}}
+                        \centerline{Case 2 - 3}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.24\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_2_1.pdf}}
+                        \centerline{Case 3 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_2_2.pdf}}
+                        \centerline{Case 3 - 2}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_1_1.pdf}}
+                        \centerline{Case 4 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.32\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4_0_1.pdf}}
+                        \centerline{Case 5 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_4__1.pdf}}
+                        \centerline{Case 6 - 1}\medskip
+                    \end{minipage}
+                    \caption{
+                        Different cases where the string has the minimum number
+                        of 1’s in the middle. Red represents beginning and
+                        ending 1's and blue represents middle 1's. Symmetrical
+                        cases are not plotted.
+                    }
+                    \label{fig:4e1}
+                \end{figure}
+    
+                \begin{figure}[!H]
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_3_1.pdf}}
+                        \centerline{Case 7 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.24\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_3_2.pdf}}
+                        \centerline{Case 7 - 2}\medskip
+                    \end{minipage}
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_3_3.pdf}}
+                        \centerline{Case 7 - 3}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.24\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_3_4.pdf}}
+                        \centerline{Case 7 - 4}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.24\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_3_5.pdf}}
+                        \centerline{Case 7 - 5}\medskip
+                    \end{minipage}
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_2_1.pdf}}
+                        \centerline{Case 8 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_2_2.pdf}}
+                        \centerline{Case 8 - 2}\medskip
+                    \end{minipage}
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_2_3.pdf}}
+                        \centerline{Case 8 - 3}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_2_4.pdf}}
+                        \centerline{Case 8 - 4}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.24\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_2_5.pdf}}
+                        \centerline{Case 8 - 5}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_1_1.pdf}}
+                        \centerline{Case 9 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_1_2.pdf}}
+                        \centerline{Case 9 - 2}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.32\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3_0_1.pdf}}
+                        \centerline{Case 10 - 1}\medskip
+                    \end{minipage}
+                    \hfill
+                    \begin{minipage}[b]{0.16\linewidth}
+                        \centering
+                        \centerline{\includegraphics[width=0.8\linewidth]{figs/fig_4e_3__1.pdf}}
+                        \centerline{Case 11 - 1}\medskip
+                    \end{minipage}
+                    \caption{Different cases where the string has the minimum number
+                        of 1’s in the middle (continued).}
+                    \label{fig:4e2}
+                \end{figure}
             }
+             
         \end{homeworkSection}
     \end{homeworkProblem}
+    
+    
+    \newpage
+    \begin{appendices}
+        \begin{enumerate}
+            \item \textbf{\emph{hw\_1\_1.py}}
+            \lstinputlisting[language=Python]{../Program/hw_1_1.py}
+            \item \textbf{\emph{hw\_1\_2.py}}
+            \lstinputlisting[language=Python]{../Program/hw_1_2.py}
+        \end{enumerate}
+        
+    \end{appendices}
+
     
     %----------------------------------------------------------------------------------------
 
