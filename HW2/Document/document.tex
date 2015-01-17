@@ -208,7 +208,7 @@
         
         \problemAnswer{
             The steps of 4-Russian's method for bitmatrix multiplication (BMM)
-            are as follows
+            are summarized in Algorithm~\ref{alg:4russians}.
             \begin{algorithm}
                 \caption{4-Russian's algorithm for BMM of $n\times n$ bit matrix
                 $A$ and $B$: C = AB}
@@ -294,7 +294,8 @@
         vice-versa.  Completely explain and justify the above statement.
         
         \problemAnswer{
-            To convert an alignment to an edit transcript
+            The algorithm to convert an alignment to an edit transcript is shown
+            in Algorithm~\ref{alg:ali2trans}.
             \begin{algorithm}
                 \caption{Convert an alignment $(S_1', S_2'$) to an edit
                 transcript $E$.}
@@ -314,9 +315,31 @@
                 \end{algorithmic}
             \end{algorithm}
             
-            To convert an edit trancript to an alignment
+            The algorithm to convert an edit transcript to an alignment is
+            shown in Algorithm~\ref{alg:trans2ali}.
             \begin{algorithm}
-            
+                \caption{Convert an edit transcript $E$ and the
+                original strings $(S_1, S_2)$ to an alignment $(S_1', S_2'$).}
+                \label{alg:trans2ali}
+                \begin{algorithmic}[1]
+                    \STATE Initialize pointer $p_1$ to the beginning of
+                    $S_1$, $p_2$ to the beginning of $S_2$, $e$ to the
+                    beginning of $E$, and $a$ to the beginning of the alignment
+                    $S_1', S_2'$.
+                    \REPEAT
+                        \IF {$E[e] = \mbox{M}$ \textbf{or} $E[e] = \mbox{R}$} 
+                            \STATE $S_1'[a] = S_1[p_1]$, $S_2'[a] = S_2[p_2]$.
+                            \STATE $e += 1$, $p_1 += 1$, $p_2 += 1$, $a += 1$.
+                        \ELSIF {$E[e] = \mbox{I}$}
+                            \STATE $S_1'[a] = \_$, $S_2'[a] = S_2[p_2]$.
+                            \STATE $e += 1$, $p_2 += 1$, $a += 1$.
+                        \ELSE
+                            \STATE $S_1'[a] = S_1[p_1]$, $S_2'[a] = \_$.
+                            \STATE $e += 1$, $p_1 += 1$, $a += 1$.
+                        \ENDIF
+                    \UNTIL{$p_1$ at the end of $S_1$ \textbf{and} $p_2$ at
+                    the end of $S_2$}
+                \end{algorithmic}
             \end{algorithm}
         }
     \end{homeworkProblem}
@@ -330,6 +353,101 @@
         where the spaces should go in the two strings.
         
         \problemAnswer{
+             Firstly we prove that any traceback path specifies an optimal edit
+             transcript. To do so we can use mathematical induction. Denote
+             $E(i, j)$ as the edit transcript defined by the traceback path from
+             cell $(i, j)$ back to cell $(0, 0)$ in the table. We would like to
+             prove the more general result that $E(i, j)$ is an optimal
+             edit transcript, which implies: 
+             \begin{enumerate}
+                 \item $E(i, j)$ is uses exactly $D(i, j)$ conversions, i.e. the
+                 sum of number of (I)(D)(R) in $E(i, j)$, defined as $N(i, j)$
+                 always equals to $D(i, j)$.
+                 \item $E(i, j)$ can indeed convert $S_1[1:i]$ to $S_2[1:j]$.
+             \end{enumerate}
+             We prove these two points with mathematical induction:
+             \begin{itemize}
+                 \item Since $E(i, 0)$ is just $i$ D's, we have $N(i, 0) = i =
+                 D(i, 0)$. Also, carrying out $i$ deletion to $S_1[1:i]$ results
+                 in the empty string $S_2[1:0]$. On the other hand, $E(0, j)$ is
+                 just $j$ I's, so $N(0, j) = j = D(0, j)$. Besides, carrying out
+                 $j$ insertions to $S_1[1:0]$ apparently results in the string
+                 $S_2[1:j]$.
+                 \item If $E(i, j - 1)$, $E(i - 1, j)$ and $E(i-1, j-1)$ are an
+                 optimal edit transcript for $(S_1[1:i],S_2[1:j-1])$,
+                 $(S_1[1:i-1],S_2[1:j])$ and $(S_1[1:i-1],S_2[1:j-1])$,
+                 respectively, we would like to prove that $E(i, j)$ is also an
+                 optimal edit transcript for $(S_1[1:i],S_2[1:j])$:
+                 \begin{enumerate}
+                     \item If the pointer to cell $(i,j)$ is from cell $(i,
+                     j-1)$, then we know that $D(i,j)=D(i,j-1) + 1$. According
+                     to the description of how the edit transcript is derived,
+                     $E(i,j) = [E(i, j-1), \mbox{I}]$. Consequently, $N(i,j) =
+                     N(i, j-1) + 1 = D(i, j-1) + 1 = D(i,j)$.
+
+                     Also, since with
+                     $E(i, j-1)$ we can convert $S_1[1:i]$ to $S_2[1:j-1]$, then
+                     by inserting $S_2[j]$ to the end of $S_1[1:i]$, we can
+                     exactly convert $S_1[1:i]$ to $S_2[1:j]$ with $E(i,j)$.
+                     \item If the pointer to cell $(i,j)$ is from cell $(i-1,
+                     j)$, then we know that $D(i,j)=D(i-1,j) + 1$. According
+                     to the description of how the edit transcript is derived,
+                     $E(i,j) = [E(i-1, j), \mbox{D}]$. Consequently, $N(i,j) =
+                     N(i-1, j) + 1 = D(i-1, j) + 1 = D(i,j)$.
+
+                     Also, since with
+                     $E(i-1, j)$ we can convert $S_1[1:i-1]$ to $S_2[1:j]$,
+                     then by deleting $S_1[i]$ at the end of $S_1[1:i]$, we
+                     can exactly convert $S_1[1:i]$ to $S_2[1:j]$ with $E(i,j)$.
+                     \item If the pointer to cell $(i,j)$ is from cell $(i-1,
+                     j-1)$, then we know that $D(i,j)=D(i-1,j-1) + t(i,j)$.
+                     \begin{itemize}
+                         \item If $t(i,j) = 0$, we know that $S_1[i]=S_2[j]$,
+                         thus $E(i,j) = [E(i-1, j-1), \mbox{M}]$. Consequently,
+                         $N(i,j) = N(i-1, j-1) = D(i-1, j-1) = D(i,j)$. Also,
+                         since with $E(i-1, j-1)$ we can convert $S_1[1:i-1]$ to
+                         $S_2[1:j-1]$, by appending the same character to the
+                         end of $S_1[1:i-1]$ and $S_2[1:j-1]$ we can exactly
+                         convert $S_1[1:i]$ to $S_2[1:j]$ with $E(i,j)$.
+                         \item If $t(i,j) = 1$, we know that
+                         $S_1[i]\not=S_2[j]$, thus $E(i,j) = [E(i-1, j-1),
+                         \mbox{R}]$. Consequently, $N(i,j) = N(i-1, j-1) + 1 =
+                         D(i-1, j-1) + 1 = D(i,j)$. Also, since with $E(i-1,
+                         j-1)$ we can convert $S_1[1:i-1]$ to $S_2[1:j-1]$, by
+                         replacing $S_1[i]$ with $S_2[j]$ we can exactly convert
+                         $S_1[1:i]$ to $S_2[1:j]$ with $E(i,j)$.
+                     \end{itemize}
+                 \end{enumerate}
+             \end{itemize}
+             According to the mathematical induction, we have proved that any
+             traceback path specifies an optimal edit transcript. From Problem
+             2, such a traceback path also specifies an optimal alignment. The
+             algorithm that computes the optimal alignment directly from a
+             traceback is described in Algorithm~\ref{alg:tb2ali}.
+             \begin{algorithm}
+                \caption{Convert an optimal traceback pathc $T$ edit and the
+                original strings $(S_1, S_2)$ to an optimal alignment $(S_1',
+                S_2'$).}
+                \label{alg:tb2ali}
+                \begin{algorithmic}[1]
+                    \STATE Initialize pointer $p_1$ to the beginning of
+                    $S_1$, $p_2$ to the beginning of $S_2$, $t$ to the
+                    beginning of $T$, and $a$ to the beginning of the alignment
+                    $S_1', S_2'$.
+                    \REPEAT
+                        \IF {$T[t+1]$ takes a horizontal step from $T[t]$} 
+                            \STATE $S_1'[a] = \_$, $S_2'[a] = S_2[p_2]$.
+                            \STATE $t += 1$, $p_2 += 1$, $a += 1$.
+                        \ELSIF {$T[t+1]$ takes a vertical step from $T[t]$}
+                            \STATE $S_1'[a] = S_1[p_1]$, $S_2'[a] = \_$.
+                            \STATE $t += 1$, $p_1 += 1$, $a += 1$.
+                        \ELSE
+                            \STATE $S_1'[a] = S_1[p_1]$, $S_2'[a] = S_2[p_2]$.
+                            \STATE $t += 1$, $p_1 += 1$, $p_2 += 1$, $a += 1$.
+                        \ENDIF
+                    \UNTIL{$t$ at the end of $T$}
+                \end{algorithmic}
+            \end{algorithm}
         }
     \end{homeworkProblem}
     
@@ -347,6 +465,8 @@
         Prove this theorem.
         
         \problemAnswer{
+            
+        
         }
     \end{homeworkProblem}
     
