@@ -266,6 +266,21 @@
         used.
         
         \problemAnswer{
+            In order to change both $S_1$ and $S_2$ into a same string (no
+            matter what exactly this string is), given a position $p_1$ in $S_1$
+            and position $p_2$ in $S_2$, we need to carry out some operation
+            either at $p_1$ or $p_2$ (but not both) so that after the operation
+            the charactors on this two positions are matched. In this sense the
+            following pairs of operations are equivalent:
+            \begin{itemize}
+                \item Insertion in $S_1$ and deletion in $S_2$.
+                \item Deletion in $S_1$ and insertion in $S_2$.
+                \item Replacement in $S_1$ and replacement in $S_2$.
+            \end{itemize}
+            We can see that for each of the 3 allowed operation on 1 string,
+            there is an equivalent operation on the other string that has the
+            same effect (get a match in the current position). Therefore, the
+            edit distance is the same no matter which definition is used.
         }
     \end{homeworkProblem}
     
