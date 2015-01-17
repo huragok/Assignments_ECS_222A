@@ -294,6 +294,30 @@
         vice-versa.  Completely explain and justify the above statement.
         
         \problemAnswer{
+            To convert an alignment to an edit transcript
+            \begin{algorithm}
+                \caption{Convert an alignment $(S_1', S_2'$) to an edit
+                transcript $E$.}
+                \label{alg:ali2trans}
+                \begin{algorithmic}[1]
+                    \FOR {i = 1 \TO length($S_1'$)}
+                        \IF{$S_1'[i] == S_2'[i]$}
+                            \STATE $E[i] = \mbox{M}$
+                        \ELSIF {$S_1'[i] = \_$}
+                            \STATE $E[i] = \mbox{I}$
+                        \ELSIF {$S_2'[i] = \_$}
+                            \STATE $E[i] = \mbox{D}$
+                        \ELSE
+                            \STATE $E[i] = \mbox{R}$
+                        \ENDIF
+                    \ENDFOR
+                \end{algorithmic}
+            \end{algorithm}
+            
+            To convert an edit trancript to an alignment
+            \begin{algorithm}
+            
+            \end{algorithm}
         }
     \end{homeworkProblem}
     
