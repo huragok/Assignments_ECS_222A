@@ -30,6 +30,8 @@
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage[toc,page]{appendix}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 
 % Margins
 \topmargin=-0.45in
@@ -205,6 +207,54 @@
         n))$ operations.
         
         \problemAnswer{
+            The steps of 4-Russian's method for bitmatrix multiplication (BMM)
+            are as follows
+            \begin{algorithm}
+                \caption{4-Russian's algorithm for BMM of $n\times n$ bit matrix
+                $A$ and $B$: C = AB}
+                \label{alg:4russians}
+                \begin{algorithmic}[1]
+                    \STATE Define $k = \log_4 n$. Build a $2^k\times 2^k$ look
+                    up tables $T$. $T(u, v)$ in which $u = 0,\ldots,2^k - 1$ and
+                    $v = 0,\ldots,2^k-1$ is the multiplication between
+                    the row bit vector representing $i$ and the column vit
+                    vector representing $j$.
+                    \FOR {i = 1 \TO n}
+                        \FOR {j = 1 \TO n}
+                            \STATE Divide $A$'s $i$-th row $A_{i,:}$ into $n/k$
+                            row vectors of length $k$, denoted as
+                            $A_{i,:}^{(1)}, \ldots, A_{i,:}^{(n/k)}$. Similarly,
+                            divide $B$'s $j$-th row $B_{:, j}$ into $n/k$ column
+                            vectors of length $k$, denoted as $B_{:,j}^{(1)},
+                            \ldots, B_{:,j}^{(n/k)}$.
+                            \STATE Lookup the multiplication value
+                            $A_{i,:}^{(w)}B_{:,j}^{(w)}, w = 1,\ldots, n/k$, 
+                            from table $T$.
+                            \STATE Take the OR operation of all
+                            $A_{i,:}^{(w)}B_{:,j}^{(w)}, w = 1,\ldots, n/k$ as
+                            the result $C_{ij}$.
+                        \ENDFOR
+                    \ENDFOR
+                \end{algorithmic}
+            \end{algorithm}
+            
+            In line 1, to build the $2^k\times 2^k = \sqrt{n} \times
+            \sqrt{n}$ lookup table, according to the matrix multiplication
+            definition, it takes $\mathcal{O}(n^{3/2})$ operations
+            
+            In line 5, given $(i, j)$, for each $w$ it takes
+            $\mathcal{O}(k)$ to index the table $T$, so the total number of cost
+            of index is $\mathcal{O}(\log_4 n)$.
+            
+            In line 6, given $(i, j)$, the sum-OR takes
+            $\mathcal{O}(n/k) = \mathcal{O}(n/\log_4 n)$ operations.
+            
+            Consequently, the total number of operations is 
+            \[
+                \mathcal{O}(n^{3/2}) + n^2(\mathcal{O}(\log_4 n) +
+                \mathcal{O}(n/\log_4 n)) = \mathcal{O}(n^3/(\log(n)))
+            \]
+        
         }
     \end{homeworkProblem}
     
