@@ -465,8 +465,55 @@
         Prove this theorem.
         
         \problemAnswer{
-            
-        
+            The first part of the theorem, i.e. any traceback path specifies an
+            optimal edit transcript, has already been proved in Problem 3. For
+            the converse argument, i.e. any optimal edit transcript is specified
+            by a traceback path, can also be proved with mathematical induction.
+            Define the set of all traceback paths from cell $(i,j)$ to $(0,0)$ as
+            $\mathcal{T}(i, j)$. We would like to show that any optimal
+            transcript for $S_1[1:i]$ and $S_2[1:j]$ is specified by a path in
+            $\mathcal{T}(i, j)$.
+            \begin{itemize}
+                \item Apparently, the only edit transcript that converts
+                $S_1[1:i]$ to an empty string $S_2[1:0]$ is the one contains
+                solely $i$ D's, and the corresponding $\mathcal{T}(i, 0)$
+                contains only 1 path composed of only vertical steps. 
+                Similarly, the only edit transcript that converts an empty
+                string $S_1[1:0]$ to $S_2[1:j]$ is the one contains
+                solely $i$ I's, and the corresponding $\mathcal{T}(0, j)$
+                contains only 1 path composed of horizontal vertical steps.
+                \item Now we assume that any optimal edit transcript $E(i,
+                j-1)$, $E(i-1, j)$ and $E(i-1, j-1)$ is specified by a path in
+                $\mathcal{T}(i, j-1)$, $\mathcal{T}(i-1, j)$ and
+                $\mathcal{T}(i-1, j-1)$, respectively. Given an optimal edit
+                transcript $E(i,j)$ of length $l$
+                \begin{enumerate}
+                    \item If $E(i,j)[l]=\mbox{I}$, then we know $D(i, j) =
+                    D(i, j-1) + 1$, therefore $E(i,j)[1:l-1]$ is an optimal edit
+                    transcript for $S_1[1:i]$ and $S_2[1:j-1]$, thus it must be
+                    specified by some $t \in \mathcal{T}(i, j-1)$.
+                    Correspondingly, $E(i,j)$ is specified by $[t, (i,j)]$.
+                    Also, one pointer in cell $(i, j)$ must be horizontal, which means
+                    $[t, (i,j)] \in \mathcal{T}(i, j)$.
+                    \item If $E(i,j)[l]=\mbox{D}$, then we know $D(i, j) =
+                    D(i-1, j) + 1$, therefore $E(i,j)[1:l-1]$ is an optimal
+                    edit transcript for $S_1[1:i-1]$ and $S_2[1:j]$, thus it
+                    must be specified by some $t \in \mathcal{T}(i-1, j)$.
+                    Correspondingly, $E(i,j)$ is specified by $[t, (i,j)]$.
+                    Also, one pointer in cell $(i, j)$ must be vertical, which
+                    means $[t, (i,j)] \in \mathcal{T}(i, j)$.
+                    \item If $E(i,j)[l]=\mbox{R}$ or M, then we know $D(i, j) =
+                    D(i-1, j-1) + t(i,j)$, therefore $E(i,j)[1:l-1]$ is an
+                    optimal edit transcript for $S_1[1:i-1]$ and $S_2[1:j-1]$,
+                    thus it must be specified by some $t \in \mathcal{T}(i-1,
+                    j-1)$. Correspondingly, $E(i,j)$ is specified by $[t,
+                    (i,j)]$. Also, one pointer in cell $(i, j)$ must be
+                    diagonal, which means $[t, (i,j)] \in \mathcal{T}(i, j)$.
+                \end{enumerate}
+            \end{itemize}
+            According to mathematical induction, we have proved that any optimal
+            edit transcript is specified by a traceback path. Consequently, the
+            correspondence between paths and optimal transcripts is one-one.        
         }
     \end{homeworkProblem}
     
