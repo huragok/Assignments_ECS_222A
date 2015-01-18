@@ -46,7 +46,7 @@
 % Set up the header and footer
 \pagestyle{fancy}
 \lhead{\hmwkAuthorName} % Top left header
-\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle} % Top center header
+\chead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle} % Top center header
 \rhead{\firstxmark} % Top right header
 \lfoot{\lastxmark} % Bottom left footer
 \cfoot{} % Bottom center footer
@@ -528,6 +528,37 @@
         $O(nm)$ time. Hint: use dynamic programming.
 
         \problemAnswer{
+            Define the number of distinct co-optimal alignments for $S_1[1:i]$
+            and $S_2[1:j]$ to be $M(i, j)$. From the Problem 4, we can easily
+            compute $M(i, j)$ with dynamic programming, as depicted in
+            Algorithm~\ref{alg:countpaths}.
+            \begin{algorithm}
+                \caption{Compute the number of distinct co-optimal alignments
+                $M(m,n)$ with dynamic programming.}
+                \label{alg:countpaths}
+                \begin{algorithmic}[1]
+                    \STATE Compute $D(i,j)$ for $i=0,\ldots,m$ and $j,\ldots,n$
+                    using DP in $\mathcal{O}(mn)$ time.
+                    \STATE Initialize $M(i,0)=i$ for $i=0,\ldots,m$ and
+                    $M(0,j)=j$ for $j=0,\ldots,n$.
+                    \FOR {i=1 \TO m}
+                        \FOR {j=1 \TO n}
+                            \STATE Set $M(i,j)=0$.
+                            \IF {$D(i, j) = D(i, j-1) + 1$}
+                                \STATE $M(i,j)+=M(i,j-1)$.
+                            \ENDIF
+                            \IF {$D(i, j) = D(i-1, j) + 1$}
+                                \STATE $M(i,j)+=M(i-1,j)$.
+                            \ENDIF
+                            \IF {$D(i, j) = D(i-1, j-1) + t(i,j)$}
+                                \STATE $M(i,j)+=M(i-1,j-1)$.
+                            \ENDIF
+                        \ENDFOR
+                    \ENDFOR
+                    \RETURN $M(m, n)$
+                \end{algorithmic}
+            \end{algorithm}
+            
         }
     \end{homeworkProblem}
     %\clearpage
