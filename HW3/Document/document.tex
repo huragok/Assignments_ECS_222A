@@ -1,0 +1,407 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[toc,page]{appendix}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName} % Top left header
+\chead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle} % Top center header
+\rhead{\firstxmark} % Top right header
+\lfoot{\lastxmark} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+    \nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+\setcounter{homeworkProblemCounter}{0}
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+    \stepcounter{homeworkProblemCounter} % Increase counter for number of
+% problems
+    \renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the
+% name of the problem
+    \section{\homeworkProblemName} % Make a section in the document with the
+% custom problem count
+    \enterProblemHeader{\homeworkProblemName} % Header and footer within the
+% environment
+}{
+    \exitProblemHeader{\homeworkProblemName} % Header and footer after the
+% environment
+}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+    \noindent\textbf{\emph{Answer: }}#1 % Just put a keyword Answer in
+    % bold/italic at the beginning
+}
+
+\newcommand{\homeworkSectionName}{}
+\newenvironment{homeworkSection}[1]{ % New environment for sections within homework problems, takes 1 argument - the name of the section
+    \renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the
+% name of the section from the environment argument
+    \subsection{\homeworkSectionName} % Make a subsection with the custom name
+% of the subsection
+    \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]} % Header
+% and footer within the environment
+}{
+    \enterProblemHeader{\homeworkProblemName} % Header and footer after the
+% environment
+}
+
+\newtheorem{theorem}{Theorem}[homeworkProblemCounter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{definition}[1][Definition]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{example}[1][Example]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+    }
+\newenvironment{remark}[1][Remark]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+
+\newcommand{\qed}{
+    \nobreak \ifvmode \relax \else
+    \ifdim\lastskip<1.5em \hskip-\lastskip
+    \hskip1.5em plus0em minus0.5em \fi \nobreak
+    \vrule height0.75em width0.5em depth0.25em\fi
+}
+
+\lstset{
+    frame=single,
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+   
+%----------------------------------------------------------------------------------------
+%	NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Assignment\ \#3} % Assignment title
+\newcommand{\hmwkDueDate}{Tusday,\ January\ 20,\ 2015} % Due date
+\newcommand{\hmwkClass}{ECS\ 222A} % Course/class
+\newcommand{\hmwkClassTime}{TR 4:40pm-6:00pm} % Class/lecture time
+\newcommand{\hmwkClassInstructor}{Daniel Gusfield} % Teacher/lecturer
+\newcommand{\hmwkAuthorName}{Wenhao Wu} % Your name
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}}
+\date{} % Insert date here if you want it to appear below your name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+    \maketitle
+    
+    %----------------------------------------------------------------------------------------
+    %	TABLE OF CONTENTS
+    %----------------------------------------------------------------------------------------
+    
+    %\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+    
+    \newpage
+    \tableofcontents
+    \newpage
+
+    %----------------------------------------------------------------------------------------
+    %	PROBLEM 1
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        The secondary structure problem discussed in section 6.5 in the book
+        seeks to find the secondary structure that maximizes the number of base
+        pairs it contains, i.e. the number of pairs that are in the matching (or
+        pairing). Review the definitions of ``secondary structure'' on page 274
+        in the book. In class, we used the term ``non-crossing pairing'' for
+        what the book calls a ``secondary structure''.
+        \\\\
+        Now suppose that instead of wanting to find the the secondary structure
+        maximizing the number of pairs it contains, we want to \emph{count} the
+        exact \emph{number} of distinct secondary structures possible in a given
+        RNA sequence. Some of these secondary structures will not contain the
+        largest number of pairs possible.
+        \\\\
+        For example, in the RNA molecule ACGGGUGU there are five secondary
+        structures. One contains no pairs (hey, its a legal secondary structure
+        according to the definition); one pairs the A to the farthest U; one
+        that pairs the A to closest U; one pairs the C to the farthest G; and
+        one pairs the A to the farthest U, and the C to the farthest G.
+        \\\\
+        This counting problem can be solved by DP.
+        
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            Write recurrence relations that give the solution to the counting
+            problem.
+            \\\\
+            Hint: You may be tempted to just do a simple conversion of the
+            recurrences we used in class to find the maximum number of pairs in
+            a non-crossing pairing (secondary structure), but you need to be
+            careful. The reason, is that the cases in the recurrences we used in
+            class were not disjoint. That is, the same secondary structure might
+            arise by more than one case in the recurrences. Since we were taking
+            the Max over all the cases, it did not matter if the same secondary
+            structure arose different ways. But now that we want to count the
+            number of distinct secondary structures, we have to be more careful.
+            Define $N(i, j)$ as the number of secondary structures involving the
+            positions from $i$ to $j$ inclusive. It includes the empty matching
+            as one of the matchings. For technical reasons, you may want to
+            define define $N(j, j) = N$ and $N(j + 1, j) = 1$. The problem asks
+            you to write recurrences for $N(i, j)$.
+            \\\\
+            Be sure to explain why your recurrences give a correct recursive
+            solution for the problem of counting the number of secondary
+            structures.
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            As before, instead of using the recurrences in a top-down recursive
+            algorithm, we want to use them in a DP solution to the problem.
+            \\\\
+            Write out the pseudo-code for a DP solution to the counting problem,
+            and analyze the worst-case running time of the DP solution.
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+    \end{homeworkProblem}
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 2
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Suppose we are given a rooted tree $T$ with $n$ leaves and $m$ non-leaf
+        nodes. Each leaf is colored with one of $k < n$ given colors, so several
+        leaves can have the same color. We need to color each interior node of T
+        with one of the $k$ given colors to \emph{maximize} the number of edges
+        whose (two) endpoints are colored the same color.
+        \\\\
+        We can solve this with a DP algorithm that runs in $O(mk)$ time. Let
+        $V(v, i)$ denote the optimal solution value when the problem is applied
+        to the subtree rooted at node $v$, and $v$ is required to be given color
+        $i$. Let $V(v)$ denote the optimal solution value when the problem is
+        applied to the subtree rooted at node $v$, and there is no restriction
+        on which of the $k$ colors $v$ can be.
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            Using that notation, develop recurrences for this problem, and
+            explain the correctness of your recurrences.
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            Expalin how the recurrences are evaluated (solved) in an efficient
+            DP way.
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(c)}
+            Show that the time bound for your DP is $O(mk)$.
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+    \end{homeworkProblem}
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 3
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        In the sequence alignment problem, suppose now we want to compute the
+        number of optimal alignments that align character $i$ with character
+        $j$, or align character $i$ with a space, for each pair $(i, j)$. Show
+        how to compute this via DP in $O(nm)$ time.
+        \\\\
+        Hint: You might be able to extend your answer to Problem 5 in HW 2.
+        \vspace{10pt}
+        
+        \problemAnswer{
+        
+        }
+    \end{homeworkProblem}
+    %\clearpage
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 4
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Here is another Four-Russian’s approach to doing bit-matrix
+        multiplication of $A \times B = C$. Assume that $A$ and $B$ are both
+        of dimension n × n. Instead of doing the preprocessing of $B$ (which is
+        how the Four Russians for bit-matrix mult. was done in class), we will
+        preprocess $A$. Suppose $A$ is dimension $n \times n$, and $n$ is a
+        multiple of $q$ (to be set later). We partition $A$ into squares of
+        dimension $q \times q$. So there are $n^2 / q^2$ of these squares, and
+        they are indexed by $(s, t)$ where $s$ and $t$ both range from 1 to
+        $n/q$. For each pair $(s, t)$, build a table of size $2^q$, one cell for
+        each possible binary number of length $q$. The cells in that table are
+        indexed by the binary numbers 0 through $2^q - 1$. For the cell in the
+        $(s, t)$ table, indexed by binary number $b$, compute the bit-matrix
+        multiplication of square $(s, t)$ times $b$. The result is a vector of
+        length $q$. That is the preprocessing for $A$.
+        
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            In the RAM model, we can follow a pointer, or use an index, or
+            lookup a value, or take the OR of two vectors in constant time,
+            provided that each pointer, index, value or vector only uses $\log
+            m$ bits, where $m$ is the number of bits used to represent the
+            input. In our case, $m$ is $n^2$. However, the bit-matrix
+            multiplication of two vectors of size $q$, takes time $q$. How much
+            time does the preprocessing of $A$ take in the RAM model?
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            After preprocessing of $A$, we want to compute $A \times B$. We will
+            view that as n multiplication $A \times B_j$, where $B_j$ is the $j$
+            column of $B$, and where $j$ ranges from 1 to $n$. That is, the $j$
+            column of $C$ is $A$ times the $j$ column of $B$.
+            \\\\
+            To do multiplication $A \times B_j = C_j$, we divide $B_j$ and $C_j$
+            into $n/q$ groups of size $q$ each.
+            \\\\
+            Explain how to use the preprocessed tables to compute the first
+            group of size $q$ of $C_j$.
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(c)}
+            Estimate the total time needed to compute $C_j$, using the
+            preprocessed tables, under the RAM model.
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(d)}
+            Show that this approach can compute the bit-matrix multiplication in
+            $O(n^3 /\log n)$, by picking $q$ to be $\epsilon \log n$, for any
+            $\epsilon > 1$.
+            \vspace{10pt}
+            
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+    \end{homeworkProblem}
+    %\clearpage
+    
+    %----------------------------------------------------------------------------------------
+
+\end{document}
