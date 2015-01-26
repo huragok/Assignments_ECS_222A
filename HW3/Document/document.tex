@@ -245,7 +245,42 @@
             \vspace{10pt}
             
             \problemAnswer{
-            
+                Consider all the secondary structures on the inclusive interval
+                $(i, j)$:
+                \begin{itemize}
+                    \item The number of secondary structures in which element
+                    $j$ is not paired with any element in $(i, j-1)$ is the same
+                    as the number of secondary structures on $(i, j-1)$, i.e.
+                    \[
+                        N_1(i, j) = N(i, j-1)
+                    \]
+                    \item If element $j$ can be paired with some element $k\in
+                    (i, j-1)$, indicated by $\beta(k, j) = 1$, then any
+                    secondary structure on $(i, k-1)$ and any secondary
+                    structure on $(k+1, j-1)$, together with the pair formed
+                    by element $k$ and $j$, forms a distinct secondary structure
+                    on $(i,j)$ that is not included in the previous case.
+                    Consequently, the number of these secondary structures is
+                    \[
+                        N_{2,k}(i, j) = \left\{\begin{array}{ll}N(i, k-1)N(k+1,
+                        j-1), & \mbox{if } \beta(k, j) = 1\\ 0, &
+                        \mbox{else}\end{array}\right.
+                    \]
+                \end{itemize}
+                These 2 cases exhaust all distinct secondary structures,
+                therefore the recurrence of counting is
+                \begin{align*}
+                    N(i, j) & = N_1(i, j) + \sum_{k=i}^{j-1}N_{2,k}(i, j) \\
+                            & = N(i, j-1) + \sum_{\substack{k=i \\
+                            \beta(k,j) = 1}}^{j-1}N(i, k-1)N(k+1,j-1)
+                \end{align*}
+                And the base cases are (according to the definition on the
+                textbook and the example given here, no sharp turns)
+                \[
+                    N(j, j+m) = 1,\;m=-1,0,1,2,3,4.
+                \]
+                In these cases the only secondary structure is no pairing at
+                all.
             }
         \end{homeworkSection}
         
@@ -258,7 +293,33 @@
             \vspace{10pt}
             
             \problemAnswer{
-            
+                The pseudo-code for a DP solution is given in
+                Algorithm~\ref{alg:count_secondary_structure}.
+                \begin{algorithm}
+                    \caption{Count the number of secondary structures in a RNA
+                    string.}
+                    \label{alg:count_secondary_structure}
+                    \begin{algorithmic}[1]
+                        \STATE Initialize $N(j, j+m) = 1$ for $m=-1,0,1,2,3,4$,
+                        $j = 1, \ldots, n$.
+                        \FOR {$m=1$ \TO $n - 1$}
+                            \FOR {$i=1$ \TO $n$}
+                                \STATE Compute 
+                                \[
+                                    N(i, i+m) = N(i, i+m-1) +
+                                    \sum_{\substack{k=i \\ \beta(k,i+m) =
+                                    1}}^{i+m-1} N(i, k-1)N(k+1,i+m-1)
+                                \]
+                            \ENDFOR
+                        \ENDFOR
+                        \RETURN $N(1, m)$.
+                    \end{algorithmic}
+                \end{algorithm}
+                There are $O(n^2)$ $N(i, j)$ terms in the DP table to fill in.
+                To fill in each term using the recurrence equation requires
+                $O(n)$ multiplication, addition and table lookup (RAM model).
+                Consequently, the worst-case running time of the DP solution is
+                $O(n^3)$.
             }
         \end{homeworkSection}
     \end{homeworkProblem}
