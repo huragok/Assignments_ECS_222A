@@ -388,7 +388,7 @@
                 The pseudo-code for a DP solution is given in
                 Algorithm~\ref{alg:count_edges}.
                 \begin{algorithm}
-                    \caption{Count the number of }
+                    \caption{Count the number of maximum same-color edges.}
                     \label{alg:count_edges}
                     \begin{algorithmic}[1]
                         \STATE Order the non-lear nodes in tree $T$ into a heap
@@ -449,7 +449,144 @@
         \vspace{10pt}
         
         \problemAnswer{
-        
+            Firstly we introduce a few notations:
+            \begin{itemize}
+                \item $P(i, j)$: the minimum number of edit operations to
+                transform $S_1$ to $S_2$, in which $S_1[i]$ is aligned to
+                $S_2[j]$.
+                \item $Q(i)$: the minimum number of edit operations to
+                transform $S_1$ to $S_2$, in which $S_1[i]$ is aligned to
+                $S_2[j]$.
+                \item $R(i, j)$: the minimum number of edit operations to
+                transform $S_1$ to $S_2$, in which $S_1[i]$ is aligned to
+                $S_2[j]$ or deleted, i.e.
+                \begin{align}
+                    R(i, j) = \min\{P(i, j), Q(i)\} \label{eq:Rij}
+                \end{align}
+                \item $D(i, j)$: the minimum number of edit operations to
+                transform $S_1[1:i]$ to $S_2[1:j]$.
+                \item $E(i, j)$: the minimum number of edit operations to
+                transform $S_1[i:m]$ to $S_2[j:n]$.
+                \item $M(i, j)$: the number of optimal alignments between
+                $S_1[1:i]$ to $S_2[1:j]$. This is the variable we defined in
+                Probelm 5, HW2.
+                \item $N(i, j)$: the number of optimal alignments between
+                $S_1[i:m]$ to $S_2[j:n]$.
+                \item $L(i)$: the number of optimal alignments between $S_1$ and
+                $S_2$, in which $S_1[i]$ is deleted.
+                \item $K(i, j)$: the number of optimal alignments that align
+                $S_1[i]$ to $S_2[j]$, or align $S_1[i]$ with a space (i.e.
+                $S_1[i]$ is deleted).
+            \end{itemize}
+            To compute all $K(i, j)$, we would like to make use of the following
+            facts:
+            \begin{itemize}
+                \item For an optimal alignments where $S_1[i]$ is aligned to
+                $S_2[j]$, $S_1[1 : i-1]$ must be optimally aligned to
+                $S_2[1 : j-1]$, and $S_1[i+1 : m]$ must be optimally aligned to
+                $S_2[j+1 : n]$. Consequently,
+                \begin{align}
+                    P(i, j) = D(i-1, j-1) + E(i + 1, j + 1) + t(i, j).
+                    \label{eq:Pij}
+                \end{align}
+                And the total number of this kind of alignments, i.e. the total
+                number of combination of an optimal alignment between $S_1[1 :
+                i-1]$ and $S_2[1 : j-1]$ and an optimal alignment between
+                $S_1[i+1:m]$ and $S_2[j+1:n]$, is simply $M(i-1,
+                j-1)N(i+1,j+1)$.
+                \item For an optimal alignments where $S_1[i]$ is deleted, there
+                must exist some $k\in\{0,\ldots,n\}$ such that $S_1[1 : i-1]$ is
+                optimally aligned to $S_2[1:k]$ and $S_1[i+1:m]$ is optimally
+                aligned to $S_2[k+1:n]$. Such $k$'s are determined so that the
+                total number of operation is minimized. Consequently,
+                \begin{align}
+                    Q(i) = \min_{k=0,\ldots,n}(D(i-1,k) + E(i+1,k+1) + 1).
+                    \label{eq:Qi}
+                \end{align}
+                And the total number of this kind of alignments, i.e. the total
+                number of combination of an optimal alignment between $S_1[1 :
+                i-1]$ and $S_2[1:k]$ and an optimal alignment between
+                $S_1[i+1:m]$ and $S_2[k+1:n]$ for all feasible $k$, is simply      
+                \begin{align}
+                    L(i) = \sum_{\substack{ k=0, \\ Q(i) = D(i-1,k) + E(i+1,k+1)
+                    + 1}}^nM(i-1, k)N(i+1,k+1). \label{eq:Li}
+                \end{align}
+                \item $D(i,j)$ and $E(i,j)$ have very similar recurrent
+                structure, which is given in the class:
+                \begin{align}
+                    & D(i,j) = \min\{D(i-1,j)+1, D(i,j-1)+1, D(i-1,j-1)+t(i,j)\}
+                    \label{eq:Dij}
+                    \\
+                    & D(i,0)=i, D(0,j)=j \label{eq:Dij_base}
+                \end{align}
+                \begin{align}
+                    & E(i,j) = \min\{E(i+1,j)+1, E(i,j+1)+1, E(i+1,j+1)+t(i,j)\}
+                    \label{eq:Eij}
+                    \\
+                    & E(i,n+1)=m-i+1, E(m+1,j)=n-j+1 \label{eq:Eij_base}
+                \end{align}
+                \item Similarly, $M(i,j)$ and $N(i,j)$ have very similar
+                recurrent structure, which we have analyzed in Problem 5 HW2:
+                \begin{align}
+                    M(i, j) & = M(i, j-1)\delta(D(i,j), D(i,j-1)+1) +
+                    M(i-1,j)\delta(D(i,j), D(i-1,j)+1) \notag\\
+                    & + M(i-1,
+                    j-1)\delta(D(i,j), D(i-1,j-1)+t(i,j)) \label{eq:Mij} \\
+                    M(i,0) & = M(0,j) = 1 \label{eq:Mij_base}
+                \end{align}
+                \begin{align}
+                    N(i, j) & = N(i, j+1)\delta(E(i,j), E(i,j+1)+1) +
+                    N(i+1,j)\delta(E(i,j), E(i+1,j)+1) \notag\\
+                    & + N(i+1,
+                    j+1)\delta(E(i,j), E(i+1,j+1)+t(i,j)) \label{eq:Nij}\\
+                    N(i,n+1) & = N(m+1,j) = 1 \label{eq:Nij_base}
+                \end{align}
+                where $\delta(x,y) = 1$ if $x=y$ and $\delta(x,y) = 0$
+                otherwise.
+                \item Once $P(i,j)$, $Q(i)$, $R(i,j)$, $M(i,j)$, $N(i,j)$ and $L(i)$
+                are available, $K(i, j)$ can be simply computed as
+                \begin{align}
+                    K(i,j)=L(i)\delta(R(i,j), Q(i)) +
+                    M(i-1,j-1)N(i+1,j+1)\delta(R(i,j), P(i,j)) \label{eq:Kij}
+                \end{align}
+                Namely, if deleting $S_1[i]$ results in the optimal alignments, we
+                count all this kind of optimal alignments; if aligning $S_1[i]$ with
+                $S_2[j]$ results in the optimal alignments, we count all this kind
+                of optimal alignments.
+            \end{itemize}
+            The overall DP algorithm to compute all $K(i,j)$ is given in
+            Algorithm~\ref{alg:count_align}.
+            \begin{algorithm}
+                \caption{Compute $K(i,j)$: the number of optimal alignments that
+                align $S_1[i]$ to $S_1[j]$ or delete $S_1[i]$ for
+                $i=1,\ldots,m$ and $j=1\ldots,n$.}
+                \label{alg:count_align}
+                \begin{algorithmic}[1]
+                    \STATE Compute all $D(i, j)$ and $M(i, j)$ with DP following
+                    the recurrence
+                    Eq.~(\ref{eq:Dij})(\ref{eq:Dij_base})(\ref{eq:Mij})(\ref{eq:Mij_base}).
+                    This algorithm has already been defined in the class and in
+                    HW2.
+                    \STATE Compute all $E(i, j)$ and $N(i, j)$ with DP following
+                    the recurrence
+                    Eq.~(\ref{eq:Eij})(\ref{eq:Eij_base})(\ref{eq:Nij})(\ref{eq:Nij_base}).
+                    This algorithm is very similar to the one that computes all
+                    $D(i, j)$ and $M(i, j)$ and a description is thus
+                    omitted.
+                    \STATE Given all $D(i,j)$ and $E(i,j)$, compute all
+                    $P(i,j)$, $Q(i)$ and then $R(i,j)$ with
+                    Eq.~(\ref{eq:Pij})(\ref{eq:Qi})(\ref{eq:Rij}), respectively.
+                    \STATE Given all $M(i,j)$, $N(i,j)$, $D(i,j)$, $E(i,j)$ and
+                    $Q(i)$, compute all $L(i)$ with Eq.~(\ref{eq:Li}).
+                    \RETURN all $K(i,j)$ computed with Eq.~(\ref{eq:Kij}).
+                \end{algorithmic}
+            \end{algorithm}
+            The 2 DP algorithm in line 1 and line 2 has $O(nm)$
+            complexity. The computation of $nm$ $P(i,j)$, $R(i,j)$ and $m$
+            $L(i)$, $Q(i)$ each have $O(nm)$ complexity. Finally, the
+            computation of all $K(i,j)$ also have $O(nm)$ complexity.
+            Consequently, Algorithm~\ref{alg:count_align} has $O(nm)$
+            complexity.
         }
     \end{homeworkProblem}
     %\clearpage
