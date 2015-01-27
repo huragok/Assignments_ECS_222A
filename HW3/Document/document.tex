@@ -621,7 +621,16 @@
             \vspace{10pt}
             
             \problemAnswer{
-            
+                There are $n^2/q^2$ tables to build. To process the $(s,t)$-th
+                table $T_{s,t}$ alone, we need to compute $2^q$ multiplications
+                between a $q$-by-$q$ matrix and a $q$-by-$1$ vector. Each
+                matrix-vector multiplication compose of $q$ vector-vector
+                multiplication which takes time $q$. In summary, the
+                preprocessing of $A$ takes
+                \[
+                    t_A = \frac{n^2}{q^2}\cdot 2^q\cdot q\cdot q = n^22^q.
+                \]
+                
             }
         \end{homeworkSection}
         
@@ -639,7 +648,17 @@
             \vspace{10pt}
             
             \problemAnswer{
-            
+                Denote the $(s,t)$-th $q$-by-$q$ block in $A$ as $A(s, t)$.
+                Denote the $t$-th group of size $q$ in $B_j$, $C_j$ as $B_j(t)$,
+                $C_j(t)$, respectively. We have
+                \[
+                    C_j(1) = \sum_{t=1}^{n/q}A(1, t)B_j(t)
+                \]
+                in which $A(1, t)B_j(t)$ is the $B_j(t)$-th element in the $(1,
+                t)$-th table $T_{1,t}$. In summary, we only need to look up
+                $T_{1,t}[B_j(t)]$ for $t=1,\ldots,n/q$, and then perform $n/q -
+                1$ vector summation of size $q$ to compute the first group of
+                size $q$ of $C_j$.
             }
         \end{homeworkSection}
         
@@ -649,6 +668,15 @@
             \vspace{10pt}
             
             \problemAnswer{
+                As analyzed in the previous problem, to compute each group of
+                size $q$ $C_j(s)$, $s=1,\ldots,n/q$, we need to perform $n/q$
+                table look-up and $n/q - 1$ vector summation. In RAM model, both
+                the table-look-up and vector-OR operation takes constant time.
+                Consequently, the time to compute $C_j$ is
+                \[
+                    t_{C_j} = O\left(\frac{n}{q}\cdot\frac{n}{q}\right) =
+                    O\left(\frac{n^2}{q^2}\right).
+                \]
             
             }
         \end{homeworkSection}
@@ -660,6 +688,18 @@
             \vspace{10pt}
             
             \problemAnswer{
+                Since all $C_j$ where $j=1,\ldots,n$ needs to be computed,
+                taking into account of the cost to preprocess $A$, the total
+                amount of time to compute $C$ is:
+                \begin{align*}
+                    t_C & = t_A + nt_{C_j} = O\left(n^22^q +
+                    \frac{n^3}{q^2}\right) \notag\\
+                    & = O\left(n^{2+\epsilon} +\frac{n^3}{\epsilon^2\log^2
+                    n}\right)
+                    \notag
+                    \\
+                    & = O\left(\frac{n^3}{\log^2 n}\right).
+                \end{align*}
             
             }
         \end{homeworkSection}
