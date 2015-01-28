@@ -347,35 +347,58 @@
             
             \problemAnswer{
                 Denote the set of leaf children and non-leaf children of node
-                $v$ as $v.C_l$ and $v.C_{nl}$, respectively. Denote indicator
-                function $\delta(i, j) = 1$ if $i=j$ and 0 otherwise, where
-                $i,j=1,\ldots,k$. Denote the color of a leaf node $l$ as
-                $l.color$. Then we have
+                $v$ as $v.C_l$ and $v.C_{nl}$, respectively. Also denote
+                the set of colors $i$ for which $V(v, i)=V(v)$ as
+                $v.Color_{max}$. Denote indicator function $\delta(x\in X) = 1$
+                if $x\in X$ and 0 otherwise, and indicator function $\delta(x,y)
+                = 1$ if $x=y$ and 0 otherwise. Denote the color of a leaf node
+                $l$ as $l.color$.
+                Then we have
                 \begin{align*}
-                    V(v, i) = \sum_{l\in v.C_l}\delta(i, l.color) + \sum_{n\in
-                    v.C_{nl}}\left[\max_{j=1,\ldots,k}(V(n,
-                    j)+\delta(i,j))\right]
+                    V(v, i) & = \sum_{l\in v.C_l}\delta(i, l.color) + \sum_{n\in
+                    v.C_{nl}}(V(n)+\delta(i\in n.Color_{max})) \\
+                    V(v) & = \max_{i=1,\ldots,k} V(v, i)
                 \end{align*}
                 Here is an explanation for this recurrence:
                 \begin{itemize}
-                    \item For the 1st term in the RHS, node $v$ forms a
-                    same-color edge with any leaf nodes with color $i$.
-                    \item For the 2nd term in the RHS, given a non-leaf child
-                    $n$ of $v$, if $n$ is in color $j$, then the tree from $n$
-                    contains $V(n,j)$ edges. $n$ and $v$ also forms another
-                    same-color edge if and only if $i=j$. To maximize the number
-                    of edges, color $j$ should be determined by maximizing the
-                    possible number of edges brought by setting $n$'s color to
-                    $j$.
+                    \item For the 1st term in the RHS of the first equation,
+                    node $v$ forms a same-color edge with any leaf nodes with color $i$.
+                    \item For the 2nd term in the RHS the first equation, given
+                    a non-leaf child $n$ of $v$
+                    \begin{itemize}
+                        \item If $n$ with color $i$ can achieve $V(n)$, then
+                        apart from the $V(n)$ same-color edges that the tree
+                        from $n$ contains, $n$ and $v$ can also form another
+                        same-color edge, therefore the maximum number of
+                        same-color edges introduced by $n$ is $V(n) + 1$.
+                        \item If $n$ with color $i$ can not achieve $V(n)$:
+                        \begin{itemize}
+                            \item By setting the color of $n$ to some color
+                            $j\in n.Color_{max}$, the maximum number of
+                            same-color edges introduced by $n$ is $V(n)$;
+                            \item By setting the color of $n$ to some color
+                            $j\notin n.Color_{max}$, the maximum number of
+                            same-color edges in the tree from $n$ is at most
+                            $V(n) - 1$, and there is at most one additional
+                            same-color edge $(v,n)$, consequently the maximum
+                            number of same-color edges introduced by $n$ is
+                            at most $V(n)$.
+                       \end{itemize}
+                    \end{itemize}
+                    In conclusion, $V(n)+\delta(i\in n.Color_{max})$ is an
+                    achievable upper bound for the maximum number of same-color
+                    edges introduced by $n$ if $n.parent$ is colored $i$. Also,
+                    the above analysis indicate that, if $n.parent$ is colored
+                    $i$, then the optimal coloring for $n$ is $i$ if $i\in
+                    n.Color_{max}$ or any $j\in n.Color_{max}$ if $i\notin
+                    n.Color_{max}$.
                 \end{itemize}
                 Note that with this recurrence we don't need to explicitly
                 define a base case. The solution to the original problem, is
-                simply $\max_{i=1,\ldots,k}V(T.root, i)$. To determine an
-                optimal coloring scheme, each non-leaf, non-root node $v$
-                maintains an array $v.j(i), i=1,\ldots,k$ which means the
-                optimal color $j$ that $v$ should use when $v.parent$ is colored
-                with $i$. The starting point for this traceback is the optimal
-                color for $T.root$.
+                simply $V(T.root)$. To determine an optimal coloring scheme,
+                each non-leaf, non-root node $v$ maintains the set
+                $v.Color_{max}$ and a traceback from $T.root$ will determine
+                the optimal color for $v$.
             }
         \end{homeworkSection}
         
@@ -399,21 +422,22 @@
                             \STATE Compute and save
                             \[
                                 V(h[m], i) = \sum_{l\in h[m].C_l}\delta(i, l.color)
-                                + \sum_{n\in h[m].C_{nl}}\left[\max_{j=1,\ldots,k}(V(n,
-                    j)+\delta(i,j))\right],\;i=1,\ldots,k
+                                + \sum_{n\in
+                                h[m].C_{nl}}(V(n)+\delta(i\in
+                                n.Color_{max})),\;i=1,\ldots,k
                             \]
-                            and record $n.j(i) =
-                            \arg\max_{j=1,\ldots,k}(V(n,j)+\delta(i,j))$, $i =
-                            1,\ldots,k$ for all $n\in h[m].C_{nl}$.
+                            and determine $V(h[m]) =
+                            \max_{i=1,\ldots,k} V(h[m], i)$ and
+                            $h[m].Color_{max} = \{j|V(h[m]) = V(h[m], j)\}$.
                         \ENDFOR
-                        \STATE $T.root$, i.e. $H[1]$ is colored optimally with
-                        $T.root.color_{opt}
-                        = \arg\max_{j=1,\ldots,k}V(T.root,j)$. Then traceback
-                        and color each node $v$ with $v.color_{opt} =
-                        v.j(v.parent.color_{opt})$. Either a BFS or DFS will do
-                        in $O(m)$ time (RAM model).
-                        \RETURN the maximal number of edges
-                        $\max_{j=1,\ldots,k}V(T.root,j)$.
+                        \STATE To determine an optimal coloring scheme, color
+                        $T.root$ with any $j\in T.root.Color_{max}$, then
+                        starting from $T.root$, perform a BFS or DFS during
+                        which the color of $v$ is set to $v.parent.color$ if it
+                        is in $v.Color_{max}$, or any $j\in v.Color_{max}$ if it
+                        is not.                    
+                        \RETURN the
+                        maximal number of edges $V(T.root)$.
                     \end{algorithmic}
                 \end{algorithm}
                 
@@ -425,13 +449,20 @@
             \vspace{10pt}
             
             \problemAnswer{
-                There are $mk$ $V(v, i)$ and $v.j(i)$ to compute respectively.
-                On computing each $V(v, i)$ or $v.j(i)$, the maximization over
-                all $k$ different colors is performed. Also we assume that each
-                node has a finite degree, so the total cost of summation over
-                the leaf nodes and non-leaf nodes is also $O(m)$. Consequently,
-                the time bound for this DP is $O(mk^2)$.
-                
+                The essential computation happens in Step 3 of
+                Algorithm~\ref{alg:count_edges}. The first $\delta$ function can
+                be evaluated in constant times, V(n) can be accessed in constant
+                times and the second $\delta$ function can also be evaluated in
+                constant time (e.g. using hash). Therefore, the total amount of
+                time to evaluate a single $V(h[m], i)$ is $O(h[m].degree)$, i.e.
+                linear w.r.t to the number of children that $h[m]$ has. Then the
+                evaluation of all $k$ $V(h[m], i)$, the $V(h[m])$ and
+                $h[m].Color_{max}$ takes $O(k\cdot h[m].degree)$ time. The
+                traceback in Step 5 takes $O(m)$ time.
+                Consequently, the time bound for this DP is
+                \[
+                    t = \sum_{v\in T} O(k\cdot v.degree) + O(m) = O(mk).
+                \]
             }
         \end{homeworkSection}
     \end{homeworkProblem}
@@ -630,6 +661,16 @@
                 \[
                     t_A = \frac{n^2}{q^2}\cdot 2^q\cdot q\cdot q = n^22^q.
                 \]
+                However, there are smarter ways to bulid each $T_{s,t}$. Since
+                entries in $T_{s,t}$ represent all bit-wise OR of all subset of
+                columns of the $(s,t)$-th block of $A$, if computed in the right
+                order, each entry in $T_{s,t}$ can be computed using a single
+                bit-wise OR of 2 $q$-bit vector. With this method, the
+                preprocessing of $A$ takes
+                \[
+                    t_A = O\left(\frac{n^2}{q^2}\cdot 2^q\cdot q\right) =
+                    O\left(\frac{n^22^q}{q}\right).
+                \]
                 
             }
         \end{homeworkSection}
@@ -669,13 +710,12 @@
             
             \problemAnswer{
                 As analyzed in the previous problem, to compute each group of
-                size $q$ $C_j(s)$, $s=1,\ldots,n/q$, we need to perform $n/q$
-                table look-up and $n/q - 1$ vector summation. In RAM model, both
-                the table-look-up and vector-OR operation takes constant time.
-                Consequently, the time to compute $C_j$ is
+                size $q$ in $C_j(s)$, $s=1,\ldots,n/q$, we need to perform $n/q$
+                table look-up and $n/q - 1$ $q$-bit vector summation. In RAM
+                model, the time to compute $C_j$ is
                 \[
-                    t_{C_j} = O\left(\frac{n}{q}\cdot\frac{n}{q}\right) =
-                    O\left(\frac{n^2}{q^2}\right).
+                    t_{C_j} = O\left(\frac{n}{q}\cdot\frac{n}{q}\cdot q\right) =
+                    O\left(\frac{n^2}{q}\right).
                 \]
             
             }
@@ -693,14 +733,25 @@
                 amount of time to compute $C$ is:
                 \begin{align*}
                     t_C & = t_A + nt_{C_j} = O\left(n^22^q +
-                    \frac{n^3}{q^2}\right) \notag\\
-                    & = O\left(n^{2+\epsilon} +\frac{n^3}{\epsilon^2\log^2
+                    \frac{n^3}{q}\right) \notag\\
+                    & = O\left(n^{2+\epsilon} +\frac{n^3}{\epsilon\log
                     n}\right)
                     \notag
                     \\
-                    & = O\left(\frac{n^3}{\log^2 n}\right)
+                    & = O\left(\frac{n^3}{\log n}\right)
                 \end{align*}
-                for all $0<\epsilon<1$.
+                for all $0<\epsilon<1$. If we use the other approach to build
+                each $T_{s,t}$, then
+                \begin{align*}
+                    t_C & = t_A + nt_{C_j} = O\left(\frac{n^22^q}{q} +
+                    \frac{n^3}{q}\right) \notag\\
+                    & = O\left(\frac{n^{2+\epsilon}}{\epsilon\log n}
+                    +\frac{n^3}{\epsilon\log n}\right)
+                    \notag
+                    \\
+                    & = O\left(\frac{n^3}{\log n}\right)
+                \end{align*}
+                for all $0<\epsilon\leq 1$.
             }
         \end{homeworkSection}
     \end{homeworkProblem}
