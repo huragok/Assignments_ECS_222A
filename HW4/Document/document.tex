@@ -217,8 +217,68 @@
         
         \vspace{10pt}
         \problemAnswer{
-                
-         }
+            Denote the set of vertices in $G$ as $V$ and its partition as $A
+            \cup B$. For each edge $(u, v)\in E$ in the set of edges we have
+            $u\in A$ and $v\in B$. The graph $G$ is extended to graph $G'$ in
+            which
+            \begin{itemize}
+                \item A source node $s$ and edges $(s, u)$ for all $u\in A$ with
+                capacity $c(s, u) = w(u)$ are added.
+                \item A sink node $t$ and edges $(v, t)$ for all $v\in B$ with
+                capacity $c(v, t) = w(v)$ are added.
+                \item All original edges in $G$ are labeled with $c(u, v) =
+                \infty$.
+            \end{itemize}
+            
+            \begin{lemma}
+                There exists a one-to-one mapping between a $s,t$ cut with
+                finite capacity in $G'$, and a vertex cover in $G$. This mapping
+                is represented as follows: each $s, t$ cut $X, Y$ in which
+                $X = \{s\}\cup A_X\cup B_X$, $Y = \{t\}\cup A_Y\cup B_Y$ where
+                $A_X, A_Y$ is a partition of $A$ and $B_X$, $B_Y$ is a partition
+                of $B$, is one-to-one mapped to the vertex cover $C = A_Y\cup
+                B_X$.
+            \end{lemma}
+            \begin{proof}
+                (From finite cut to cover) Assume for contradiction that $C =
+                A_Y\cup B_X$ is not a cover, so that there exist $(u, v) \in E$ but $(u,
+                v) \in C$. Therefore we have $u\in A_X$ and $v\in B_Y$, which
+                means $u\in X$ and $v\in Y$, i.e. edge $(u,v)$ crosses the
+                boundry of the cut. However, the fact that $c(u,v)=\infty$
+                contradicts the assumption that this cut has finite capacity. As
+                a result,  $C = A_Y\cup B_X$ must be a cover.
+                \\\\
+                (From cover to finite cut) Assume for contradiction that the cut
+                $X = \{s\}\cup A_X\cup B_X$, $Y = \{t\}\cup A_Y\cup B_Y$ has
+                infinite capacity. That means there exists an edge $(u, v)\in E$
+                such that $u\in X$ and $v\in Y$. Consequently, we must have
+                $u\in A_X$ and $v\in B_Y$, which suggests that neither $u$ nor
+                $v$ is in $C = A_Y\cup B_X$. This contradicts the assumption
+                that $C$ is a cover. As a result, $X$, $Y$ must be a cut with
+                finite capacity.
+            \end{proof}
+            
+            \begin{lemma}
+                In the above one-to-one mapping, the weight of cover $C$
+                in $G$ equals to the capacity of $s,t$ cut $X, Y$ in $G'$. 
+            \end{lemma}
+            \begin{proof}
+                \begin{align*}
+                    \sum_{p\in C} w(p) &= \sum_{p\in A_X\cup B_Y} w(p) \\
+                    &= \sum_{v\in A_Y} w(v) + \sum_{u \in B_X} w(u) \\
+                    &= \sum_{v\in A_Y} c(s, v) + \sum_{u \in B_X} c(u, t) \\
+                    &= \sum_{v\in Y} c(s, v) + \sum_{u \in X} c(u, t) \\
+                    &= \sum_{u\in X, v\in Y} c(u, v)
+                \end{align*}
+            \end{proof}
+            
+            From the above 2 lemmas, we conclude that finding a node cover with
+            minimum weight in $G$ is equivalent to finding a minimum $s,t$ cut
+            in $G'$, which can be easily solved by Ford-Fulkerson algorithm.
+            After getting the minimum cut, the minimum cover can be easily
+            derived from the above one-to-one mapping.
+            
+        }
         
     \end{homeworkProblem}
     
