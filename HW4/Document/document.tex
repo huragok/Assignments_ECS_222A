@@ -312,7 +312,319 @@
         
         \vspace{10pt}
         \problemAnswer{
-                
+            For the original $n$-by-$m$ table $T$, denote its $(j,i)$-th entry
+            as $T_{ji}\in[0, 1)$. Define row sum and column sum as
+            \begin{align*}
+                b_j & = \sum_{i=1}^m T_{ji},\,j=1,\ldots,n \\
+                a_i & = \sum_{j=1}^n T_{ji},\,i=1,\ldots,m
+            \end{align*}
+            respectively, and the total sum as 
+            \[
+                c = \sum_{j=1}^n b_j = \sum_{i=1}^m a_i =
+                \sum_{j=1}^n\sum_{i=1}^m T_{ji}.
+            \]
+            For a $n$-by-$m$ rounded table $\tilde{T}$, denote its $(j,i)$-th
+            entry, the $j$-th row sum, th $i$-th column sum and the total sum as
+            $\tilde{T}_{ji}$, $\tilde{b}_j$, $\tilde{a}_i$ and $\tilde{c}$,
+            respectively, where
+            \begin{align*}
+                \tilde{b}_j & = \sum_{i=1}^m \tilde{T}_{ji},\,j=1,\ldots,n \\
+                \tilde{a}_i & = \sum_{j=1}^n \tilde{T}_{ji},\,i=1,\ldots,m
+            \end{align*}
+            and
+            \[
+                \tilde{c} = \sum_{j=1}^n \tilde{b}_j = \sum_{i=1}^m \tilde{a}_i
+                = \sum_{j=1}^n\sum_{i=1}^m \tilde{T}_{ji}.
+            \]
+            The rounding requirement is then formulated as (from loose to
+            tight)
+            \begin{subequations}
+                \begin{align}
+                    & 0 \leq \tilde{T}_{ji} \leq \lceil T_{ji} \rceil \\
+                    & \lfloor a_i \rfloor \leq \tilde{a}_i \leq\lceil a_i\rceil,\;
+                    \lfloor b_j \rfloor \leq \tilde{b}_j \leq\lceil b_j\rceil \\
+                    & \lfloor c \rfloor \leq \tilde{c} \leq\lceil c
+                    \rceil.
+                \end{align}
+                \label{eq:table_round_req}
+            \end{subequations}
+            This motivates us to build a graph $G = (V, E)$ corresponding to
+            the original table, given either $\tilde{c} = \lfloor c \rfloor$ or
+            $\tilde{c} = \lceil c \rceil$, where
+            \[
+                V = \{p\}\cup A \cup B \cup \{q\}
+            \]
+            in which each node $A_i\in A$, $i=1,\ldots,m$ corresponds to a
+            column and each node $B_j\in B$, $j=1,\ldots,n$ corresponds to a
+            row. The demands of this nodes are 
+            \begin{align*}
+                d(A_i) & = -\lfloor a_i \rfloor,\,i=1,\ldots,m \\
+                d(B_j) & = \lfloor b_j \rfloor,\,j=1,\ldots,n \\
+                d(p) & = -(\tilde{c} - \sum_{i=1}^{m}\lfloor a_i \rfloor) \\
+                d(q) & = \tilde{c} - \sum_{j=1}^{n}\lfloor b_j \rfloor
+            \end{align*}
+            And
+            \begin{align*}
+                E & =\{(p, A_i)|A_i\in A\} \\ & \cup \{(A_i, B_j)|A_i\in A, B_j\in B\} \\ &
+                \cup \{(B_j, q)|B_j\in B\}
+            \end{align*}
+            over which the capacity is defined as
+            \begin{align*}
+                c(p, A_i) & = \lceil a_i \rceil - \lfloor a_i \rfloor,\,
+                i=1,\ldots,m \\
+                c(A_i, B_j) & = \lceil T_{ji} \rceil, \,i=1,\ldots,m, j=1,\ldots,n \\
+                c(B_j, q) & = \lceil b_j \rceil - \lfloor b_j \rfloor,\,
+                j=1,\ldots,n
+            \end{align*}
+            An example of graph $G$ is plotted in
+            Figure~\ref{fig:table_rounding_G} 
+            \begin{figure}[!h]
+                \centering
+                \includegraphics[width=0.5\columnwidth]{figs/table_rounding_G.pdf}
+                \caption{Graph $G$ constructed from the original table and
+                $\tilde{c}$ where $m=4$ and $n=2$.}
+                \label{fig:table_rounding_G}
+            \end{figure}
+            
+            We would like to convert the original table rounding problem into an
+            equaivalent circulation with demands problem on $G$ and prove that
+            the latter is always feasible and propose an efficient algorithm.
+            \begin{lemma}
+                There is a one to one mapping between a table rounding scheme
+                given $\tilde{c}$ and an integer circulation scheme in graph
+                $G$. Given a table rounding scheme specified by $\{\tilde{T}_{ji}\}$,
+                $\{\tilde{a}_i\}$, $\{\tilde{b}_j\}$, $\tilde{c}$ corresponds to
+                a circulation scheme given by
+                \begin{align*}
+                    f(p, A_i) &= \tilde{a}_i - \lfloor a_i \rfloor, \, i =
+                    1,\ldots, m \\
+                    f(A_i, B_j) & = \tilde{T}_{ji},\,i=1,\ldots,m, j=1,\ldots,n \\
+                    f(B_j, q) & = \tilde{b}_j - \lfloor b_j \rfloor,\,
+                    j=1,\ldots,n
+                \end{align*}
+                On the other hand, given a feasible integer circulation scheme
+                defined by $\{f(p, A_i)\}$, $\{f(A_i,
+                B_j)\}$, $\{f(B_j, q)\}$ on $G$, a table rounding scheme is
+                given by 
+                \begin{align*}
+                    \tilde{T}_{ji} & = f(A_i, B_j),\,i=1,\ldots,m,\,j=1,\ldots,n
+                    \\
+                    \tilde{a}_i &= f(p, A_i) + \lfloor a_i
+                    \rfloor,\,i=1,\ldots,m
+                    \\
+                    \tilde{b}_j &= f(B_j, q) + \lfloor b_j
+                    \rfloor,\,j=1,\ldots,n\\
+                \end{align*}
+                \label{lemma:21}
+            \end{lemma}
+            \begin{proof}
+                (From table rounding to circulation) Firstly it is easy to
+                verify that this mapping respects that $0\leq f(u, v) \leq c(u,
+                v)$ for all $(u, v)$ in $E$ and all $f(u, v)$ are integers. All
+                we need to do is to check the demand conditions: at node $p$, we
+                have
+                \begin{align*}
+                    \sum_{u} f(u, p) - \sum_{v} f(p, v) & = -\sum_{i=1}^{m} f(p,
+                    A_i) \\
+                    & = - \sum_{i=1}^{m} (\tilde{a}_i -\lfloor{a}_i\rfloor) \\
+                    & = - \tilde{c}_i + \sum_{i=1}^{m}\lfloor{a}_i\rfloor \\
+                    & = d(p)
+                \end{align*}
+                at node $A_i$, we have
+                \begin{align*}
+                    \sum_{u} f(u, A_i) - \sum_{v} f(A_i, v) & = f(p,
+                    A_i) - \sum_{j=1}^n f(A_i, B_j)\\
+                    & = \tilde{a}_i - \lfloor{a}_i\rfloor - \sum_{j=1}^{n}
+                    \tilde{T}_{ji}\\
+                    & = - \lfloor{a}_i\rfloor \\
+                    & = d(A_i)
+                \end{align*}
+                According to the symmetric property of graph $G$ and function
+                $f$, demand conditions are also satisfied at node $q$ and all
+                $B_j$. Consequently, $f$ defines a feasible circulation on $G$.
+                \\\\
+                (From circulation to table rounding) Firstly we verify that
+                $\tilde{T}_{ji}$, $\tilde{a}_i$ $\tilde{b}_j$ are indeed
+                roundings of $T_{ji}$, $a_i$ and $b_j$, respectively. Since
+                \begin{align*}
+                    0\leq f(A_i, B_j) \leq c(A_i, B_j) = \lceil T_{ji} \rceil,
+                \end{align*}
+                therefore $\tilde{T}_{ji} = f(A_i, B_j)$ is indeed an integer
+                round for $T_{ji}\in [0, 1)$. Since
+                \begin{align*}
+                    \lfloor a_i \rfloor \leq f(p, A_i) + \lfloor a_i \rfloor
+                    \leq c(p, A_i) + \lfloor a_i \rfloor = \lceil a_i \rceil
+                \end{align*}
+                therefore $\tilde{a}_i$ is indded an integer round for $a_i$.
+                Similarly we can prove that $\tilde{b}_j$ is indded an integer
+                round for $b_j$.
+                \\\\
+                Next we prove that these roundings $\tilde{T}_{ji}$,
+                $\tilde{a}_i$ $\tilde{b}_j$ satisfies the row-sum, column-sum
+                and total-sum consistency properties of table rounding. Consider
+                the demand condition at node $A_i$, we have
+                \begin{align*}
+                    \sum_{j=1}^n \tilde{T}_{ji} & = \sum_{j=1}^n f(A_i, B_j) \\
+                    & = f(p, A_i) - d(A_i)\\
+                    & = f(p, A_i) + \lfloor a_i \rfloor \\
+                    & = \tilde{a}_i
+                \end{align*}
+                so the row-sum consistency is verified. Similarly, by examining
+                the demand condition at node $B_j$ we can verify the column-sum
+                consistency $\sum_{i=1}^m \tilde{T}_{ji} = \tilde{b}_j$.
+                Consider the demand condition at node $p$, we have
+                \begin{align*}
+                    \sum_{i=1}^m \tilde{a}_i & = \sum_{i=1}^m f(p, A_i) +
+                    \sum_{i=1}^m\lfloor a_i \rfloor \\
+                    & = -d(p) + \sum_{i=1}^m\lfloor a_i \rfloor \\
+                    & = (\tilde{c} - \sum_{i=1}^m\lfloor a_i \rfloor) +
+                    \sum_{i=1}^m\lfloor a_i \rfloor \\
+                    & = \tilde{c}.
+                \end{align*}
+                Similarly, by looking at the demand condition at node $q$ we
+                have $\sum_{i=1}^m \tilde{b}_j$, therefore the total-sum consistency
+                is verified. In conclusion, $\{\tilde{T}_ji\}$ indeed defines a
+                valid table rounding scheme.
+            \end{proof}
+            
+            The above lemma suggests that the original table rounding problem is
+            equivalent to propose an efficient algorithm to find an integer flow
+            with value $\tilde{c}$ in $G$ and prove this flow always exists.
+            \begin{lemma}
+                The network flow problem on $G$ always have an integer solution
+                with value equal to $\tilde{c}$ for either $\tilde{c} = \lfloor c
+                \rfloor$ or $\tilde{c} = \lceil c \rceil$.
+            \end{lemma}
+            \begin{proof}
+                According to (7.51) in the text book, we just need to prove
+                that for every cut $X, Y$ of $G$:
+                \[
+                    \sum_{v\in Y} d(v) \leq c(X, Y).
+                \]
+                Assume
+                \[
+                    Y = A_Y \cup B_Y \cup H
+                \]
+                in which $A_Y \subset A$, $B_Y \subset B$ and $H\subset \{p,
+                q\}$. Next we prove the above inequality for the 4 different
+                $H$:
+                \begin{enumerate}
+                    \item $H=\{p, q\}$
+                    \begin{align*}
+                        \sum_{v\in Y} d(v) & = -(\tilde{c} -
+                        \sum_{i=1}^{m}\lfloor a_i \rfloor) + (\tilde{c} - \sum_{j=1}^{n}\lfloor b_j
+                        \rfloor) - \sum_{A_i\in A_Y}\lfloor a_i \rfloor +
+                        \sum_{B_j\in B_Y}\lfloor b_j \rfloor \\
+                        & = \sum_{A_i\in A_X} \lfloor a_i \rfloor - \sum_{B_j\in
+                        B_X} \lfloor b_j \rfloor \\
+                        & \leq \sum_{A_i\in A_X} \tilde{a}_i - \sum_{B_j\in
+                        B_X} \lfloor b_j \rfloor \\
+                        & = \sum_{A_i\in A_X} \sum_{j=1}^n\tilde{T}_{ji} - \sum_{B_j\in
+                        B_X} \lfloor b_j \rfloor \\
+                        & \leq \sum_{A_i\in A_X}\sum_{B_j\in B_Y}\tilde{T}_{ji}
+                        + \sum_{i=1}^m\sum_{B_j\in B_X} \tilde{T}_{ji} - \sum_{B_j\in
+                        B_X} \lfloor b_j \rfloor \\
+                        & = \sum_{A_i\in A_X}\sum_{B_j\in B_Y}\tilde{T}_{ji} +
+                        \sum_{B_j\in B_X} \tilde{b}_j - \sum_{B_j\in B_X}
+                        \lfloor b_j \rfloor \\
+                        & \leq \sum_{A_i\in A_X}\sum_{B_j\in B_Y}\lceil T_{ji}
+                        \rceil +
+                        \sum_{B_j\in B_X} \lceil b_j \rceil - \sum_{B_j\in B_X}
+                        \lfloor b_j \rfloor \\
+                        & = \sum_{A_i\in A_X}\sum_{B_j\in B_Y}c(A_i, B_j)
+                        + \sum_{B_j\in B_X}c(B_j, q) \\
+                        & = c(X, Y)
+                    \end{align*}
+                    \item $H=\{p\}$
+                    \begin{align*}
+                        \sum_{v\in Y} d(v) & = -(\tilde{c} -
+                        \sum_{i=1}^{m}\lfloor a_i \rfloor) - \sum_{A_i\in A_Y}\lfloor a_i \rfloor +
+                        \sum_{B_j\in B_Y}\lfloor b_j \rfloor \\
+                        & = -\tilde{c} + \sum_{A_i\in A_X} \lfloor a_i \rfloor+
+                        \sum_{B_j\in B_Y}\lfloor b_j \rfloor \\
+                        & \leq -\tilde{c} + \sum_{A_i\in A_X}\tilde{a}_i
+                        +\sum_{B_j\in B_Y}\tilde{b}_j \\
+                        & = -\sum_{i=1}^m\sum_{j=1}^n\tilde{T}_{ji} +
+                        \sum_{A_i\in A_X}\sum_{j=1}^n\tilde{T}_{ji} + 
+                        \sum_{i=1}^m\sum_{B_j\in B_Y}\tilde{T}_{ji} \\
+                        & \leq \sum_{A_i\in A_X}\sum_{B_j\in B_Y}\tilde{T}_{ji}
+                        \\
+                        & \leq \sum_{A_i\in A_X}\sum_{B_j\in B_Y} \lceil T_{ji}
+                        \rceil \\
+                        & = \sum_{A_i\in A_X}\sum_{B_j\in B_Y}c(A_i, B_j)\\
+                        & = c(X, Y)
+                    \end{align*}
+                    \item $H=\{q\}$
+                    \begin{align*}
+                        \sum_{v\in Y} d(v) & = - \sum_{A_i\in A_Y}\lfloor a_i
+                        \rfloor + \sum_{B_j\in B_Y}\lfloor b_j \rfloor +
+                        (\tilde{c} - \sum_{j=1}^n\lfloor b_j \rfloor) \\
+                        & = \tilde{c} - \sum_{A_i\in A_Y}\lfloor a_i \rfloor -
+                        \sum_{B_j\in B_X}\lfloor b_j \rfloor \\
+                        & = \sum_{i=1}^m\sum_{j=1}^n\tilde{T}_{ji} -
+                        \sum_{A_i\in A_Y}\lfloor a_i \rfloor - \sum_{B_j\in
+                        B_X}\lfloor b_j \rfloor \\
+                        & \leq \sum_{A_i\in A_Y}\sum_{j=1}^n \tilde{T}_{ji} +
+                        \sum_{i=1}^m\sum_{B_j\in B_X} \tilde{T}_{ji} +
+                        \sum_{A_i\in A_X}\sum_{B_j\in B_Y} \tilde{T}_{ji} -
+                        \sum_{A_i\in A_Y}\lfloor a_i \rfloor - \sum_{B_j\in
+                        B_X}\lfloor b_j \rfloor \\
+                        & = \sum_{A_i\in A_Y} \tilde{a}_i + \sum_{B_j\in B_X}
+                        \tilde{b}_j + \sum_{A_i\in A_X}\sum_{B_j\in B_Y}
+                        \tilde{T}_{ji} -
+                        \sum_{A_i\in A_Y}\lfloor a_i \rfloor - \sum_{B_j\in
+                        B_X}\lfloor b_j \rfloor \\
+                        & \leq \sum_{A_i\in A_Y}(\lceil a_i \rceil - \lfloor
+                        a_i \rfloor) + \sum_{A_i\in A_X}\sum_{B_j\in B_Y}
+                        \lceil T_{ji} \rceil + \sum_{B_j\in B_X}(\lceil b_j
+                        \rceil - \lfloor b_j \rfloor) \\
+                        & = \sum_{A_i\in A_Y}c(p, A_i) + \sum_{A_i\in
+                        A_X}\sum_{B_j\in B_Y}c(A_i, B_j) + \sum_{B_j\in
+                        B_X}c(B_j, q) \\
+                        & = c(X, Y)
+                    \end{align*}
+                    \item $H = \emptyset$
+                    \begin{align*}
+                        \sum_{v\in Y} d(v) & = -\sum_{A_i\in A_Y}\lfloor a_i
+                        \rfloor + \sum_{B_j\in B_Y}\lfloor b_j \rfloor \\
+                        & \leq -\sum_{A_i\in A_Y}\lfloor a_i \rfloor
+                        + \sum_{B_j\in B_Y}\tilde{b}_j \\
+                        & = -\sum_{A_i\in A_Y}\lfloor a_i \rfloor +
+                        \sum_{i=1}^m\sum_{B_j\in B_Y} \tilde{T}_{ji} \\
+                        & \leq -\sum_{A_i\in A_Y}\lfloor a_i \rfloor +
+                        \sum_{A_i\in A_Y}\sum_{j=1}^n \tilde{T}_{ji} +
+                        \sum_{A_i\in A_X}\sum_{B_j\in B_Y} \tilde{T}_{ji}\\
+                        & = -\sum_{A_i\in A_Y}\lfloor a_i \rfloor + \sum_{A_i\in
+                        A_Y} \tilde{a}_i + \sum_{A_i\in A_X}\sum_{B_j\in B_Y}
+                        \tilde{T}_{ji} \\
+                        & \leq \sum_{A_i\in A_Y} (\lceil a_i \rceil - \lfloor
+                        a_i \rfloor) + \sum_{A_i\in A_X}\sum_{B_j\in B_Y} \lceil
+                        T_{ji} \rceil \\
+                        & = \sum_{A_i\in A_Y}c(p, A_i) + \sum_{A_i\in
+                        A_X}\sum_{B_j\in B_Y}c(A_i, B_j) \\
+                        & = c(X, Y)
+                    \end{align*}
+                \end{enumerate}
+            \end{proof}
+            From the above lemma, the circulation with demands problem is always
+            feasible, indicating that the equivalent table rounding problem is
+            always feasible. For an efficient algorithm to solve the table
+            rounding problem, we can further extend graph $G$ to $G'$ by adding
+            a source node $s$, a sink node $t$ and the corresponding edges
+            $(s,p)$, $(s,  A_i)$, $(B_j, t)$ and $(q, t)$, as described in the
+            text book. An example of $G'$ is shown in
+            Figure~\ref{fig:table_rounding_network}. We can use the
+            Ford-Fulckerson algorithm to find a integer flow with value
+            $\tilde{c}$ in $G'$, then the table rounding scheme is defined as in
+            Lemma~\ref{lemma:21}.
+            
+            \begin{figure}[!h]
+                \centering
+                \includegraphics[width=0.6\columnwidth]{figs/table_rounding_network.pdf}
+                \caption{Graph $G'$ based on the circulation problem.}
+                \label{fig:table_rounding_network}
+            \end{figure}
+            
         }
         
     \end{homeworkProblem}
