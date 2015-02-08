@@ -634,8 +634,8 @@
     %----------------------------------------------------------------------------------------
     \begin{homeworkProblem}
         Suppose $(X, Y)$ and $(X', Y')$ are two distinct minimum-capacity $s$,
-        $t$ cuts in a directed network $G$. Prove that $(X\cup X' , Y\cup Y')$
-        and $(X\cap X , Y\cap Y)$ are also a minimum-capacity $s$, $t$ cuts in
+        $t$ cuts in a directed network $G$. Prove that $(X\cup X' , Y\cap Y')$
+        and $(X\cap X' , Y\cup Y')$ are also a minimum-capacity $s$, $t$ cuts in
         $G$. The key to this problem is to remember that an $s$, $t$ cut is a
         partition of the nodes with $s$ in one subset and $t$ in the other, so
         there are four subsets of nodes when you examine $X$, $Y$, $X'$, $Y'$
@@ -644,7 +644,52 @@
         
         \vspace{10pt}
         \problemAnswer{
-            
+            It is apparent that both $(X\cup X' , Y\cap Y')$ and $(X\cap X',
+            Y\cup Y')$ are partitions of $V = X\cup Y = X'\cup Y'$ as $X\cap Y =
+            X'\cap Y' = \emptyset$. Also as $s\in X$ and $s\in X'$, we have
+            $s\in X\cap X'$ and $s\in X\cup X'$ and similarly $t\in Y\cap Y'$
+            and $t\in Y\cup Y'$, which means both $(X\cup X' , Y\cap Y')$ and
+            $(X\cap X' , Y\cup Y')$ are indeed $s,t$ cuts. Since $(X, Y)$ and
+            $(X', Y')$ are min-cut, we have
+            \begin{align*}
+                c(X\cup X', Y\cap Y') & \geq c(X, Y) = c(X', Y') \\
+                c(X\cap X', Y\cup Y') & \geq c(X, Y) = c(X', Y').
+            \end{align*}
+            As a result,
+            \begin{align*}
+                c(X\cup X', Y\cap Y') + c(X\cap X', Y\cup Y') \geq c(X, Y) +
+                c(X', Y')
+            \end{align*}
+            the equality holds iff $(X\cup X' , Y\cap Y')$ and $(X\cap X' ,
+            Y\cup Y')$ are both min-cut. On the other hand
+            \begin{align*}
+                & c(X\cup X', Y\cap Y') + c(X\cap X', Y\cup Y') \\
+                &=\sum_{u\in X\backslash X'}\sum_{v\in Y\cap Y'}c(u, v)
+                +\sum_{u\in X'\backslash X}\sum_{v\in Y\cap Y'}c(u, v)
+                +\sum_{u\in X\cap X'}\sum_{v\in Y\cap Y'}c(u, v) \\
+                &+\sum_{u\in X\cap X'}\sum_{v\in Y\backslash Y'}c(u, v)
+                +\sum_{u\in X\cap X'}\sum_{v\in Y'\backslash Y}c(u, v)
+                +\sum_{u\in X\cap X'}\sum_{v\in Y\cap Y'}c(u, v) \\
+                & \leq \sum_{u\in X\backslash X'}\sum_{v\in Y\backslash Y'}c(u,
+                v)
+                +\sum_{u\in X\backslash X'}\sum_{v\in Y\cap Y'}c(u, v)
+                +\sum_{u\in X\cap X'}\sum_{v\in Y\backslash Y'}c(u, v)
+                +\sum_{u\in X\cap X'}\sum_{v\in Y\cap Y'}c(u, v) \\
+                &+ \sum_{u\in X'\backslash X}\sum_{v\in Y'\backslash Y}c(u,
+                v)
+                +\sum_{u\in X'\backslash X}\sum_{v\in Y'\cap Y}c(u, v)
+                +\sum_{u\in X'\cap X}\sum_{v\in Y'\backslash Y}c(u, v)
+                +\sum_{u\in X'\cap X}\sum_{v\in Y'\cap Y}c(u, v) \\
+                &= c(X, Y) + c(X', Y')
+            \end{align*}
+            Consequently, $c(X\cup X', Y\cap Y') + c(X\cap X', Y\cup Y') = c(X,
+            Y) + c(X', Y')$. Thus
+            \begin{align*}
+                c(X\cup X', Y\cap Y') = c(X\cap X', Y\cup Y') = c(X, Y) = c(X',
+                Y') \\
+            \end{align*}
+            i.e. both $(X\cup X' , Y\cap Y')$ and $(X\cap X' , Y\cup Y')$ are
+            min-cap $s,t$ cut in $G$.
         }
     \end{homeworkProblem}
     %\clearpage
