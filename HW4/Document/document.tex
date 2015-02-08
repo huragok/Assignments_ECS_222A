@@ -885,7 +885,39 @@
         
         \vspace{10pt}
         \problemAnswer{
-                
+            By superposing, the flow $f$ on $G$ is updated to $f'$ in which
+            \begin{align*}
+                f'(i, j) = \left\{\begin{array}{ll}f(i, j) + g(i,
+                j), & (i, j) \in G^f \\ f(i, j) - g(j,
+                i) & (j, i) \in G^f\end{array}\right.
+            \end{align*}
+            As a result, the residual graph $G_f$ is updated to $G_{f'}$ in
+            which
+            \begin{align*}
+                c_{f'}(i, j) & = c(i, j) - [f(i, j) + g(i, j)] \\ 
+                c_{f'}(j, i) & = f(i, j) - g(j, i)
+            \end{align*}
+            which in turn can be summarized as
+            \begin{align*}
+                c_{f'}(u, v) = c_f(u, v) - g(u, v)
+            \end{align*}
+            Assume for contradiction that $f'$ is not a maximum flow in $G$.
+            According to the stop condition for Ford-Fulkerson algorithm, there
+            still exists a $s-t$ path
+            $i_0\rightarrow i_1\rightarrow\cdots\rightarrow i_K$ in $G_{f'}$ in
+            which $i_0=s$ and $i_K=t$, such that
+            \begin{align*}
+                c_{f'}(i_k, i_{k+1}) > 0,\, k=0,\ldots, K-1
+            \end{align*}
+            therefore we can define $\delta = \min_{k}c_{f'}(i_k, i_{k+1}) > 0$.
+            In $G_{f}$, we can still increase $g(i_k, i_{k+1})$ to $g'(i_k,
+            i_{k+1}) = g(i_k, i_{k+1}) + \delta$ and still have $c_f(u, v) >
+            g'(u, v)$ for any edge $(u, v)$ and the conservation still holds. As
+            a result, the value of flow $g$ in $G_f$ can still be increased by
+            $\delta$. This contradicts with the fact that flow $g$ is a maximum
+            flow in $G_f$. As a result, we conclude that $f'$ is a maximum flow
+            in $G$.
+        
         }
      
     \end{homeworkProblem}
