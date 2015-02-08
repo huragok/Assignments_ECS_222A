@@ -710,8 +710,157 @@
         
         \vspace{10pt}
         \problemAnswer{
-                
-                
+            \begin{lemma}
+                Given 2 entries $M_{i_1j_1}$ and $M_{i_2j_2}$ such that
+                $i_1\not=i_2$ and $j_1\not=j_2$. Suppose after an arbitrary
+                series of row permutations and column permutations, this 2
+                entries are moved to $M_{i_1'j_1'}$ and $M_{i_2'j_2'}$, then we
+                still have $i_1'\not=i_2'$ and $j_1'\not=j_2'$.
+            \end{lemma}
+            \begin{proof}
+                If is sufficient to prove that after a single row-swap we still
+                have $i_1'\not=i_2'$ and $j_1'\not=j_2'$. Then the conclusion
+                can be generalized to a single column swap due to symmertry and
+                generalized to arbitrary row/column permutattions according to
+                mathematical induction.
+                \begin{itemize}
+                    \item If row $i_1$ and row $i_2$ are swapped, then $i_1' =
+                    i_2$, $j_1' = j_1$, $i_2' = i_1$, $j_2' = j_2$, the 2
+                    inequalities hold.
+                    \item If row $i_1$ is swapped with row $i_3\not=i_2$, then
+                    $i_1' = i_3$, $j_1' = j_1$, $i_2' = i_2$, $j_2' = j_2$, the
+                    2 inequalities hold.
+                    \item If 2 rows are swapped but neither $i_1$-th row nor
+                    $i_2$-th row is involved, the 2 entries are not moved at
+                    all, so the 2 inequalities still hold.
+                \end{itemize}
+                \label{lemma:41}
+            \end{proof}
+            
+            \begin{corollary}
+                If we can find a permutation so that the diagonal elements of
+                $M$ is non-zero, then we must be able to find a set of non-zero
+                entries in the original $M$ such that no 2 entries are in the
+                same row or column.
+            \end{corollary}
+            \begin{proof}
+                We note that the row and column permutations are invertible.
+                Since in the resulting matrix $M'$ we have $n$ non-zero diagonal
+                elements, and obviously any pair of them are in different rows
+                and columns, according to Lemma~\ref{lemma:41} in the orignal
+                matrix $M$ this $n$ non-zero entries satisfy the property that
+                no 2 of them are in the same row or column.
+            \end{proof}
+            Algorithm~\ref{alg:perm} is able to find such a
+            permutation given the $n$ non-zero elements among which there are no
+            2 entries in the same row or column. Consequently, finding the
+            permutation and finding the $n$ non-zero elements are equivalent
+            problems.
+            \begin{algorithm}
+                \caption{$perm(M)$: the function to permute the rows and
+                columns in $n$-by-$n$ matrix $M$ so that all diagonal entries
+                are non-zero, suppose there are a list of $n$ non-zero entries
+                $L = \{M_{i_1j_1},\ldots,M_{i_nj_n}\}$ in $M$ among which no two
+                are in the same row or column.}
+                \label{alg:perm}
+                \begin{algorithmic}[1]
+                    \IF {$n=1$}
+                        \RETURN
+                    \ELSIF {$M_{11} \notin L$}
+                        \STATE Swap row 1 and row $i_1$.
+                        \STATE Swap column 1 and column $j_1$.
+                    \ENDIF
+                    \STATE Call $perm(M_{2:n, 2:n})$.
+                \end{algorithmic}
+            \end{algorithm}
+            This recursive algorithm is valid since after step 3-6, we have made
+            sure that $M_{11}\not = 0$. According to Lemma~\ref{lemma:41}, all
+            the remaining $n-1$ entries in $L$ is now in $M_{2:n, 2:n}$ and
+            still no two of them are in the same row or column.
+            
+            To find such $n$ non-zero entries in $M$,
+            we construct a table $G=(V, E)$ as follows:
+            \begin{itemize}
+                \item $V = \{s\} \cup A \cup B \{t\}$, where $s$, $t$ are the
+                source and the sink node respectively, $A = \{A_i|i=1,\ldots,
+                n\}$ corresponds to the $n$ rows and $B = \{B_j|j=1,\ldots,
+                n\}$ corresponds to the $n$ columns.
+                \item $E = \{(s, A_i\}\cup\{(A_i,B_j)\}\cup\{(B_j, t)\}$, where
+                $c(s, A_i) = 1, i=1,\ldots,n$, $c(B_j, t) = 1, j=1,\ldots,n$,
+                $c(A_i,B_j) = 1$ if $M_{ij}\not=0$ and $c(A_i,B_j) = 0$
+                otherwise.
+            \end{itemize}
+            \begin{lemma}
+                There is a one-to-one mapping between a list of $n$ non-zero entries
+                $L = \{M_{i_1j_1},\ldots,M_{i_nj_n}\}$ in $M$ among which no two
+                are in the same row or column, and an integer flow on $G$
+                with value $n$.
+                \label{lemma:43}
+            \end{lemma}
+            \begin{proof}
+                (From $L$ to flow) Given the non-zero entries list $L =
+                \{M_{i_1j_1},\ldots,M_{i_nj_n}\}$, we define a flow in $G$ as
+                \begin{align*}
+                    f(s, A_i) & = 1,\, i = 1,\ldots,n \\
+                    f(A_i, B_j) & = \left\{\begin{array}{ll}1
+                    & \mbox{if } M_{ij}\in L \\ 0 &
+                    \mbox{else.}\end{array}\right. ,\, i,j=1,\ldots,n\\
+                    f(B_j, t) &= 1,\, j=1,\ldots, n
+                \end{align*}
+                Firstly it is easy to verify that $0\leq f(u, v) \leq c(u, v)$
+                for all $(u, v)\in E$. Consider the conservation law at node
+                $A_i$. Since no 2 indices in $\{i_1,\ldots,i_n\}$ are the same,
+                $\{i_1,\ldots,i_n\}$ must be a permutation of $1,\ldots,n$,
+                consequently, there is exactly one non-zero flow $f(A_i, B_j)=1$
+                from $A_i$. Also there is exactly one flow $f(s, A_i)=1$.
+                Therefore the convervation law holds at any node $A_i$. Due to
+                symmetric structure of $G$, it is easy to verify that the
+                conservation law also holds for any node $B_j$. In conclusion,
+                function $f$ defined above is indeed a flow in $G$.
+                \\\\
+                (From flow to $L$) Firstly we show that an integer flow on $G$
+                with value $n$ must satisfy the following properties:
+                \begin{itemize}
+                    \item $f(s, A_i)=f(B_j, t) = 1$, $i,j = 1,\ldots,n$. By
+                    considering the cut $(\{s\}, V\backslash\{s\})$, we have
+                    \begin{align*}
+                        n = f(\{s\}, V\backslash\{s\}) \leq c(\{s\},
+                        V\backslash\{s\}) = n
+                    \end{align*}
+                    therefore $(\{s\}, V\backslash\{s\})$ is indeed a
+                    min-cut and each edge $(s, A_i)$ must be saturated.
+                    Similarly, by considering the cut $(V\backslash\{t\},
+                    \{t\})$, each edge $(B_j, t)$ must also be saturated.
+                    \item For any node $A_i$, there exists exactly one
+                    $B_{j(i)}$ such that $f(A_i, B_{j(i)}) = 1$ and all other
+                    edges out from $A_i$ have 0 flow on them. Conversely, for
+                    any node $B_j$, there exists exactly one $A_{i(j)}$ such
+                    that $f(A_{i(j)}, B_j) = 1$ and all other edges into $B_j$
+                    have 0 flow on them. This is because at node $A_i$, we have
+                    \begin{align*}
+                        \sum_{j=1}^n f(A_i, B_j) = f(s, A_i) = 1
+                    \end{align*}
+                    while at node $B_j$, we have
+                    \begin{align*}
+                        \sum_{i=1}^n f(A_i, B_j) = f(B_j, t) = 1
+                    \end{align*}
+                    and $f(A_i, B_j)$ must be integer.
+                \end{itemize}
+                Consequently, from such an integer flow with value $n$, we can
+                simply build $L=\{M_{1,j(1)},\ldots,M_{n,j(n)}\}$ and it is
+                guaranteed that no 2 indices in $j(1),\ldots,j(n)$ are equal.
+            \end{proof}
+            
+            According to Lemma~\ref{lemma:43}, the original problem is
+            equivalent to finding an integer flow with value $n$ in $G$. Also if
+            such a flow exist it must be a max-flow since $c(\{s\},
+            V\backslash\{s\}) = n$. Therefore, to find $L =
+            \{M_{i_1j_1},\ldots,M_{i_nj_n}\}$ we can simply run the
+            Ford-Fulkerson algorithm on $G$. If the resulting integer max-flow
+            has value $n$, then we build $L$ as described in the proof of
+            Lemma~\ref{lemma:43}, and use Algorithm~\ref{alg:perm} to execute
+            the permutations.
+            
         }
      
     \end{homeworkProblem}
