@@ -2,6 +2,7 @@ tmp
 Reference
 __pycache__
 *~
+*#
 .metadata
 .project
 .texlipse

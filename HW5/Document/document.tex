@@ -1,0 +1,380 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[toc,page]{appendix}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName} % Top left header
+\chead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle} % Top center header
+\rhead{\firstxmark} % Top right header
+\lfoot{\lastxmark} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%   DOCUMENT STRUCTURE COMMANDS
+%   Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+    \nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+\setcounter{homeworkProblemCounter}{0}
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+    \stepcounter{homeworkProblemCounter} % Increase counter for number of
+% problems
+    \renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the
+% name of the problem
+    \section{\homeworkProblemName} % Make a section in the document with the
+% custom problem count
+    \enterProblemHeader{\homeworkProblemName} % Header and footer within the
+% environment
+}{
+    \exitProblemHeader{\homeworkProblemName} % Header and footer after the
+% environment
+}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+    \noindent\textbf{\emph{Answer: }}#1 % Just put a keyword Answer in
+    % bold/italic at the beginning
+}
+
+\newcommand{\homeworkSectionName}{}
+\newenvironment{homeworkSection}[1]{ % New environment for sections within homework problems, takes 1 argument - the name of the section
+    \renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the
+% name of the section from the environment argument
+    \subsection{\homeworkSectionName} % Make a subsection with the custom name
+% of the subsection
+    \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]} % Header
+% and footer within the environment
+}{
+    \enterProblemHeader{\homeworkProblemName} % Header and footer after the
+% environment
+}
+
+\newtheorem{theorem}{Theorem}[homeworkProblemCounter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{definition}[1][Definition]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{example}[1][Example]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+    }
+\newenvironment{remark}[1][Remark]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+
+\newcommand{\qed}{
+    \nobreak \ifvmode \relax \else
+    \ifdim\lastskip<1.5em \hskip-\lastskip
+    \hskip1.5em plus0em minus0.5em \fi \nobreak
+    \vrule height0.75em width0.5em depth0.25em\fi
+}
+
+\lstset{
+    frame=single,
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+   
+%----------------------------------------------------------------------------------------
+%   NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Assignment\ \#5} % Assignment title
+\newcommand{\hmwkDueDate}{Tuesday,February\ 26,\ 2015} % Due date
+\newcommand{\hmwkClass}{ECS\ 222A} % Course/class
+\newcommand{\hmwkClassTime}{TR 4:40pm-6:00pm} % Class/lecture time
+\newcommand{\hmwkClassInstructor}{Daniel Gusfield} % Teacher/lecturer
+\newcommand{\hmwkAuthorName}{Wenhao Wu} % Your name
+
+%----------------------------------------------------------------------------------------
+%   TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}}
+\date{} % Insert date here if you want it to appear below your name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+    \maketitle
+    
+    %----------------------------------------------------------------------------------------
+    %   TABLE OF CONTENTS
+    %----------------------------------------------------------------------------------------
+    
+    %\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+    
+    \newpage
+    \tableofcontents
+    \newpage
+
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 1
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Read (or skim, since we discussed it in class) the first 4 sections of
+        the Bender et al. paper on the LCA problem. In class we derived a
+        preprocessing time of $O(\sqrt{n}\times(2n/(\log_2n))^3)$ to build the
+        tables for all the binary vectors. In the Bender paper, the time stated
+        for that is faster by a factor of $(2n/\log_2 n)$. How do they achieve
+        this improvement? (This is an easy problem given what we have already
+        done in this class, but it makes sure you understand the method.)
+        
+        \vspace{10pt}
+        \problemAnswer{
+            
+        }
+        
+    \end{homeworkProblem}
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 2
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Now, read Section 5 of the LCA paper of Bender et al. In that paper,
+        they call the Range Query problem that we discussed in class (where the
+        list $L$ comes from a tree) the +-1RMQ problem. In section 5, they show
+        how to solve the general RMQ problem (where the consecutive values can
+        differ by any amount). They show that the general RMQ problem can be
+        solved in constant time, after $O(n)$ preprocessing, i.e., just as fast
+        as the +-1RMQ. This is done by reducing the general RMQ problem to an
+        LCA problem on a tree, in $O(n)$ time. Call LCA problem that the RMQ
+        problem reduces to, the RLCA problem, and use $RT$ to refer to the tree
+        used in the RLCA problem.
+        
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            Is this an amazing result, or what? I mean, the fact that any LCA
+            query can be answered in constant time, after only linear-time
+            preprocessing, is already amazing, but probably one would
+            (hand-waivingly) explain that it is somehow due to the fact that
+            the adjacent $L$ values differ by +1 or -1, which allows a
+            4-Russian’s approach. But, then to see that in fact, that condition
+            is not needed \ldots
+            
+            \vspace{10pt}
+            \problemAnswer{
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            In class, we said that in some applications, only the LCAs of two
+            leaves of a tree $T$ are ever needed. In this true of the $RT$ trees
+            used to solve RLCA problems, in order to solve general RMQ problems?
+            (This is also an easy problem, only really intended to be sure you
+            read and understood Section 5.)
+            
+            \vspace{10pt}
+            \problemAnswer{
+            }
+        \end{homeworkSection}
+    \end{homeworkProblem}
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 3
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Read (or skim, since we have already discussed it in class) the Wagner
+        paper on global minimum cut in an undirected graph.
+        
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            In the last sentence of Section 2, they state: 
+            \begin{quotation}
+                ``Notice that the starting vertex a stays the same throughout
+                the whole algorithm. It can be selected arbitrarily in each phase
+                instead.''
+            \end{quotation}
+            
+            Make an explicit argument for this claim.
+            
+            \vspace{10pt}
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            It is known that in any edge-weighted undirected graph with $n$
+            nodes, there is a set $S$ of at most $n − 1$ cuts (bipartitions of
+            the nodes), such that for any pair of nodes $s, t$ (there are
+            $\left(\begin{array}{l}n\\2\end{array}\right)$ pairs of
+            nodes), $S$ will contain a minimum $s − t$ cut.
+
+            Do the $n − 1$ minimum cuts found by the Wagner algorithm form such
+            a set $S$? Prove that they do, or find a counter-example.
+            
+            \vspace{10pt}
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+    \end{homeworkProblem}
+    %\clearpage
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 4
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Parametric P-P problem (this is probably the most time-consuming
+        problem, but it mostly requires that you understand the Preflow-Push
+        method.)
+        
+        Recall that in HW 4, you showed that if $f$ is some non-maximum $s − t$
+        flow in a graph $G$, and $G_f$ is the residual flow graph with respect
+        to $f$, then a maximum $s − t$ flow in $G$ can be obtained by
+        superimposing $f$ with the maximum $s-t$ flow $g$ in $G_f$.
+        
+        Suppose one wants to compute a sequence of $k$ maximum $s-t$ flows in a
+        graph $G$, where between each flow computation the capacity on each edge
+        out of $s$ is either unchanged or increased, and all other capacities
+        are left constant. We call this a parametric flow problem. There are
+        many problems which can be solved by such a sequence of flow
+        computations. If we consider each flow as an independent computation,
+        the best resulting time bound is $O(kn^3)$.
+        
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            Using the result from HW 4, restated above, give a brief argument
+            that the $(i+1)$ $s-t$ flow can be computed by changing the
+            capacities on the edges out of $s$ to s in the last residual graph
+            used in the $i$-th maximum flow computation, and then finding the
+            maximum flow in that altered residual graph. Essentially, then we
+            are computing the $(i + 1)$ $s-t$ flow, starting with the $i$-th
+            flow in the $(i + 1)$ $s-t$ graph.
+            
+            \vspace{10pt}
+            \problemAnswer{    
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            Now we explore how the variant of the Preflow-Push algorithm which
+            always picks the active node with largest d value works in this
+            parametric environment.
+            
+            Argue that the following method correctly computes the $i + 1$ $s-t$
+            maximum flow in the sequence.
+            \begin{enumerate}
+                \item In the last residual graph used by the Preflow-Push
+                algorithm in the $i$-th flow computation, remove all edges into
+                $s$, and remove every node, other than s, whose $d$ label is $n$
+                or greater. Leave all of the node labels $d$ on the remaining
+                nodes unchanged. Call this graph $G'$.
+                \item Increase the capacities (as given by the new capacity
+                data) of every edge of $G'$ out of s to a remaining node in
+                $G'$. This might create new forward edges. Call this graph
+                $G''$.
+                \item Saturate all the edges in $G''$ out of $s$.
+                \item With this preflow, and the existing $d$ labels, continue
+                with the preflow-push algorithm, with the maximum $d$ variant,
+                on $G''$. When it stops, superimpose its flow with the flow
+                for the $i$-th problem in the sequence. We claim that this gives
+                a maximum flow in the $i + 1$ $s-t$ graph in the sequence.
+            \end{enumerate}
+            The key to proving that this is correct is to first show that Step 3
+            does indeed create a preflow in $G''$, and the node labels are
+            valid for that preflow. After that, you only need to briefly argue
+            that the overall algorithm is correct.
+            
+            \vspace{10pt}
+            \problemAnswer{    
+            }
+        \end{homeworkSection}
+        
+        So far, we haven’t made much progress, since the time for each running
+        of the above algorithm is bounded only by $O(n^3)$. But, I believe that
+        the entire sequence of $k$ flows can be computed in $O(n^3 + kn)$ time,
+        which is a dramatic improvement over the method that starts each flow
+        from scratch. We will explore this in the next homework (or you can get
+        started now).
+    \end{homeworkProblem}
+    %\clearpage
+    
+    %----------------------------------------------------------------------------------------
+
+\end{document}
