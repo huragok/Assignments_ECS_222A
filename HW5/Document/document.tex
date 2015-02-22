@@ -201,14 +201,56 @@
     \begin{homeworkProblem}
         Read (or skim, since we discussed it in class) the first 4 sections of
         the Bender et al. paper on the LCA problem. In class we derived a
-        preprocessing time of $O(\sqrt{n}\times(2n/(\log_2n))^3)$ to build the
+        preprocessing time of $O(\sqrt{n}\times(\log_2n)^3)$ to build the
         tables for all the binary vectors. In the Bender paper, the time stated
-        for that is faster by a factor of $(2n/\log_2 n)$. How do they achieve
+        for that is faster by a factor of $(\log_2 n)$. How do they achieve
         this improvement? (This is an easy problem given what we have already
         done in this class, but it makes sure you understand the method.)
         
         \vspace{10pt}
         \problemAnswer{
+            As discussed in the class, the bottleneck in the
+            preprocessing is, for each of the $\sqrt{n}/2$ possible binary
+            vector of length $\log_2n/2 - 1$ named $b$, where
+            $b[i]\in\{-1,1\}$, $i = 1,\ldots,\log_2n/2 - 1$, compute
+            \begin{align}
+                (\phi_b(u,v), \eta_b(u,
+                v)) = \left(\min_{j\in[u,v]}\sum_{i=0}^{j-1}b[i],
+                \arg\min_{j\in[u,v]}\sum_{i=0}^{j-1}b[i])\right), 1\leq u\leq
+                v \leq \log_2n/2
+            \end{align}
+            in which we define $b[0] = 0$. In the original preprocessing method,
+            the computation of each $(\phi_b(u,v), \eta_b(u,v))$ with a linear
+            scan takes $O(\log_2 n)$ time. However, all $(\phi_b(u,v),
+            \eta_b(u,v))$ can in fact be computed using dynamic programming.
+            Specifically, define
+            \begin{align}
+                \rho_b(v) = \sum_{i=0}^{v-1}b[i],
+            \end{align}
+            we have the recursion
+            \begin{subequations}
+                \begin{align}
+                    \rho_b(v+1) & = \rho_b(v) + b[v+1] \\
+                    \phi_b(u, v+1) & = \min\{\phi_b(u, v),\rho_b(v+1)\} \\
+                    \eta_b(u, v+1) & = \left\{\begin{array}{ll}\eta_b(u,
+                    v) & \mbox{if } \phi_b(u, v) < \rho_b(v+1)
+                    \\ v+1 & \mbox{else.}\end{array}\right.
+                \end{align}
+            \end{subequations}
+            and the base cases are
+            \begin{subequations}
+                \begin{align}
+                    \rho_b(0) & = 0 \\
+                    \phi_b(u,u) & = b[u] \\
+                    \eta_b(u, u) & = u
+                \end{align}
+            \end{subequations}
+            In the DP, we can compute all $(\phi_b(u,u+d),\eta_b(u,u+d))$, $u =
+            1, \ldots, \log_2n/2$ by increaseing $d$ by 1 each time. In this
+            way, the time to compute all $(\phi_b(u,v), \eta_b(u,v))$ is
+            $O((\log_2n)^2)$ for each $b$. Consequently, the overall
+            preprocessing time is $O(\sqrt{n}(\log_2n)^2)$, which is $\log_2n$
+            faster than the linear scan method.
             
         }
         
