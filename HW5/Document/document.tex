@@ -282,6 +282,10 @@
             
             \vspace{10pt}
             \problemAnswer{
+                Yes. The key point is that one can transform a general RMQ
+                problem into a LCA problem by building a Cartesian Tree with
+                $O(n)$ amortized complexity.
+                
             }
         \end{homeworkSection}
         
@@ -294,7 +298,15 @@
             
             \vspace{10pt}
             \problemAnswer{
-            }
+                This is not likely to be true. In the general RMQ problem
+                one might ask for the smallest element in the subarray
+                $A[i,\ldots,j]$ for any pair of indices $(i, j)$. However, in
+                the RT tree, the nodes corresponding to indices $i$ and $j$ may
+                not be leaf nodes. This indicates that solving LCA problem only
+                for 2 leaf nodes for the RT trees constructed is not sufficient
+                to solve general RMQ problems.
+                
+             }
         \end{homeworkSection}
     \end{homeworkProblem}
     
