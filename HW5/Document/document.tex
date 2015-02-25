@@ -329,8 +329,13 @@
             
             \vspace{10pt}
             \problemAnswer{
-            
-            }
+                According to Theorem 2.1. in Section 2, the generic algorithm
+                from the lecture works if we can find any pair $s-t$ cut during
+                each of the $n-1$ iterations (phases) and then merge them. Since
+                during each iteration, selecting arbitrary starting vertex
+                eventually will result in some min $s-t$ cut, the starting point
+                does not have to stay the same.
+             }
         \end{homeworkSection}
         
         \begin{homeworkSection}{\homeworkProblemName(b)}
@@ -345,7 +350,21 @@
             
             \vspace{10pt}
             \problemAnswer{
-            
+                Look at the example provided in Wagner's paper. The 7 cuts are
+                \begin{enumerate}
+                    \item $\{1\}, \{2, 3, 4, 5, 6, 7, 8\}$, with $w=5$;
+                    \item $\{8\}, \{1, 2, 3, 4, 5, 6, 7\}$, with $w=5$;
+                    \item $\{7, 8\}, \{1, 2, 3, 4, 5, 6\}$, with $w=7$;
+                    \item $\{4, 7, 8\}, \{1, 2, 3, 5, 6\}$, with $w=7$;
+                    \item $\{3, 4, 7, 8\}, \{1, 2, 5, 6\}$, with $w=4$;
+                    \item $\{1, 5\}, \{2, 3, 4, 6, 7, 8\}$, with $w=7$;
+                    \item $\{2\}, \{1, 3, 4, 5, 6, 7, 8\}$, with $w=9$.
+                \end{enumerate} 
+                However, we can find the $5-6$ cut $\{1, 2, 3, 4, 5, 7, 8\}$,
+                $\{6\}$ with $w=6$ which is smaller than all the $5-6$ cut in
+                the above list. This serves as a counter example indicating that
+                the Wagner algorithm does not form such a set $S$.
+                
             }
         \end{homeworkSection}
     \end{homeworkProblem}
