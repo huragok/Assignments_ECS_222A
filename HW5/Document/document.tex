@@ -378,9 +378,9 @@
         problem, but it mostly requires that you understand the Preflow-Push
         method.)
         
-        Recall that in HW 4, you showed that if $f$ is some non-maximum $s − t$
+        Recall that in HW 4, you showed that if $f$ is some non-maximum $s-t$
         flow in a graph $G$, and $G_f$ is the residual flow graph with respect
-        to $f$, then a maximum $s − t$ flow in $G$ can be obtained by
+        to $f$, then a maximum $s-t$ flow in $G$ can be obtained by
         superimposing $f$ with the maximum $s-t$ flow $g$ in $G_f$.
         
         Suppose one wants to compute a sequence of $k$ maximum $s-t$ flows in a
@@ -394,20 +394,39 @@
         \begin{homeworkSection}{\homeworkProblemName(a)}
             Using the result from HW 4, restated above, give a brief argument
             that the $(i+1)$ $s-t$ flow can be computed by changing the
-            capacities on the edges out of $s$ to s in the last residual graph
+            capacities on the edges out of $s$ in the last residual graph
             used in the $i$-th maximum flow computation, and then finding the
             maximum flow in that altered residual graph. Essentially, then we
             are computing the $(i + 1)$ $s-t$ flow, starting with the $i$-th
             flow in the $(i + 1)$ $s-t$ graph.
             
             \vspace{10pt}
-            \problemAnswer{    
+            \problemAnswer{
+                Firstly, we note that the $i$-th $s-t$ flow is still a flow in
+                the $(i+1)$-th graph, since the conservation at all nodes are
+                still satisfied and 
+                \begin{align}
+                    0\leq f_i(u, v) \leq c_i(u, v) \leq c_{i+1}(u, v) 
+                \end{align}
+                Secondly, given $f_i(u, v)$, in the altered residual graph, the
+                only edges whose capacities are potentially changed are
+                \begin{align}
+                    c_i^f(s, v) = c_i(s, v) - f_i(s, v) \longrightarrow
+                    c_{i+1}^f(s, v) = c_{i+1}(s, v) - f_i(s, v),\,v\in V
+                \end{align}
+                i.e. only the forward edge from $s$ is altered in the residual
+                graph. Consequently, according to HW4, to compute the $(i+1)-th$
+                max $s-t$ flow, we just need to change the capacities on the
+                edges out of $s$ in the last residual graph used in the $i$-th
+                maximum flow computation, and then finding the maximum flow in
+                that altered residual graph.
+                
             }
         \end{homeworkSection}
         
         \begin{homeworkSection}{\homeworkProblemName(b)}
             Now we explore how the variant of the Preflow-Push algorithm which
-            always picks the active node with largest d value works in this
+            always picks the active node with largest $d$ value works in this
             parametric environment.
             
             Argue that the following method correctly computes the $i + 1$ $s-t$
@@ -419,7 +438,7 @@
                 or greater. Leave all of the node labels $d$ on the remaining
                 nodes unchanged. Call this graph $G'$.
                 \item Increase the capacities (as given by the new capacity
-                data) of every edge of $G'$ out of s to a remaining node in
+                data) of every edge of $G'$ out of $s$ to a remaining node in
                 $G'$. This might create new forward edges. Call this graph
                 $G''$.
                 \item Saturate all the edges in $G''$ out of $s$.
@@ -435,10 +454,68 @@
             that the overall algorithm is correct.
             
             \vspace{10pt}
-            \problemAnswer{    
+            \problemAnswer{
+                \begin{lemma}
+                    In the above algorithm, Step 3 does indeed create a preflow
+                    in $G''$ and the node labels are valid fo that preflow.
+                \end{lemma}
+                \begin{proof}
+                    Firstly we show that Step 3 creates a preflow in $G''$.
+                    Denote the node set in $G'$ and $G''$ as $V'$ the edge set
+                    in $G''$ as $E_f''$, and the capacity of edge $(u, v)$
+                    in $G''$ as $c_f''(u, v)$, then
+                    \begin{itemize}
+                        \item For each node $v$ in $\{v| (s, v)\in E_f'', v\in
+                        V'\backslash\{s\}\}$, after Step 3, we have $f(v, u) =
+                        0$ for all $u\in V'$, $f(s, v) = c_f''(s, v)$ and $f(u,
+                        v) = 0$ for $u\not=s$. Consequently, the excess of $v$ is
+                        \begin{align}
+                            e(v) & = \sum_{v\in V'} f(v, u) - \sum_{v\in V'}f(u,
+                            v) \notag \\
+                            & = c_f''(s, v)
+                        \end{align}
+                        \item For each node $v$ in $\{v| (s, v)\notin E_f'', v\in
+                        V'\backslash\{s\}\}$, i.e. there is no edge from $s$ to
+                        $v$ in $G''$, we have $f(v, u) = f(u, v) = 0$ all $u\in
+                        V'$. Consequently, the excess of $v$ is
+                        \begin{align}
+                            e(v) & = \sum_{v\in V'} f(v, u) - \sum_{v\in V'}f(u,
+                            v) \notag \\
+                            & = 0
+                        \end{align}
+                    \end{itemize}
+                    In summary, for any $u, v \in V'$, we have $0\leq f(u,
+                    v)\leq c_f''(u, v)$ and for all $v\in V'\backslash\{s\}$ we
+                    have $e(v) \geq 0$, therefore after Step 3 there is indeed a
+                    preflow in $G''$.
+                    
+                    Next we show that after Step 3 the node labels are valid.
+                    For all the remaining nodes in $G''$ their node labels are
+                    the same as in $G_f$ the original residual graph used by the
+                    Preflow-Push algorithm. Denote the capacity of edge $(u, v)$
+                    in $G'$ as $c_f'(u, v)$. In graph $G''$, for all $c_f''(u,
+                    v) > 0$, we must have $u\not=s$ since after Step 3 all edges
+                    $(s, v)$ must have been satisfied. Since $u\not=s$, from
+                    Step 1 we know that $v\not=s$, concequently, edge $(u, v)$
+                    must be in the original residual graph. Thus
+                    \begin{align}
+                        d(v) \leq d(u) + 1 
+                    \end{align}
+                    in the original residual graph. Since in $G''$ the labels of
+                    the remaining nodes are not changed, the labels are also
+                    valid in $G''$
+                    
+                \end{proof}
+                
+                Since the flow from running the max-$d$ algorithm on $G''$
+                serves as a maximum flow in te $i+1$-th altered residual graph.
+                According to Problem 4(a), the overall algorithm results in the
+                maximum $s-t$ flow in the $(i+1)$-th graph.
+                
             }
         \end{homeworkSection}
         
+        \vspace{10pt}
         So far, we haven’t made much progress, since the time for each running
         of the above algorithm is bounded only by $O(n^3)$. But, I believe that
         the entire sequence of $k$ flows can be computed in $O(n^3 + kn)$ time,
