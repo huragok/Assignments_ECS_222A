@@ -1,0 +1,407 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[toc,page]{appendix}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName} % Top left header
+\chead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle} % Top center header
+\rhead{\firstxmark} % Top right header
+\lfoot{\lastxmark} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%   DOCUMENT STRUCTURE COMMANDS
+%   Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+    \nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+\setcounter{homeworkProblemCounter}{0}
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+    \stepcounter{homeworkProblemCounter} % Increase counter for number of
+% problems
+    \renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the
+% name of the problem
+    \section{\homeworkProblemName} % Make a section in the document with the
+% custom problem count
+    \enterProblemHeader{\homeworkProblemName} % Header and footer within the
+% environment
+}{
+    \exitProblemHeader{\homeworkProblemName} % Header and footer after the
+% environment
+}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+    \noindent\textbf{\emph{Answer: }}#1 % Just put a keyword Answer in
+    % bold/italic at the beginning
+}
+
+\newcommand{\homeworkSectionName}{}
+\newenvironment{homeworkSection}[1]{ % New environment for sections within homework problems, takes 1 argument - the name of the section
+    \renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the
+% name of the section from the environment argument
+    \subsection{\homeworkSectionName} % Make a subsection with the custom name
+% of the subsection
+    \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]} % Header
+% and footer within the environment
+}{
+    \enterProblemHeader{\homeworkProblemName} % Header and footer after the
+% environment
+}
+
+\newtheorem{theorem}{Theorem}[homeworkProblemCounter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{definition}[1][Definition]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{example}[1][Example]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+    }
+\newenvironment{remark}[1][Remark]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+
+\newcommand{\qed}{
+    \nobreak \ifvmode \relax \else
+    \ifdim\lastskip<1.5em \hskip-\lastskip
+    \hskip1.5em plus0em minus0.5em \fi \nobreak
+    \vrule height0.75em width0.5em depth0.25em\fi
+}
+
+\lstset{
+    frame=single,
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+   
+%----------------------------------------------------------------------------------------
+%   NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Assignment\ \#6} % Assignment title
+\newcommand{\hmwkDueDate}{Thursday,March\ 5,\ 2015} % Due date
+\newcommand{\hmwkClass}{ECS\ 222A} % Course/class
+\newcommand{\hmwkClassTime}{TR 4:40pm-6:00pm} % Class/lecture time
+\newcommand{\hmwkClassInstructor}{Daniel Gusfield} % Teacher/lecturer
+\newcommand{\hmwkAuthorName}{Wenhao Wu} % Your name
+
+%----------------------------------------------------------------------------------------
+%   TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}}
+\date{} % Insert date here if you want it to appear below your name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+    \maketitle
+    
+    %----------------------------------------------------------------------------------------
+    %   TABLE OF CONTENTS
+    %----------------------------------------------------------------------------------------
+    
+    %\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+    
+    \newpage
+    \tableofcontents
+    \newpage
+
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 1
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        We saw a randomized algorithm that tries to find a global $Min$ cut
+        in an undirected, unweighted graph $G$ with $m$ edges. Now suppose we want
+        to find a cut that has a \emph{large} number of edges, i.e., a partition
+        of the nodes of $G$ into two sets $S$ and $T$ so that the number of
+        edges that have one node in $S$ and one node in $T$ is large. Denote the
+        maximum possible number as $Max(G)$. The problem of finding $Max(G)$ is
+        NP-hard, so we would like a randomized algorithm that finds an $S$, $T$
+        cut where the \emph{expected} number of edges that cross the cut is a
+        large fraction of $Max(G)$.
+        
+        Here is a particularly brainless algorithm that does it. For each
+        vertex, flip a coin: if the coin comes up heads, put the vertex in $S$,
+        otherwise, put it in $T$. Assume that the coin is fair, i.e., the
+        probability of heads is $1/2$.
+        
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            Using this randomized algorithm, what is the expected number of
+            edges that have one node in $S$ and one in $T$? Explain.
+            
+            \vspace{10pt}
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            Prove that in any undirected graph $G$, there is a cut that contains
+            at least half of the edges in $G$.
+            
+            \vspace{10pt}
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(c)}
+            Often in the analysis of social media, people build graphs
+            representing who knows or likes (or hates or dates) whomever else.
+            Then they analyze the graphs for particular features, such as large
+            cliques, large independent sets, small cuts, nodes with high degree,
+            the number of nodes of degree 1, number of triangles, etc. and
+            they ascribe a ``meaning'' to each of these features. For example, a
+            node with high degree is a ``hub'' or ``kingpin''; and a large
+            clique represents a ``socially cohesive unit''; and a small cut is a
+            ``bottleneck'', etc. This same approach to studying interactions is
+            used in a huge variety of other systems. For example, graphs (call
+            them ``biological networks'') are also to represent interactions
+            between molecules, or between animals in a biological system, and
+            biological, behavioural or chemical meanings are ascribed to
+            features in these graphs. In general, such networks are called
+            ``interaction networks''.
+            
+            Now consider a ``large cut'' as a feature of an interaction network.
+            Make up (use your imagination) as many meanings you can for a large
+            cut in a social or biological network, or any other interaction
+            network you can describe.
+            
+            Given the fact stated in problem 1b, how large must a cut be before
+            it could plausibly say anything meaningful about the interactions
+            represented in an interaction graph? If you were a ``network
+            analyst'' trying to find meaningful information from an interaction
+            network, and you didn't know the fact stated in problem 1b, would
+            that be a problem?
+            
+            \vspace{10pt}
+            \problemAnswer{
+            
+            }
+        \end{homeworkSection}
+    \end{homeworkProblem}
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 2
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Extend the analysis done for 3-SAT (in class and also in Section 13.4)
+        to 4-SAT, i.e., the assumption that every clause has 4 literals. Then
+        generalize to t-SAT for any fixed integer $t$. That is, generalize
+        statments 13.14, 13.15, and 13.16, and justify your answers.
+            
+        \vspace{10pt}
+        \problemAnswer{
+                
+        }
+
+    \end{homeworkProblem}
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 3
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Do problem 7 in chapter 13 of the book. How does the answer to this
+        problem relate to the answer of problem 2?
+        
+        \vspace{10pt}
+        \problemAnswer{
+            
+        }
+    \end{homeworkProblem}
+    %\clearpage
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 4
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        Assume that SAT is NP-complete. Define twice-SAT as the problem of
+        determing whether a given Boolean formula can be satisfied in at least
+        two \emph{different} ways. Two ways to satisfy a Boolean formula are
+        different if at least one variable is set differently (i.e., true in one
+        and false in the other).
+        
+        Show how to reduce the SAT problem to the twice-SAT problem in
+        polynomial time.
+        
+        Assuming SAT is NP-complete, show that twice-SAT is NP complete.
+
+        \vspace{10pt}
+        \problemAnswer{
+                
+        }
+        
+    \end{homeworkProblem}
+    %\clearpage
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 5
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        \textbf{Approximation Algorithm for Node Cover}
+        
+        Recall the node cover problem:
+        
+        Let $G$ be an undirected graph with each node $i$ given weight $w(i) >
+        0$. A set of nodes $S$ is a \emph{node cover} of $G$ if every edge of
+        $G$ is incident to at least one node of $S$. The \emph{weight} of a node
+        cover $S$ is the summation of the weights, denoted $w(S)$, of the nodes
+        in $S$; the weighted node cover problem is to select a node cover with
+        minimum weight.
+        
+        The node cover problem (even when all weights are one) is known to be
+        NP-hard, and hence we do not expect to find a polynomial-time (in terms
+        of worst case) algorithm that is always correct. Therefore, we relax
+        somewhat the insistence that the method be both correct and efficient
+        for all problem instances. There are many types of relaxations that have
+        been developed for NP-hard problems. The most common is the
+        constant-factor, polynomial-time approximation algorithm.
+        
+        For a graph $G$ with node weights, let $S^∗(G)$ denote the minimum
+        weight node cover. Let $A$ be a polynomial time algorithm that always
+        finds a node cover, but one that is not necessarily minimum; let $S(G)$
+        denote the node cover of $G$ that $A$ finds. Then $A$ is called a
+        \emph{constant-error polynomial-time approximation algorithm} (or
+        approximation algorithm for short) if for any graph $G$,
+        $S(G)/S^∗(G)\leq c$ for some fixed constant $c$.
+        
+        For the node cover problem we will give an approximation algorithm,
+        based on network flow, with $c = 2$. First, recall that the node cover
+        problem has a nice solution when the graph $G$ is bipartite. This was
+        done on a previous homework. You may take it as a black box at this
+        point.
+        
+        \textbf{The Approximation Algorithm for General Graphs}
+        
+        Given $G$ (not necessarilly bipartite), create bipartite graph $B = (N,
+        N', E)$ as follows: for each node $i$ in $G$, create two nodes $i$ and
+        $i'$, placing $i$ on the $N$ side, and $i'$ on the $N'$ side of $B$;
+        give both of these nodes the weight $w(i)$ of the original node $i$ in
+        $G$. If $(i, j)$ is an edge in $G$, create an edge in $B$ from $i$ to
+        $j'$ and one from $j$ to $i'$. Now find a minimum cost node cover $S^∗
+        (B)$ of graph $B$. From $S^∗(B)$, create a node cover $S(G)$ in $G$ as
+        follows: for any node $i$ in $G$, if either $i$ or $i'$ is in $S^∗(B)$,
+        then put $i$ in $S(G)$.
+
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            It is easy to find examples where $S(G)$ is not a minimum node cover
+            of $G$, and where $S(G)/S^∗ (G) = 2$. Do it.
+            
+            \vspace{10pt}
+            \problemAnswer{
+                
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            However, no worse error ever happens.
+            
+            \begin{theorem}
+                $S(G)/S^∗(G) \leq 2$ for any $G$ and any choice of node weights
+                for $G$.
+            \end{theorem}
+            
+            Prove the theorem.
+            
+            \vspace{10pt}
+            \problemAnswer{
+                
+                
+            }
+        \end{homeworkSection}
+        
+    \end{homeworkProblem}
+    %\clearpage
+    
+    %----------------------------------------------------------------------------------------
+
+\end{document}
