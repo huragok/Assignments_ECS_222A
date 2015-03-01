@@ -220,7 +220,51 @@
             
             \vspace{10pt}
             \problemAnswer{
-            
+                \begin{lemma}
+                    \label{lemma:E_cross_u}
+                    Denote the expected number of edges $(u, v)$ from vertex $u$
+                    such that $u\in S$ AND $v\in T$ or $u\in T$ AND $v\in S$ as
+                    $E_{cross}(u)$. Then we have
+                    \begin{align}
+                        E_{cross}(u) = \frac{d(u)}{2}
+                    \end{align}
+                    in which $d(u)$ is the degree of vertex $u$.
+                \end{lemma}
+                \begin{proof}
+                    Firstly we have $P\{u\in S\} = P\{u\in T\} = 1/2$. The
+                    probability that there among the $d(u)$ neighbors of vertex
+                    $u$, $k$ of them belong to $S$ while $d(u)-k$ of belong to
+                    $T$ is 
+                    \begin{align}
+                        P_u(|S|=k) & =
+                        \left(\begin{array}{c}k\\ d(u)\end{array}\right)
+                        \left(\frac{1}{2}\right) ^ k\left(\frac{1}{2}\right) ^
+                        {d(u)-k} \notag\\
+                        & = \left(\begin{array}{c}k\\ d(u)\end{array}\right)
+                        \left(\frac{1}{2}\right) ^ {d(u)}
+                    \end{align}
+                    Consequently,
+                    \begin{align}
+                        E_{cross}(u) & = \sum_{k = 0}^{d(u)} P\{u\in
+                        S\}P_u(|S|=k)(d(u) - k) + \sum_{k = 0}^{d(u)} P\{u\in
+                        T\}P_u(|S|=k)k \notag \\
+                        & = 2\cdot\frac{1}{2} \sum_{k = 0}^{d(u)}
+                        k\left(\begin{array}{c}k\\
+                        d(u)\end{array}\right) \left(\frac{1}{2}\right) ^ {d(u)}
+                        \notag \\
+                        & = \frac{d(u)}{2}    
+                    \end{align}
+                \end{proof}
+                Consequently, the expected number of eges that have one node in
+                $S$ and one in $T$, according to Lemma~\ref{lemma:E_cross_u} and
+                the handshake lemma, is
+                \begin{align}
+                    E_{cross} & = \frac{1}{2}\sum_{u\in V} E_{cross}(u) \notag
+                    \\
+                    & = \frac{|E|}{2}
+                \end{align}
+                where $|E|$ is the number of edges in graph $G$.
+                
             }
         \end{homeworkSection}
         
@@ -230,7 +274,23 @@
             
             \vspace{10pt}
             \problemAnswer{
-            
+                We note there are a total number of $2^{|V| - 1}$ possible cuts
+                (taking into consideration of the symmetry between $S$ and $T$),
+                and the random algorithm results in any of them with probability
+                $(1/2)^{|V| - 1}$. Denote the number of edges contained in cut
+                $C$ as $n_{cross}(C)$. Assume for contradiction that $n_{cross}(C)
+                < |E|/2$, then we have
+                \begin{align}
+                    E_{cross} & = \sum_{C}\left(\frac{1}{2}\right)^{|V| -
+                    1}n_{cross}(C) \notag \\
+                    & < \sum_{C}\left(\frac{1}{2}\right)^{|V| -
+                    1}\frac{|E|}{2} \notag \\
+                    & = \frac{|E|}{2}
+                \end{align}
+                which is in contradiction with the solution to Problem 1(a).
+                Consequently, there is a cut that contains at least half of the
+                edges in $G$.
+                
             }
         \end{homeworkSection}
         
@@ -265,6 +325,18 @@
             
             \vspace{10pt}
             \problemAnswer{
+                As an example of a large cut, consider a conflict graph in which
+                each node represents ``a student'' and each edge represents
+                ``hatred'' between two students. The teacher is having a big
+                headache since the students in his class hates each other so
+                much, that he decides to divide the class into 2 so that the
+                total conflicts is minimized in each subclass. To do so he will
+                need to find a large cut, so that a large number of conflict
+                across the cut can be removed with this division.
+                
+                A cut must be greater than $|E|/2$ to be meaningful, since
+                according to Problem 1b, there is going to be a cut of size of
+                at least $|E|/2$ anyway in any graph $G$.
             
             }
         \end{homeworkSection}
@@ -281,7 +353,107 @@
             
         \vspace{10pt}
         \problemAnswer{
+            \begin{lemma}
+                \label{lemma:expected_tAT}
+                (Generalization of statement 13.14) Consider a $t$-SAT formula,
+                where each clause has $t$ different variables. The expected
+                number of clauses satisfied by a random assignment is within an
+                approximation factor $1-(1/2)^t$ of optimal.
+            \end{lemma}
+            \begin{proof}
+                Denote $Z_i = 1$ if the $i$-th clause is true and $Z_i = 0$
+                otherwise. The expectation of the random variable $Z_i$ is
+                \begin{align}
+                    E[Z_i] & = P\{Z_i = 1\}\cdot 1 + P\{Z_i = 0\}\cdot 0
+                    \notag \\
+                    & = P\{Z_i = 1\} \notag \\
+                    & = 1 - P\{\mbox{All $t$ literals in the $i$-th clauses
+                    are false}\} \notag \\
+                    & = 1 - \left(\frac{1}{2}\right)^t
+                \end{align}
+                Consequently, the expected number of clauses satisfied by the
+                random assignment is
+                \begin{align}
+                    E[Z] & = \sum_{i=1}^kE[Z_i] \notag\\
+                    & = \left[1 - \left(\frac{1}{2}\right)^t\right]k
+                \end{align}
+                where $k$ is the total number of clauses.
+            \end{proof}
+            
+            \begin{lemma}
+                \label{lemma:existence_truth_assignment}
+                (Generalization of statement 13.15) For every instance of
+                $t$-SAT, there is a truth assignment that satisfies at least a
+                $1-(1/2)^t$ fraction of all clauses.
+            \end{lemma}
+            \begin{proof}
+                Denote the probability that the random algorithm results in
+                assignment $A_l$ as $p(A_l)$ and the number of clauses satisfied
+                by $A_l$ as $Z(A_l)$. Assume for contradiction that $Z(A_l) <
+                (1-(1/2)^t)k$ for all assignment $A_l$. Then we have
+                \begin{align}
+                    E[Z] & = \sum_l p(A_l)Z(A_l) \notag \\
+                    & < \sum_l p(A_l)\left[1-
+                    \left(\frac{1}{2}\right)^t\right]k \notag \\
+                    & = \left[1-\left(\frac{1}{2}\right)^t\right]k
+                \end{align}
+                which is in contradiction with
+                Lemma~\ref{lemma:expected_tAT}. Consequently,
+                there is a truth assignment that satisfies at least a
+                $1-(1/2)^t$ fraction of all clauses.
+            \end{proof}
+            
+            \begin{lemma}
+                \label{lemma:poly_alg}
+                (Generalization of statement 13.16) There is a randomized
+                algorithm with polynomial expected running time that is
+                guaranteed to produce a truth assignment satisfying at least a
+                $1-(1/2)^t$ fraction of all clauses.
+            \end{lemma}
+            \begin{proof}
+                We propose the random algorithm that generate random assignment
+                (with $1/2$ probability of truth) independently and continuously
+                until a truth assignment satisfying at least a $(1-(1/2)^t)$ is
+                generated. Next we show that this algorithm has polynomial
+                expected running time.
                 
+                Denote $p_j$ as the probability that a single round of random
+                truth assignment results in exactly $j$ clauses being satisfied.
+                From Lemma~\ref{lemma:expected_tAT}, we have
+                \begin{align}
+                    \sum_{j=1}^kjp_j = \left[1 -
+                    \left(\frac{1}{2}\right)^t\right]k \label{eq:E_j}
+                \end{align}
+                Denote the probability that a single round of random
+                truth assignment results in at least $1-(1/2)^t$
+                fraction of all clauses as $p$:
+                \begin{align}
+                    p = \sum_{j\geq[1-(1/2)^t]k}p_j \label{eq:p}
+                \end{align}
+                Define $k' = \lceil (1-(1/2)^t)k\rceil - 1$, then from
+                Eq.~(\ref{eq:E_j}) and Eq.~(\ref{eq:p}) we have
+                \begin{align}
+                    \left[1-\left(\frac{1}{2}\right)^t\right]k & \leq
+                    \sum_{j<[1-(1/2)^t]k}k'p_j + \sum_{j\geq[1-(1/2)^t]k}kp_j
+                    \notag \\
+                    & = k'(1-p) + kp \notag\\
+                    & \leq k'+kp
+                \end{align}
+                Therefore
+                \begin{align}
+                    p & \geq \left[1-\left(\frac{1}{2}\right)^t\right] -
+                    \frac{k'}{k} \notag \\
+                    & \geq \frac{1}{k2^t}
+                \end{align}
+                since both $k$ and $k'$ are integers. Consequently, according to
+                Bernoulli distribution, the expected running time of this random
+                algorithm is 
+                \begin{align}
+                    E_{run} = \frac{1}{p} = k2^t
+                \end{align}
+                which is linear w.r.t the number of clauses.
+            \end{proof}
+            
         }
 
     \end{homeworkProblem}
@@ -293,10 +465,176 @@
         Do problem 7 in chapter 13 of the book. How does the answer to this
         problem relate to the answer of problem 2?
         
-        \vspace{10pt}
-        \problemAnswer{
+        In Section 13.4, we designed an approximation algorithm to within a
+        factor of $7/8$ for the MAX 3-SAT Problem, where we assumed that each
+        clause has terms associated with three different variables. In this
+        problem, we will consider the analogous MAX SAT Problem: Given a set of
+        clauses $C_1,\ldots,C_k$ over a set of variables $X =
+        \{x_1,\ldots,x_n\}$, find a truth assignment satisfying as many of the
+        clauses as possible. Each clause has at least one term in it, and all
+        the variables in a single clause are distinct, but otherwise we do not
+        make any assumptions on the length of the clauses: There may be clauses
+        that have a lot of variables, and others may have just a single
+        variable.
+        
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            First consider the randomized approximation algorithm we used for
+            MAX 3-SAT, setting each variable independently to \emph{true} or
+            \emph{false} with probability $1/2$ each. Show that the expected
+            number of clauses satisfied by this random assignment is at least
+            $k/2$, that is, at least half of the clauses are satisfied in
+            expectation. Give an example to show that there are MAX SAT
+            instances such that no assignment satisfies more than half of the
+            clauses.
             
-        }
+            \vspace{10pt}
+            \problemAnswer{
+                As in Problem 2, denote $Z_i = 1$ if clause $C_i$ is satisfied
+                and $Z_i = 0$ otherwise. The expectation of the random variable
+                $Z_i$ is
+                \begin{align}
+                    E[Z_i] & = P\{Z_i = 1\}\cdot 1 + P\{Z_i = 0\}\cdot 0
+                    \notag \\
+                    & = P\{Z_i = 1\} \notag \\
+                    & = 1 - P\{\mbox{All $t_i$ literals in clause $C_i$ are
+                    false}\} \notag \\
+                    & = 1 - \left(\frac{1}{2}\right)^{t_i} \notag \\
+                    & \geq \frac{1}{2}
+                \end{align}
+                where $t_i \geq 1$ is the number of literals in $C_i$.
+                Consequently, the expected number of clauses satisfied by the
+                random assignment is
+                \begin{align}
+                    E[Z] & = \sum_{i=1}^kE[Z_i] \notag\\
+                    & \geq \frac{k}{2}
+                \end{align}
+                
+                An example of MAX SAT instances where no assignment satisfies
+                half of the clauses is
+                \begin{align}
+                    C_1 = x_1,\, C_2 = \bar{x_1}
+                \end{align}
+                apparently any assignment can only satisfy half of the clauses.
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            If we have a clause that consists only of a single term (e.g., a
+            clause consisting just of $x_1$, or just of $\bar{x_2}$), then there
+            is only a single way to satisfy it: We need to set the corresponding
+            variable in the appropriate way. If we have two clauses such that
+            one consists of just the term $x_i$, and the other consists of just
+            the negated term $\bar{x_i}$, then this is a pretty direct
+            contradiction.
+            
+            Assume that our instance has no such pair of ``contacting clauses'';
+            that is, for no variable $x_i$ do we have both a clause $C=\{x_i\}$
+            and a clause $C' = \{\bar{x_i}\}$. Modify the randomized procedure
+            above to improve the approximation factor from $1/2$ to at least
+            $0.6$. That is, change the algorithm so that the expected number of
+            clauses satisfied by the process is at least $0.6k$.
+            
+            \vspace{10pt}
+            \problemAnswer{
+                We modify the random algorithm as follows: for all literals that
+                appears in a single-literal clause, let the probability of
+                setting the literal so that the clause is satisfied to be $0.6$;
+                For all other literals, let the probability of setting them to
+                \emph{true} to be $0.5$. 
+                
+                \begin{lemma}
+                    This algorithm results in the expected number of satisfied
+                    clauses to be $0.6k$
+                \end{lemma}
+                \begin{proof}
+                    Here we use the same notation as in the proof to
+                    Lemma~\ref{lemma:expected_tAT}. Consider clause $C_i$
+                    \begin{itemize}
+                        \item If $C_i$ is a single-literal clause, we have $E[Z_i]
+                        = P\{Z_i = 1\} = 0.6$.
+                        \item If $C_i$ contains at least two literals, i.e. $t_i
+                        \geq 2$, we can divide the literals in this clause into 3
+                        classes:
+                        \begin{enumerate}
+                            \item The literal corresponds to one of the
+                            single-literal clause. We assume there are $a_i$ such
+                            literals.
+                            \item The inverse of the literal corresponds to one of
+                            the single-literal clause. We assume there are $b_i$
+                            such literals.
+                            \item The literal or its inverse don't correspond to
+                            any single-literal clause. We assume there are $c_i$
+                            such literals.
+                        \end{enumerate}
+                        Based on this classification, we have $a_i + b_i + c_i = t_i
+                        \geq 2$. Then
+                        \begin{align}
+                            E[Z_i] &= P\{Z_i = 1\} \notag \\
+                            & = 1 -
+                            \left(\frac{1}{2}\right)^{c_i} \cdot0.4^{a_i}
+                            \cdot0.6^{b_i} \notag \\
+                            & \geq 1 - 0.6 ^ 2 \notag \\
+                            & = 0.64 \notag \\
+                            & > 0.6
+                        \end{align}
+                    \end{itemize}
+                    Consequently, $E[Z] = \sum_{i=1}^kE[Z_i] \geq 0.6k$.
+                \end{proof}
+                
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(c)}
+            Give a randomized polynomial-time algorithm for the general MAX SAT
+            Problem, so that the expected number of clauses satisfied by the
+            algorithm is at least a $0.6$ fraction of the maximum possible.
+            
+            (Note that, by the example in part (a), there are instances where
+            one cannot satisfy more than $k/2$ clauses; the point here is that
+            we'd still like an efficient algorithm that, in expectation, can
+            satisfy a $0.6$ fraction of the maximum that can be satisfied by an
+            optimal assignment.)
+        
+            \vspace{10pt}
+            \problemAnswer{
+                Similar to the proof of Lemma~\ref{lemma:poly_alg}, we propose
+                the random algorithm that generate random assignmentas in
+                Problem 3(b) independently between different rounds until a
+                truth assignment satisfying at least a $0.6k$ clauses are
+                generated. To show that this algorithm has polynomial expected
+                running time, denote $p_j$ as the probability that a single
+                round of random truth assignment results in exactly $j$ clauses
+                being satisfied, and $p$ as
+                \begin{align}
+                    p = \sum_{j\geq0.6k}p_j
+                \end{align}
+                Also define $k' = \lceil 0.6k\rceil - 1$. From Problem 3(b), we
+                have
+                \begin{align}
+                    0.6k & \leq
+                    \sum_{j<0.6k}k'p_j + \sum_{j\geq0.6k}kp_j
+                    \notag \\
+                    & = k'(1-p) + kp \notag\\
+                    & \leq k'+kp
+                \end{align}
+                Therefore
+                \begin{align}
+                    p & \geq 0.6 - \frac{k'}{k}
+                    \notag \\
+                    & \geq \frac{1}{5k}
+                \end{align}
+                since both $k$ and $k'$ are integers. Consequently, according to
+                Bernoulli distribution, the expected running time of this random
+                algorithm is 
+                \begin{align}
+                    E_{run} = \frac{1}{p} = 5k
+                \end{align}
+                which is linear w.r.t the number of clauses.
+                
+            }
+        \end{homeworkSection}
+        
     \end{homeworkProblem}
     %\clearpage
     
