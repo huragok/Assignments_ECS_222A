@@ -695,8 +695,6 @@
     %   PROBLEM 5
     %----------------------------------------------------------------------------------------
     \begin{homeworkProblem}
-        \textbf{Approximation Algorithm for Node Cover}
-        
         Recall the node cover problem:
         
         Let $G$ be an undirected graph with each node $i$ given weight $w(i) >
@@ -714,13 +712,13 @@
         been developed for NP-hard problems. The most common is the
         constant-factor, polynomial-time approximation algorithm.
         
-        For a graph $G$ with node weights, let $S^∗(G)$ denote the minimum
+        For a graph $G$ with node weights, let $S^*(G)$ denote the minimum
         weight node cover. Let $A$ be a polynomial time algorithm that always
         finds a node cover, but one that is not necessarily minimum; let $S(G)$
         denote the node cover of $G$ that $A$ finds. Then $A$ is called a
         \emph{constant-error polynomial-time approximation algorithm} (or
         approximation algorithm for short) if for any graph $G$,
-        $S(G)/S^∗(G)\leq c$ for some fixed constant $c$.
+        $S(G)/S^*(G)\leq c$ for some fixed constant $c$.
         
         For the node cover problem we will give an approximation algorithm,
         based on network flow, with $c = 2$. First, recall that the node cover
@@ -728,24 +726,34 @@
         done on a previous homework. You may take it as a black box at this
         point.
         
-        \textbf{The Approximation Algorithm for General Graphs}
-        
-        Given $G$ (not necessarilly bipartite), create bipartite graph $B = (N,
-        N', E)$ as follows: for each node $i$ in $G$, create two nodes $i$ and
-        $i'$, placing $i$ on the $N$ side, and $i'$ on the $N'$ side of $B$;
-        give both of these nodes the weight $w(i)$ of the original node $i$ in
-        $G$. If $(i, j)$ is an edge in $G$, create an edge in $B$ from $i$ to
-        $j'$ and one from $j$ to $i'$. Now find a minimum cost node cover $S^∗
-        (B)$ of graph $B$. From $S^∗(B)$, create a node cover $S(G)$ in $G$ as
-        follows: for any node $i$ in $G$, if either $i$ or $i'$ is in $S^∗(B)$,
-        then put $i$ in $S(G)$.
-
+        \begin{quotation}
+            \noindent \textbf{The Approximation Algorithm for General Graphs}
+            
+            Given $G$ (not necessarilly bipartite), create bipartite graph $B = (N,
+            N', E)$ as follows: for each node $i$ in $G$, create two nodes $i$ and
+            $i'$, placing $i$ on the $N$ side, and $i'$ on the $N'$ side of $B$;
+            give both of these nodes the weight $w(i)$ of the original node $i$ in
+            $G$. If $(i, j)$ is an edge in $G$, create an edge in $B$ from $i$ to
+            $j'$ and one from $j$ to $i'$. Now find a minimum cost node cover
+            $S^*(B)$ of graph $B$. From $S^*(B)$, create a node cover $S(G)$ in $G$
+            as follows: for any node $i$ in $G$, if either $i$ or $i'$ is in
+            $S^*(B)$, then put $i$ in $S(G)$.
+        \end{quotation}
         \begin{homeworkSection}{\homeworkProblemName(a)}
             It is easy to find examples where $S(G)$ is not a minimum node cover
-            of $G$, and where $S(G)/S^∗ (G) = 2$. Do it.
+            of $G$, and where $w(S(G))/w(S^*(G)) = 2$. Do it.
             
             \vspace{10pt}
             \problemAnswer{
+                Consider a simple graph $G$ of 2 nodes $V_G=\{x, y\}$ and a
+                single edge $E_G=\{(x, y)\}$, with $w(x) = w(y) = 1$. Then the
+                above mentioned algorithm generates a bipartite graph $B$ with 4
+                nodes $V_B = \{x,y,x',y'\}$ and 2 edges $E_B=\{(x, y'), (x',
+                y)\}$, with $w(x) = w(y) = w(x') = w(y') =1$. One minimum cost
+                code cover $S*(B) = \{i, j\}$, therefore the corresponding
+                $S(G) = \{i, j\}$. However, we know that $S(G) = \{i\}$ or $S(G)
+                = \{j\}$. As a result, $S(G)$ is not a minimum node cover of
+                $G$, and $w(S(G))/w(S^*(G)) = 2$ exactly.
                 
             }
         \end{homeworkSection}
@@ -754,7 +762,7 @@
             However, no worse error ever happens.
             
             \begin{theorem}
-                $S(G)/S^∗(G) \leq 2$ for any $G$ and any choice of node weights
+                $S(G)/S^*(G) \leq 2$ for any $G$ and any choice of node weights
                 for $G$.
             \end{theorem}
             
@@ -762,8 +770,25 @@
             
             \vspace{10pt}
             \problemAnswer{
+                Assuming $S^*(G) = \{x_1, x_2, \ldots, x_k\}$ is a minimum node
+                cover in $G$, than we claim that $S'(B) = \{x_1, x_2, \ldots,
+                x_k, x_1', x_2', \ldots, x_k'\}$ is a node cover for bipartite
+                graph $B$. To see this, for any edge $(i, j')$ in $B$, the
+                corresponding edge $(i, j)$ in $G$ suggests either $i\in S^*(G)$
+                or $j\in S^*(G)$. Therefore, either $i\in \{x_1, x_2, \ldots,
+                x_k\}$ or $j'\in \{x_1', x_2', \ldots, x_k'\}$. Consequently,
+                either $i\in S'(B)$ or $j\in S'(B)$, which means $S'(B)$ is
+                indeed a cover of $B$.
                 
+                The construction of $S(G)$ from $S^*(B)$ suggests that $w(S(G))
+                \leq w(S^* (B))$, since for any $i\in S(G)$, we must have either
+                $i\in S^*(B)$ or $i'\in S^*(B)$ and $w(i) = w(i')$.
                 
+                Consequently, we have
+                \begin{align}
+                    w(S(G)) \leq w(S^*(B)) \leq w(S'(B)) = 2w(S^*(G))
+                \end{align}
+                therefore $w(S(G))/w(S^*(G)) \leq 2$.
             }
         \end{homeworkSection}
         
