@@ -655,7 +655,37 @@
 
         \vspace{10pt}
         \problemAnswer{
-                
+            Firsly we show how to reduce the SAT problem to the twice-SAT
+            problem in polynomial time. Given a conjunctive normal form (CNF) of
+            $n$ Boolean variables $\phi(x_1,\ldots,x_n)$, we convert it into
+            another CNF by adding a new variable and a 2-literal clause:
+            \begin{align}
+                \phi'(x_1,\ldots,x_n, x_{n+1}) =
+                \phi(x_1,\ldots,x_n)\wedge(x_{n+1}\vee \neg x_{n+1})
+            \end{align}
+            This conversion takes constant thus polynomial amount of time.
+            Suppose $\phi$ has a satisfying assignment $x_1,\ldots,x_n$, then
+            $\phi'$ has at least 2 satisfying assignment $x_1,\ldots,x_n,
+            0$ and $x_1,\ldots,x_n, 1$. Conversely, if $\phi'$ has at
+            least 2 different satisfying assignments and one of them is
+            $x_1,\ldots, x_n, x_{n+1}$, then $x_1,\ldots, x_n$ is a satisfying
+            assignment for $\phi$.
+            
+            Next we show that twice-SAT is NP complete. Since we assume SAT is
+            NP-complete, from the first step we know that twice-SAT is NP
+            hard. All that is left to prove is that twice-SAT is NP. Given a
+            satisfiable twice-SAT formula $\phi$ of $n$ boolean variables, the
+            certificate we choose for twice-SAT is simply 2 different $n$-bit
+            Boolean assignments. To verify each of the two assignments takes
+            $O(\sum_{l=1}^Lt_l)$ time where $L$ is the total number of clauses
+            and $t_l$ is the number of literals in the $l$-th clause.
+            Consequently, the time of verification is polynomial. On the other
+            hand, if $\phi$ is not satisfiable, we can find no assignment that
+            will pass the verification. As a result, twice-SAT is also NP.
+            
+            In summary, since twice-SAT is both NP hard and NP,
+            we conclude that twice-SAT is NP complete.
+            
         }
         
     \end{homeworkProblem}
