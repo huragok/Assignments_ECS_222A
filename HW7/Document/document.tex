@@ -1,0 +1,318 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[toc,page]{appendix}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName} % Top left header
+\chead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle} % Top center header
+\rhead{\firstxmark} % Top right header
+\lfoot{\lastxmark} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%   DOCUMENT STRUCTURE COMMANDS
+%   Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+    \nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+\setcounter{homeworkProblemCounter}{0}
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+    \stepcounter{homeworkProblemCounter} % Increase counter for number of
+% problems
+    \renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the
+% name of the problem
+    \section{\homeworkProblemName} % Make a section in the document with the
+% custom problem count
+    \enterProblemHeader{\homeworkProblemName} % Header and footer within the
+% environment
+}{
+    \exitProblemHeader{\homeworkProblemName} % Header and footer after the
+% environment
+}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+    \noindent\textbf{\emph{Answer: }}#1 % Just put a keyword Answer in
+    % bold/italic at the beginning
+}
+
+\newcommand{\homeworkSectionName}{}
+\newenvironment{homeworkSection}[1]{ % New environment for sections within homework problems, takes 1 argument - the name of the section
+    \renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the
+% name of the section from the environment argument
+    \subsection{\homeworkSectionName} % Make a subsection with the custom name
+% of the subsection
+    \enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]} % Header
+% and footer within the environment
+}{
+    \enterProblemHeader{\homeworkProblemName} % Header and footer after the
+% environment
+}
+
+\newtheorem{theorem}{Theorem}[homeworkProblemCounter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{definition}[1][Definition]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+\newenvironment{example}[1][Example]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+    }
+\newenvironment{remark}[1][Remark]{
+    \begin{trivlist}
+        \item[\hskip \labelsep {\bfseries #1}]
+    }{
+        \end{trivlist}
+}
+
+\newcommand{\qed}{
+    \nobreak \ifvmode \relax \else
+    \ifdim\lastskip<1.5em \hskip-\lastskip
+    \hskip1.5em plus0em minus0.5em \fi \nobreak
+    \vrule height0.75em width0.5em depth0.25em\fi
+}
+
+\lstset{
+    frame=single,
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+   
+%----------------------------------------------------------------------------------------
+%   NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Assignment\ \#7} % Assignment title
+\newcommand{\hmwkDueDate}{Thursday,March\ 12,\ 2015} % Due date
+\newcommand{\hmwkClass}{ECS\ 222A} % Course/class
+\newcommand{\hmwkClassTime}{TR 4:40pm-6:00pm} % Class/lecture time
+\newcommand{\hmwkClassInstructor}{Daniel Gusfield} % Teacher/lecturer
+\newcommand{\hmwkAuthorName}{Wenhao Wu} % Your name
+
+%----------------------------------------------------------------------------------------
+%   TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}}
+\date{} % Insert date here if you want it to appear below your name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+    \maketitle
+    
+    %----------------------------------------------------------------------------------------
+    %   TABLE OF CONTENTS
+    %----------------------------------------------------------------------------------------
+    
+    %\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+    
+    \newpage
+    \tableofcontents
+    \newpage
+
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 1
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        In class on thursday, we talked about the factor of two approximation
+        algorithm for minimum-size node cover problem in an undirected graph
+        $G$: find a maximal Independent Set of edges of $G$, call it $M$ , then
+        form $A(G)$ by taking both ends of each edge in $M$. $A(G)$ is a node
+        cover, and we proved that its size is at most twice the size of $O(G)$,
+        where $O(G)$ is a minimum-size node cover of $G$. That is,
+        $|A(G)|/|O(G)| \leq 2$. In class, I said that we can find a subset
+        $A'(G)$ of $A(G)$ (possibly equal), which is also a node cover of $G$,
+        such that $|A'(G)|/|O(G)| < 2$. More precisely, we have the following:
+        \begin{quotation}
+            Claim: Either some node $x$ can be removed from $A(G)$ so that
+            $A'(G) = A(G) − \{x\}$ is a node cover of $G$, or $A(G)$ is a
+            minimum-size node cover.
+        \end{quotation}
+        Prove the claim, and show how it establishes the better ratio. As a
+        hint, examine two cases: either there is a node $v$ in $A(G)$ such that
+        for every edge $(u, v)$ in $G$, $u$ is also in $A(G)$; or there is no
+        such node. To handle the latter case, extend the proof we gave in class
+        that $|A(G)|/|O(G)| \leq 2$.
+            
+        \vspace{10pt}
+        \problemAnswer{
+
+            
+        }
+        
+    \end{homeworkProblem}
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 2
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        In class we stated that the Satifiability problem is NP-complete, that
+        the Independent Set problem is NP-complete and the Node-Cover Problem is
+        NP-complete. So in this problem you may assume those problems, but only
+        those problems, are known to be NP-complete.
+
+        \begin{homeworkSection}{\homeworkProblemName(a)}
+            In a problem we call the ZZZ problem, the input is a number $k$, and
+            bipartite graph $G$, where the two node sets on the two sides of $G$
+            are denoted $A$ and $B$. The answer to an instance of problem ZZZ is
+            yes if and only if there is a subset $S$ of size at most $k$ of the
+            nodes in $A$, such that every node in $B$ is adjacent to at least
+            one node in $S$. Prove that problem ZZZ is NP-complete.
+            
+            \vspace{10pt}
+            \problemAnswer{
+            
+            
+            }
+        \end{homeworkSection}
+        
+        \begin{homeworkSection}{\homeworkProblemName(b)}
+            In a problem we call the QQQ problem, the input is an undirected
+            graph $G = (V, E)$ and an undirected graph $G_1$. There are no node
+            or edge labels. The answer to an instance of problem QQQ is yes if
+            and only if there is an ``induced'' subgraph $G' = (V', E')$ of $G$
+            which is isomorphic (indentical in this context) to $G_1$. In an
+            induced subgraph containing the set of nodes $V'$, the edge set $E'$
+            consists of \emph{every} edge whose two endpoints are both in $V'$.
+            Prove that Problem QQQ is NP-complete.
+             
+            \vspace{10pt}
+            \problemAnswer{
+            
+            
+            }
+        \end{homeworkSection}
+        
+
+    \end{homeworkProblem}
+    
+    %----------------------------------------------------------------------------------------
+    %   PROBLEM 3
+    %----------------------------------------------------------------------------------------
+    \begin{homeworkProblem}
+        In an undirected, connected graph $G$, a subset $S$ of nodes of $G$ is
+        called a \emph{Dominating Set} if every node in $G$ is adjacent to at
+        least one node in $S$. Note that a Dominating Set is not the same as a
+        Node Cover. The Dominating Set Problem has input $(G, k)$. The answer to
+        an instance of the Dominating Set problem is yes, if and only if $G$ has
+        a Dominating Set of size at most $k$.
+        
+        The following idea shows how to reduce any instance of the Node Cover
+        Problem, when the input graph is connected, to an Instance of the
+        Dominating Set Problem. Note that the Node Cover problem is NP-complete
+        even when the restricted to the case where the input graph is required
+        to be connected.
+        
+        Given an instance $(H, t)$ of the Node Cover Problem ($H$ is a
+        connected, undirected graph, and $t$ is the target), create a new
+        graph $G$ consisting of $H$ plus one new node $uv$ for each edge $(u,
+        v)$ in $H$. Node $uv$ in $G$ has an edge to node $u$ in $G$ and an edge
+        to node $v$ in $G$. So each edge $(u, v)$ in $H$ is associated with a
+        triangle in $G$ consisting of nodes $u$, $v$, $uv$. It helps to draw a
+        picture. Then the input to the Dominating Set Problem is $(G, k)$, where
+        $k = t$.
+        
+        Prove that $H$ has a Node Cover of size at most $t$ if and only if $G$
+        has a Dominating Set of size at most $t$. Hint: establish first that a
+        smallest Dominating Set of $G$ can be found using only the original
+        nodes in $H$.
+        
+        \vspace{10pt}
+        \problemAnswer{
+        
+        
+        }
+        
+    \end{homeworkProblem}
+    %\clearpage
+    
+   
+    
+    %----------------------------------------------------------------------------------------
+
+\end{document}
