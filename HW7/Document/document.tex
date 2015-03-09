@@ -246,8 +246,62 @@
             
             \vspace{10pt}
             \problemAnswer{
+                Firstly, if the answer to problem ZZZ is ``yes'', there exists a
+                subset $S\subset A$ of size at most $k$ (certificate) which can
+                be verified in $O(|V|^2)$ time that every vertex in $B$ is
+                adjacent to at at least one vertex in $S$. And if the answer to
+                problem ZZZ is ``no'', no certificate can trick the verification
+                into saying ``yes''. Consequently, ZZZ problem is NP.
+                
+                An instance $(G, k)$ for a Node-Cover problem, i.e.
+                whether there is a node cover $C$ of size at most $k$ in graph
+                $G = (V, E)$, can be reduced into an instance of ZZZ problem as
+                follows. For the bipartite graph $H$, define $A = V$, $B = \{uv
+                | (u, v)\in E\}$, i.e. $A$ contains the same node as $G$ and for
+                each edge in $G$ a node is added to $B$. The edge set $F$ of $H$
+                is defined as $F=\{(u, uv), (v, uv)|(u, v) \in E\}$, i.e. for
+                any edge $(u, v)$ in $G$, define 2 edges $(u, uv)$ and $(v, uv)$
+                in $H$ where $uv \in B$ is the node corresponding to the edge
+                $(u, v)$.
+                
+                \begin{lemma}
+                    \label{lemma:2a_1}
+                    The answer to instance $(G, k)$ of Node-Cover problem is
+                    ``yes'' iff the answer to instance $(H, k)$ of ZZZ
+                    problem is ``yes''.
+                \end{lemma}
+                \begin{proof}
+                    Suppose $S$ is a node cover in $G$, we claim
+                    that every node in $B$ is adjacent to at least one node in
+                    $S\subset A$. To see this, suppose for contradiction that
+                    there exists a node $uv \in B$ that is not adjacent to any
+                    node in $S$, then there exists two nodes $u\in A\backslash
+                    S$, $v\in A\backslash S$ such that $(u, v) \in E$.
+                    Consequently, we find an edge in $G$ that is not covered by
+                    $S$, which contradicts with the fact that $S$ is a node
+                    cover. As a result, the answer to instance $(H, k)$ of ZZZ
+                    problem is ``yes'' if the answer to instance $(G, k)$ of
+                    Node-Cover problem is ``yes''.
+                    
+                    On the other hand, suppose in bipartite graph $H$ there
+                    is $S\in A$ such that every node in $B$ is adjacent to some
+                    node in $S$, we claim $S$ is also a node cover in $G$. To
+                    see this, suppose for contradiction that $S$ is not a node
+                    cover in $G$, i.e. there exists $(u, v)\in E$ such that
+                    $u\notin S$ and $v\notin S$. In bipartite graph $H$,
+                    consider node $uv \in B$. From the construction of $H$, $uv$
+                    is adjacent to only $u$ and $v$, therefore $uv$is not
+                    adjacent to any node in $S$. This contracdits with the
+                    assumption. As a result, the answer to instance $(G, k)$ of
+                    Node-Cover problem is ``yes'' if the answer to instance $(H,
+                    k)$ of ZZZ problem is ``yes''.
+                \end{proof}
             
-            
+                Since we assume Node-Cover problem to be NP-complete, from
+                Lemma~\ref{lemma:2a_1} we know that ZZZ problem is NP-hard.
+                Since ZZZ problem is also NP, we conclude that ZZZ problem is
+                NP-complete.
+                
             }
         \end{homeworkSection}
         
@@ -263,8 +317,29 @@
              
             \vspace{10pt}
             \problemAnswer{
-            
-            
+                Firstly, if the answer to problem QQQ is ``yes'', there exists
+                an induced subgraph $G'$ of $G$ which is isomorphic to $G_1$.
+                Define the certificate as $G'$ and the correspondence between
+                nodes in $G'$ and $G_1$, the correctness of $G'$ can be verified
+                in  $O(|V|^2)$ time. And if the answer to problem QQQ is ``no'',
+                no certificate can trick the verification into saying ``yes''.
+                Consequently, QQQ problem is NP.
+                
+                An instance $(G, k)$ of the independent set problem, i.e.
+                whether there is an independent set of edges $S$ of size at
+                most $k$ in graph $G = (V, E)$, can be reduced into a QQQ
+                problem instance $(G, G_1)$, where $G_1 = (V_1, E_1)$. We define
+                $V_1 = \{x_1, \ldots, x_k, y_1, \ldots, y_k\}$ and $E_1 =
+                \{(x_1, y_1),\ldots, (x_k, y_k)\}$. Apparently, an independent
+                set of size $k$ corresponds to an induced subgraph isomorphic to
+                $G_1$. Consequently, the answer to instance $(G, k)$ of
+                independent set problem is ``yes'' iff the answer to instance
+                $(G, G_1)$ of QQQ problem is ``yes''.
+                
+                Since we assume Independent Set problem to be NP-complete, from
+                the above reduction we know that QQQ problem is NP-hard.
+                Since QQQ problem is also NP, we conclude that QQQ problem is
+                NP-complete.
             }
         \end{homeworkSection}
         
