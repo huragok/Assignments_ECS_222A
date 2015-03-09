@@ -210,7 +210,7 @@
         such that $|A'(G)|/|O(G)| < 2$. More precisely, we have the following:
         \begin{quotation}
             Claim: Either some node $x$ can be removed from $A(G)$ so that
-            $A'(G) = A(G) − \{x\}$ is a node cover of $G$, or $A(G)$ is a
+            $A'(G) = A(G)-\{x\}$ is a node cover of $G$, or $A(G)$ is a
             minimum-size node cover.
         \end{quotation}
         Prove the claim, and show how it establishes the better ratio. As a
@@ -221,7 +221,75 @@
             
         \vspace{10pt}
         \problemAnswer{
-
+            \begin{lemma}
+                \label{lemma:1_1}
+                If $|A(G)|/|O(G)| = 2$, then for any optimal node cover $O(G)$,
+                for any edge $(u, v)\in M$ we must have either $u\in O(G)$ and
+                $v\notin O(G)$, or $v\in O(G)$ and $u\notin O(G)$. Consequently,
+                $O(G)\subset A(G)$.
+            \end{lemma}
+            \begin{proof}
+                If $|A(G)|/|O(G)| = 2$, we have $|M| = |O(G)|$. Given an optimal
+                node cover $O(G)$ and an edge $(u, v)\in M$:
+                \begin{itemize}
+                    \item If $u\notin O(G)$ and $v\notin O(G)$, then edge $(u,
+                    v)$ is not covered by $O(G)$, this contradicts with the fact
+                    that $O(G)$ is a node cover.
+                    \item If $u\in O(G)$ and $v\in O(G)$, since $|M| = |O(G)|$,
+                    according to Pigeonhole principle, there must be another
+                    edge $(u', v')\in M$ such that $u'\notin O(G)$ and $v'\notin
+                    O(G)$. This again contradicts with the fact that $O(G)$ is a
+                    node cover.
+                \end{itemize}
+                Consequently, for any edge $(u, v)\in M$ we must have either $u\in O(G)$ and
+                $v\notin O(G)$, or $v\in O(G)$ and $u\notin O(G)$. Since there
+                are exactly $|O(G)|$ edges in $M$, we have $O(G)\subset A(G)$.
+            \end{proof}
+            
+            \begin{lemma}     
+                \label{lemma:1_2}
+                If $|A(G)|/|O(G)| = 2$, then for any edge $(u, v) \in M$, there
+                is no pair of nodes $u'$, $v'$ (possibly $u'=v'$) such that
+                $(u, u')\in G$ and $(v, v')\in G$. In other words, for any edge
+                in the independent set $M$, it is impossible that both end nodes
+                are adjacent to some other nodes.
+            \end{lemma}
+            \begin{proof}
+                Assume for contradiction that there exists edge $(u, v) \in M$
+                and $u'$, $v'$ such that $(u, u')\in G$ and $(v, v')\in G$.
+                Since $M$ is an independent set, $u'\notin A(G)$ and $v'\notin
+                A(G)$. According to Lemma~\ref{lemma:1_1}, without loss of
+                generality we can assume that $u\in O(G)$ and $v\notin
+                O(G)$. Since $O(G)\subset A(G)$, $v'\notin A(G)$ indicates that
+                $v'\notin O(G)$. Consequently, we have found an edge $(v,
+                v')\in G$ not covered by $O(G)$. This contradicts with the fact
+                that $O(G)$ is a node cover. The lemma is proved.
+            \end{proof}
+            
+            \begin{corollary}
+                If $|A(G)|/|O(G)| = 2$, we can find some node $x\in A(G)$ such
+                that $A(G)-\{x\}$ is also a node cover.
+            \end{corollary}
+            \begin{proof}
+                According to Lemma~\ref{lemma:1_2}, we can find $(u, v)\in M$
+                such that $v$ is not adjacent to any node in $G$ other than $u$.
+                Consequently, $A(G)-\{v\}$ is also a node cover.
+            \end{proof}
+            Now we have proved that we can always find a node cover $A(G)$ such
+            that $|A(G)|/|O(G)| < 2$. Note that the original claim is
+            wrong. A counter example is shown in Fig~\ref{fig:1_1}. $M =
+            \{(2,3), (4,5)\}$ is a maximal independent set. However, no node can
+            be removed from $A(G) = \{2, 3, 4, 5\}$ so that $A'(G)$ is still a
+            node cover, yet $A(G)$ is not a minimum-size node cover since we
+            have one $O(G) = \{1, 2, 4\}$.
+            
+            \begin{figure}[!h]
+                \centering
+                \includegraphics[width=0.3\columnwidth]{figs/1_1.pdf}
+                \caption{$M = \{(2,3), (4,5)\}$, $A(G) = \{2, 3, 4, 5\}$,
+                $|O(G)| = 3$ and $O(G)$ must contains node $1$.}
+                \label{fig:1_1}
+            \end{figure}
             
         }
         
@@ -391,8 +459,8 @@
                 Suppose for contradiction that there exists a dominating set
                 $S$ and an edge $(u, v)$ in $H$ such that $u\notin S$ and
                 $v\notin S$. According to the construction of $G$, node $uv$ is
-                adjacent only 2 two nodes $u$ and $v$, consequently, $uv$ is not
-                adjacent to any node in $S$. This contradicts with the fact that
+                adjacent to only 2 two nodes $u$ and $v$, consequently, $uv$ is
+                not adjacent to any node in $S$. This contradicts with the fact that
                 $S$ is a dominating set. Consequently, we conlude that at least
                 one of $u, v$ is in $S$.
             \end{proof}
