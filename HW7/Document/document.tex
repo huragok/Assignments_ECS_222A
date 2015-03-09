@@ -379,8 +379,89 @@
         
         \vspace{10pt}
         \problemAnswer{
-        
-        
+            Firstly we establish a smallest Dominating Set of $G$ can be found
+            using only the original nodes in $H$.
+            
+            \begin{lemma}
+                \label{lemma:3_1}
+                If $S$ is a dominating set in $G$, then for each edge $(u, v)$
+                in $H$, at least one of $u, v$ is in $S$.
+            \end{lemma}
+            \begin{proof}
+                Suppose for contradiction that there exists a dominating set
+                $S$ and an edge $(u, v)$ in $H$ such that $u\notin S$ and
+                $v\notin S$. According to the construction of $G$, node $uv$ is
+                adjacent only 2 two nodes $u$ and $v$, consequently, $uv$ is not
+                adjacent to any node in $S$. This contradicts with the fact that
+                $S$ is a dominating set. Consequently, we conlude that at least
+                one of $u, v$ is in $S$.
+            \end{proof}
+            
+            \begin{lemma}
+                \label{lemma:3_2}
+                For a dominating set $S$. The following procedure results in a
+                dominating set $S'$ containing only the original nodes in $H$:
+                Initialize $S'=S$. For any node $uv \in S$
+                \begin{itemize}
+                    \item If $uv, v$ in $S$, replace $uv$ with $u$ in $S'$.
+                    \item If $uv, u$ in $S$, replace $uv$ with $v$ in $S'$.
+                \end{itemize}
+                (From Lemma~\ref{lemma:3_1} these are the only 2 possible
+                scenarios.) Apparently, the number of nodes in $S'$ is equal to
+                or less than that in $S$.
+            \end{lemma}
+            \begin{proof}
+                To see that $S'$ is also a dominating set, for any node $x\in
+                G$, since $S$ is a dominating set, we have $x$ must be adjacent
+                to some node $y\in S$.
+                \begin{itemize}
+                    \item If $y\in H$, i.e. $y$ is an original node in $H$, then
+                    $y\in S'$. Consequently, node $x$ is still adjacent to some
+                    node in $S'$.
+                    \item If $y = uv$ corresponds to some edge $(u, v)$ in $H$,
+                    then we have either $x=u$ or $x=v$. Since both $u$ and $v$
+                    are in $S'$, $x$ must be adjacent to some node in $S'$.
+                \end{itemize}
+                Consequently, $S'$ is also a dominating set.
+            \end{proof}
+            \begin{corollary}
+                \label{corollary:3_3}
+                A smallest Dominating Set of $G$ can be found using only the
+                original nodes in $H$.
+            \end{corollary}
+            \begin{proof}
+                From Lemma~\ref{lemma:3_2}, suppose $S$ is a smallest Dominating
+                Set, we can always construct a dominating set $S'$ no larger
+                than $S$ that contains only the original nodes in $H$.
+            \end{proof}
+            
+            Now we are ready to show that $H$ has a Node Cover of size at most
+            $t$ if and only if $G$ has a Dominating Set of size at most $t$.
+            \begin{itemize}
+                \item If $G$ has a dominating set $S$ of size $t$, from
+                Corollary~\ref{corollary:3_3} $G$ has a dominating set $S'$ of
+                size $t'\leq t$ contains only the original nodes in $H$. We
+                claim that $S'$ is a node cover in $H$. Assume for contradiction
+                that there exists an edge $(u, v)$ in $H$ such that $u\notin
+                S'$ and $v\notin S'$, then node $uv \in G$ is not adjacent to
+                any node in $S'$ since $uv$ is adjacent only to $u$ and $v$.
+                This contradicts with the assumption that $S$ is a dominating
+                set in $G$. Consequently, $S'$ is a node cover in $H$ of size at
+                most $t$.
+                \item If $H$ has a node cover $S$ of size $t$, we claim that $S$
+                is also a dominating set in $G$. Suppose for contradiction that $S$
+                is not a dominating set, then there exists node $x\in G$ that is
+                not adjacent to any node in $S$.
+                \begin{itemize}
+                    \item If $x = uv$ corresponds to some edge $(u, v)$ in $H$,
+                    then we have $u\notin S$ and $v\notin S$, therefore edge
+                    $(u, v)$ is not covered by $S$. This contradicts with the
+                    assumption that $S$ is a node cover in $H$.
+                    \item If $x = u$ corresponds to an original node in $H$,
+                    since $H$ is connected, there exists node $v$ in $H$ such
+                    that $(u, v)$ is an edge in $H$. Then we have $v\notin S$
+                \end{itemize}
+            \end{itemize}
         }
         
     \end{homeworkProblem}
