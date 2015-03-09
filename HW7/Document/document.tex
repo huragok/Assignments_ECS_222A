@@ -449,19 +449,25 @@
                 set in $G$. Consequently, $S'$ is a node cover in $H$ of size at
                 most $t$.
                 \item If $H$ has a node cover $S$ of size $t$, we claim that $S$
-                is also a dominating set in $G$. Suppose for contradiction that $S$
-                is not a dominating set, then there exists node $x\in G$ that is
-                not adjacent to any node in $S$.
+                is also a dominating set in $G$. To see this, given $x\in G$,
+                we show that either $x\in S$ or $x$ is adjacent to some node in
+                $S$:
                 \begin{itemize}
                     \item If $x = uv$ corresponds to some edge $(u, v)$ in $H$,
-                    then we have $u\notin S$ and $v\notin S$, therefore edge
-                    $(u, v)$ is not covered by $S$. This contradicts with the
-                    assumption that $S$ is a node cover in $H$.
-                    \item If $x = u$ corresponds to an original node in $H$,
-                    since $H$ is connected, there exists node $v$ in $H$ such
-                    that $(u, v)$ is an edge in $H$. Then we have $v\notin S$
+                    then edge $(u, v)$ must be covered by $S$ in $H$, therefore
+                    either $u\in S$ or $v\in S$. Since $uv$ is adjacent to both
+                    $u$ and $v$, $uv$ is adjacent to at least one node in $S$.
+                    \item If $x = u$ corresponds to an original node in $H$, we
+                    have either $u\in S$ or $u\notin S$. In the latter case,
+                    since $H$ is connected, there exists node $v$ such that edge
+                    $(u, v)$ is in $H$, thus covered by $S$. Then $u\notin S$
+                    indicates that $v\in S$, therefore $u$ is adjacent to some
+                    node in $S$.
                 \end{itemize}
+                Consequently, $S$ is a dominating set of size $t$ in $G$.
             \end{itemize}
+            In conclusion, $H$ has a Node Cover of size at most $t$ if and only
+            if $G$ has a Dominating Set of size at most $t$.
         }
         
     \end{homeworkProblem}
